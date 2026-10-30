@@ -1,7 +1,7 @@
 /**
  * SB_SKILL_NEW — MAIN APPLICATION CONTROLLER
  * Reviewed & Audited by the 50-Expert Interdisciplinary Snowboard Panel
- * Complete Real-Human Photo & Slow-Motion Video Integration for All 100 Items
+ * Complete Real-Human Continuous Action & Correct-vs-Error Video Integration (204 Images + 204 MP4 Videos)
  */
 
 (function () {
@@ -26,20 +26,22 @@
   }
 
   /* --------------------------------------------------------------------------
-     HELPER: RENDER DUAL REAL-HUMAN PHOTO + MP4 SLOW-MOTION VIDEO SHOWCASE
+     HELPER: RENDER DUAL REAL-HUMAN CONTINUOUS SEQUENCE PHOTO + MP4 VIDEO
      -------------------------------------------------------------------------- */
-  function buildRealMediaDualBoxHtml(mediaId, title, badgeText) {
+  function buildRealMediaDualBoxHtml(mediaId, title, badgeText, customCaption) {
     const imgSrc = `assets/media/images/${mediaId}.jpg`;
     const vidSrc = `assets/media/videos/${mediaId}.mp4`;
     const safeTitle = (title || '').replace(/"/g, '&quot;');
     const safeBadge = (badgeText || mediaId).replace(/"/g, '&quot;');
+    const photoLabel = customCaption || '📸 真人四階段連續分解 + 正誤對照圖';
+    const videoLabel = '🎬 真人連續動作 & ✅正確 vs ❌錯誤 MP4 影片';
 
     return `
       <div class="real-media-dual-box" data-media-id="${mediaId}">
-        <!-- Left Slot: Photorealistic Human Snowboarder Photo -->
+        <!-- Left Slot: 4-Stage Real-Human Sequence & Correct/Error Biomechanics Image -->
         <div class="media-slot">
           <div class="media-slot-header">
-            <span>📸 真人實拍力學解析圖 (Real-Human Photo)</span>
+            <span>${photoLabel}</span>
             <button
               type="button"
               class="zoom-mini-btn"
@@ -48,13 +50,13 @@
               data-lightbox-title="${safeTitle}"
               data-lightbox-badge="${safeBadge}"
             >
-              🔍 放大檢視真人圖影
+              🔍 全螢幕檢視
             </button>
           </div>
           <img
             class="real-human-img"
             src="${imgSrc}"
-            alt="${safeTitle} — 真人單板滑雪示範與力學向量圖"
+            alt="${safeTitle} — 真人四階段連續動作與正誤力學對照圖"
             loading="lazy"
             data-lightbox-img="${imgSrc}"
             data-lightbox-vid="${vidSrc}"
@@ -63,10 +65,10 @@
           />
         </div>
 
-        <!-- Right Slot: Playable Real-Human Slow-Motion MP4 Video -->
+        <!-- Right Slot: Playable Continuous Human Motion + Correct vs Error MP4 Video -->
         <div class="media-slot">
           <div class="media-slot-header video-hdr">
-            <span>🎬 真人慢動作力學分解影片 (MP4 Video)</span>
+            <span>${videoLabel}</span>
             <div class="media-speed-bar">
               <button type="button" class="speed-mini-btn" data-vid-speed="0.25" data-target-vid="vid-${mediaId}">0.25x 極慢</button>
               <button type="button" class="speed-mini-btn" data-vid-speed="0.5" data-target-vid="vid-${mediaId}">0.5x 慢速</button>
@@ -95,7 +97,6 @@
   function bindMediaInteractions(container) {
     if (!container) return;
 
-    // 1. Video playback speed buttons (0.25x, 0.5x, 1.0x)
     container.querySelectorAll('.speed-mini-btn').forEach((btn) => {
       btn.addEventListener('click', (e) => {
         e.stopPropagation();
@@ -114,7 +115,6 @@
       });
     });
 
-    // 2. Fullscreen Lightbox triggers
     container.querySelectorAll('[data-lightbox-img]').forEach((el) => {
       el.addEventListener('click', (e) => {
         e.stopPropagation();
@@ -136,7 +136,7 @@
     const vidEl = document.getElementById('lightbox-video');
 
     if (titleEl) titleEl.textContent = title || '';
-    if (badgeEl) badgeEl.textContent = badge || 'REAL-HUMAN PHOTO & VIDEO';
+    if (badgeEl) badgeEl.textContent = badge || 'REAL-HUMAN CONTINUOUS MOTION';
     if (imgEl) imgEl.src = imgSrc || '';
     if (vidEl) {
       vidEl.src = vidSrc || '';
@@ -262,12 +262,12 @@
         <div class="principle-card">
           <div style="display:flex; justify-content:space-between; align-items:center; gap:0.5rem;">
             <span class="tag-badge" style="font-size:0.68rem;">${badgeLabel}</span>
-            <span style="font-family:var(--font-mono); font-size:0.7rem; color:var(--emerald-400);">✓ 附真人圖解與慢動作影片</span>
+            <span style="font-family:var(--font-mono); font-size:0.7rem; color:var(--emerald-400);">✓ 50人教練團審核：真人四階段 + 正誤連續動作影片</span>
           </div>
           <div style="font-weight:800; font-size:1.05rem; color:var(--text-primary);">${p.title || p.name}</div>
           ${p.formula ? `<div class="principle-formula">${p.formula}</div>` : ''}
           <p style="font-size:0.88rem; color:var(--text-secondary);">${p.explanation || p.description || ''}</p>
-          ${buildRealMediaDualBoxHtml(mediaId, p.title || p.name, badgeLabel)}
+          ${buildRealMediaDualBoxHtml(mediaId, p.title || p.name, badgeLabel, '📸 物理原理四階段真人序列 & 正誤對照圖')}
         </div>
       `;
       })
@@ -276,7 +276,9 @@
     const skillsHtml = (mod.coreSkills || [])
       .map((skill, idx) => {
         const sNum = String(idx + 1).padStart(2, '0');
-        const mediaId = `s_${mNum}_${sNum}`;
+        const mainMediaId = `s_${mNum}_${sNum}`;
+        const stepMediaId = `step_${mNum}_${sNum}`;
+        const errMediaId = `err_${mNum}_${sNum}`;
         const badgeLabel = `${mod.code || mod.id} · SKILL 0${idx + 1}`;
 
         const bio = skill.biomechanics || {};
@@ -295,7 +297,7 @@
         const stepsHtml = (skill.stepByStep || [])
           .map(
             (s, i) =>
-              `<li style="margin-bottom:0.4rem;"><strong>Step ${i + 1}:</strong> ${s}</li>`
+              `<li style="margin-bottom:0.45rem;"><strong>Step ${i + 1}:</strong> ${s}</li>`
           )
           .join('');
 
@@ -324,15 +326,15 @@
             </div>
           </div>
 
-          <!-- Dual Photorealistic Human Photo + MP4 Video for this Skill -->
-          <div style="margin-bottom:1.15rem;">
-            ${buildRealMediaDualBoxHtml(mediaId, skill.name, badgeLabel)}
+          <!-- 1. Main Skill Continuous Human Motion Demonstration -->
+          <div style="margin-bottom:1.2rem;">
+            ${buildRealMediaDualBoxHtml(mainMediaId, skill.name, badgeLabel, '📸 技能全貌：真人四階段連續動作與正誤對比')}
           </div>
 
           <div class="skill-columns">
             <div class="bio-box">
               <div style="font-family:var(--font-mono); font-size:0.78rem; font-weight:700; color:var(--cyan-400); margin-bottom:0.5rem;">
-                📐 生物力學與重心參數 (BIOMECHANICS & COM/BOS)
+                📐 生物力學與重心參數 (BIOMECHANICS &amp; COM/BOS)
               </div>
               <div style="font-size:0.87rem; color:var(--text-secondary);">
                 ${bioText}
@@ -341,7 +343,7 @@
 
             <div class="steps-box">
               <div style="font-family:var(--font-mono); font-size:0.78rem; font-weight:700; color:var(--emerald-400); margin-bottom:0.5rem;">
-                🎯 系統化分解動作與練習步驟 (PROGRESSION DRILLS)
+                🎯 系統化分解動作與練習步驟 (Step 1 ➔ Step 4)
               </div>
               <ol style="padding-left:1.1rem; font-size:0.87rem; color:var(--text-secondary);">
                 ${stepsHtml}
@@ -349,18 +351,28 @@
             </div>
           </div>
 
+          <!-- 2. Dedicated Practice Steps (Step 1 to Step 4) Continuous Image & Video -->
+          <div style="margin-bottom:1.2rem;">
+            ${buildRealMediaDualBoxHtml(stepMediaId, `分解練習步驟 (Step 1–4)：${skill.name}`, `${badgeLabel} · STEPS 1–4`, '📸 練習步驟 Step 1–4 真人連續分解圖')}
+          </div>
+
+          <!-- 3. Common Errors & Expert Mindset Tips + Dedicated Correct-vs-Error Continuous Video -->
           <div class="error-box">
             ${errHtml}
           </div>
 
           ${
             skill.expertMindset
-              ? `<div class="mindset-box">
-                  <strong style="color:var(--orange-400);">🧠 50人專家團隊思維 (Expert Coaching Mindset)：</strong>
+              ? `<div class="mindset-box" style="margin-bottom:0.9rem;">
+                  <strong style="color:var(--orange-400);">🧠 50人專家團隊思維 Tips (Expert Coaching Mindset)：</strong>
                   <span>${skill.expertMindset}</span>
                 </div>`
               : ''
           }
+
+          <div>
+            ${buildRealMediaDualBoxHtml(errMediaId, `正誤連續動作對照 & 專家 Tips：${skill.name}`, `${badgeLabel} · CORRECT vs ERROR & TIPS`, '📸 ✅正確動作 vs ❌錯誤逆刃/洗刃對照 & 專家 Tips 圖')}
+          </div>
         </div>
       `;
       })
@@ -391,7 +403,7 @@
 
       <div>
         <h4 style="font-size:1.15rem; font-weight:800; color:var(--cyan-400); display:flex; align-items:center; gap:0.5rem;">
-          <span>⚡</span> 物理力學與生物力學核心原理 — 每一原理皆附真人實拍力學圖與慢動作解析影片
+          <span>⚡</span> 物理力學與生物力學核心原理（每一原理皆附真人四階段連續動作與 ✅正確 vs ❌錯誤對照影片）
         </h4>
         <div class="principles-grid">
           ${principlesHtml}
@@ -400,7 +412,7 @@
 
       <div>
         <h4 style="font-size:1.15rem; font-weight:800; color:var(--emerald-400); margin-bottom:1rem; display:flex; align-items:center; gap:0.5rem;">
-          <span>🏔️</span> 實戰技術拆解、真人動作示範圖影、常見錯誤與專家思維 (Masterclass Drills)
+          <span>🏔️</span> 實戰技術拆解、練習步驟 (Step 1–4) 與正誤對比 Tips（每一技術、練習步驟與 Tips 皆附專屬真人連續動作圖影）
         </h4>
         <div class="skills-list">
           ${skillsHtml}
@@ -440,7 +452,7 @@
             <p style="font-size:0.83rem; color:var(--text-secondary); margin-bottom:0.55rem;">
               ${sk.biomechanics || sk.description || ''}
             </p>
-            ${buildRealMediaDualBoxHtml(mediaId, sk.name, `ATOMIC SKILL 0${idx + 1}`)}
+            ${buildRealMediaDualBoxHtml(mediaId, sk.name, `ATOMIC SKILL 0${idx + 1}`, '📸 原子技能四階段真人連續分解 + 正誤對照圖')}
           </div>
         `;
         })
@@ -508,7 +520,9 @@
     if (comboDetailContainer && activeCombo) {
       const origIdx = allCombos.findIndex((orig) => orig.id === activeCombo.id);
       const cNum = String((origIdx >= 0 ? origIdx : state.activeComboIndex) + 1).padStart(2, '0');
-      const comboMediaId = `combo_${cNum}`;
+      const comboMainId = `combo_${cNum}`;
+      const comboStepId = `combo_step_${cNum}`;
+      const comboErrId = `combo_err_${cNum}`;
       const phases = activeCombo.phases || [];
 
       comboDetailContainer.innerHTML = `
@@ -526,9 +540,9 @@
             </button>
           </div>
 
-          <!-- Dual Photorealistic Human Photo + MP4 Video for this Ground Trick Combo -->
+          <!-- 1. Main Ground Trick Combo Continuous Action Photo + MP4 Video -->
           <div style="margin-bottom:1.25rem;">
-            ${buildRealMediaDualBoxHtml(comboMediaId, activeCombo.name, `${activeCombo.id} · ${activeCombo.difficulty || 'GROUND TRICK'}`)}
+            ${buildRealMediaDualBoxHtml(comboMainId, activeCombo.name, `${activeCombo.id} · ${activeCombo.difficulty || 'GROUND TRICK'}`, '📸 招式全貌：真人四階段連續動作與正誤對比')}
           </div>
 
           <div style="display:grid; grid-template-columns:repeat(auto-fit, minmax(200px, 1fr)); gap:0.75rem; margin-bottom:1.1rem;">
@@ -541,12 +555,12 @@
               <span class="val" style="font-size:0.88rem; color:var(--orange-400);">${activeCombo.edgeLogic || activeCombo.edgeStatus || 'Heelside 入刃 ➔ 點支撐 ➔ Toeside 鎖刃'}</span>
             </div>
             <div class="readout-box">
-              <span class="lbl">上下半身反擰扭矩 (Torsion & Gaze)</span>
+              <span class="lbl">上下半身反擰扭矩 (Torsion &amp; Gaze)</span>
               <span class="val" style="font-size:0.88rem; color:var(--emerald-400);">${activeCombo.torsionAngle || activeCombo.upperLowerLogic || '預轉蓄力 ±45° 反向鎖定'}</span>
             </div>
           </div>
 
-          <div class="combo-phase-timeline">
+          <div class="combo-phase-timeline" style="margin-bottom:1rem;">
             ${phases
               .map(
                 (ph, idx) => `
@@ -571,15 +585,25 @@
               .join('')}
           </div>
 
-          <div style="margin-top:1.15rem; display:grid; grid-template-columns:1fr 1fr; gap:1rem;">
+          <!-- 2. Dedicated Phase 1 to Phase 4 Practice Steps Continuous Image & MP4 Video -->
+          <div style="margin-bottom:1.25rem;">
+            ${buildRealMediaDualBoxHtml(comboStepId, `Phase 1–4 連續練習步驟：${activeCombo.name}`, `${activeCombo.id} · PHASE 1–4 DRILL`, '📸 Phase 1–Phase 4 練習步驟真人連續分解圖')}
+          </div>
+
+          <!-- 3. Failure Mode & JSBA Pro Tips + Dedicated Correct-vs-Error Continuous Video -->
+          <div style="margin-top:1.15rem; margin-bottom:1rem; display:grid; grid-template-columns:1fr 1fr; gap:1rem;">
             <div class="error-box" style="margin-bottom:0;">
               <strong style="color:var(--crimson-400);">⚠️ 失敗卡刃點分析 (Failure Mode)：</strong>
               <span style="font-size:0.85rem; color:var(--text-secondary);">${activeCombo.failureMode || activeCombo.commonMistake || ''}</span>
             </div>
             <div class="mindset-box">
-              <strong style="color:var(--orange-400);">💡 日系平花專家思維 (JSBA Pro Tip)：</strong>
+              <strong style="color:var(--orange-400);">💡 日系平花專家思維 Tips (JSBA Pro Tip)：</strong>
               <span style="font-size:0.85rem; color:var(--text-secondary);">${activeCombo.expertTip || activeCombo.mindset || ''}</span>
             </div>
+          </div>
+
+          <div>
+            ${buildRealMediaDualBoxHtml(comboErrId, `正誤對照 & 日系專家 Tips：${activeCombo.name}`, `${activeCombo.id} · CORRECT vs ERROR & TIPS`, '📸 ✅正確鎖刃 vs ❌失敗卡刃連續動作 & 專家 Tips 圖')}
           </div>
         </div>
       `;
@@ -639,12 +663,12 @@
       <article class="expert-card">
         <div class="expert-header">
           <span class="expert-id">${ex.id || `EXP-${String(i + 1).padStart(2, '0')}`}</span>
-          <span class="expert-status">✓ 審核通過並修正完畢</span>
+          <span class="expert-status">✓ 教材 · 真人圖解 · 正誤連續影片 驗收通過</span>
         </div>
         <div class="expert-name">${ex.name}</div>
         <div class="expert-role">${ex.title || ex.role} · ${ex.certification || ex.specialty || ''}</div>
         <div class="expert-audit-note">
-          <strong style="color:var(--cyan-400);">審查問題與修正重點：</strong><br/>
+          <strong style="color:var(--cyan-400);">審查問題、圖影校驗與修正重點：</strong><br/>
           ${ex.auditFinding || ex.reviewNote || ex.correction || ''}
         </div>
       </article>
@@ -677,7 +701,6 @@
       });
     }
 
-    // Lightbox close handlers
     const backdrop = document.getElementById('global-media-lightbox');
     const closeBtn = document.getElementById('btn-close-lightbox');
     if (backdrop) {

@@ -2588,6 +2588,12 @@ window.SB_CURRICULUM_DATA.experts50 = [
       sk.mediaId = "s_" + mNum + "_" + sNum;
       sk.image = "assets/media/images/" + sk.mediaId + ".jpg";
       sk.video = "assets/media/videos/" + sk.mediaId + ".mp4";
+      sk.stepMediaId = "step_" + mNum + "_" + sNum;
+      sk.stepImage = "assets/media/images/" + sk.stepMediaId + ".jpg";
+      sk.stepVideo = "assets/media/videos/" + sk.stepMediaId + ".mp4";
+      sk.errMediaId = "err_" + mNum + "_" + sNum;
+      sk.errImage = "assets/media/images/" + sk.errMediaId + ".jpg";
+      sk.errVideo = "assets/media/videos/" + sk.errMediaId + ".mp4";
     });
   });
   if (d.groundTrickComboMatrix) {
@@ -2602,6 +2608,12 @@ window.SB_CURRICULUM_DATA.experts50 = [
       cb.mediaId = "combo_" + cNum;
       cb.image = "assets/media/images/" + cb.mediaId + ".jpg";
       cb.video = "assets/media/videos/" + cb.mediaId + ".mp4";
+      cb.stepMediaId = "combo_step_" + cNum;
+      cb.stepImage = "assets/media/images/" + cb.stepMediaId + ".jpg";
+      cb.stepVideo = "assets/media/videos/" + cb.stepMediaId + ".mp4";
+      cb.errMediaId = "combo_err_" + cNum;
+      cb.errImage = "assets/media/images/" + cb.errMediaId + ".jpg";
+      cb.errVideo = "assets/media/videos/" + cb.errMediaId + ".mp4";
     });
   }
 })();
