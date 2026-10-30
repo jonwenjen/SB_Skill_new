@@ -34,8 +34,8 @@
     const vidSrc = `assets/media/videos/${mediaId}.mp4`;
     const safeTitle = (title || '').replace(/"/g, '&quot;');
     const safeBadge = (badgeText || mediaId).replace(/"/g, '&quot;');
-    const photoLabel = customCaption || '📸 多角度真人連續動作與重點標示圖';
-    const videoLabel = '🎬 多角度真人連續動作 & ✅正確 vs ❌錯誤 MP4 影片';
+    const photoLabel = customCaption || '📸 🌐 Insta360 前方3m高空俯瞰 + 側面雙視角重點圖';
+    const videoLabel = '🎬 🌐 Insta360 前方3m俯瞰 & 多視角真人連續動作 MP4';
 
     const highlightsArr = Array.isArray(keyHighlights) && keyHighlights.length > 0
       ? keyHighlights.filter(Boolean).slice(0, 3)
@@ -106,11 +106,12 @@
             preload="metadata"
           ></video>
           <div class="media-angle-bar" style="display:flex; flex-wrap:wrap; gap:0.35rem; padding:0.4rem 0.6rem; background:rgba(15,23,42,0.92); border-top:1px solid var(--border-subtle); align-items:center; justify-content:space-between;">
-            <span style="font-family:var(--font-mono); font-size:0.68rem; color:var(--text-muted);">切換視角：</span>
-            <div style="display:flex; gap:0.3rem; flex-wrap:wrap;">
-              <button type="button" class="angle-seek-btn speed-mini-btn active" data-vid-seek="0.08" data-target-vid="vid-${mediaId}">🎥 鏡頭1 廣角跟拍</button>
-              <button type="button" class="angle-seek-btn speed-mini-btn" data-vid-seek="1.45" data-target-vid="vid-${mediaId}">🎥 鏡頭2 特寫+俯視軌跡</button>
-              <button type="button" class="angle-seek-btn speed-mini-btn" data-vid-seek="2.75" data-target-vid="vid-${mediaId}">🎥 鏡頭3 ✅正確vs❌錯誤</button>
+            <span style="font-family:var(--font-mono); font-size:0.68rem; color:var(--text-muted);">切換運鏡視角：</span>
+            <div style="display:flex; gap:0.28rem; flex-wrap:wrap;">
+              <button type="button" class="angle-seek-btn speed-mini-btn active" data-vid-seek="0.08" data-target-vid="vid-${mediaId}">🌐 鏡頭1 Insta360前方3m俯瞰</button>
+              <button type="button" class="angle-seek-btn speed-mini-btn" data-vid-seek="1.50" data-target-vid="vid-${mediaId}">🎥 鏡頭2 側面特寫+3m俯瞰雙鏡</button>
+              <button type="button" class="angle-seek-btn speed-mini-btn" data-vid-seek="2.60" data-target-vid="vid-${mediaId}">🏔️ 鏡頭3 全景廣角+3m俯瞰</button>
+              <button type="button" class="angle-seek-btn speed-mini-btn" data-vid-seek="3.50" data-target-vid="vid-${mediaId}">⚖️ 鏡頭4 3m俯瞰✅正確vs❌錯誤</button>
             </div>
           </div>
         </div>
