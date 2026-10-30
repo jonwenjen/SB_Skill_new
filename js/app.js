@@ -27,18 +27,37 @@
 
   /* --------------------------------------------------------------------------
      HELPER: RENDER DUAL REAL-HUMAN CONTINUOUS SEQUENCE PHOTO + MP4 VIDEO
+     WITH MULTI-ANGLE CAMERA SWITCHER & SYNCHRONIZED TEXT CALLOUT HIGHLIGHTS
      -------------------------------------------------------------------------- */
-  function buildRealMediaDualBoxHtml(mediaId, title, badgeText, customCaption) {
+  function buildRealMediaDualBoxHtml(mediaId, title, badgeText, customCaption, keyHighlights) {
     const imgSrc = `assets/media/images/${mediaId}.jpg`;
     const vidSrc = `assets/media/videos/${mediaId}.mp4`;
     const safeTitle = (title || '').replace(/"/g, '&quot;');
     const safeBadge = (badgeText || mediaId).replace(/"/g, '&quot;');
-    const photoLabel = customCaption || '📸 真人四階段連續分解 + 正誤對照圖';
-    const videoLabel = '🎬 真人連續動作 & ✅正確 vs ❌錯誤 MP4 影片';
+    const photoLabel = customCaption || '📸 多角度真人連續動作與重點標示圖';
+    const videoLabel = '🎬 多角度真人連續動作 & ✅正確 vs ❌錯誤 MP4 影片';
+
+    const highlightsArr = Array.isArray(keyHighlights) && keyHighlights.length > 0
+      ? keyHighlights.filter(Boolean).slice(0, 3)
+      : [];
+
+    const highlightsHtml = highlightsArr.length > 0
+      ? `
+        <div class="media-sync-highlights" style="grid-column: 1 / -1; display:grid; grid-template-columns:repeat(auto-fit, minmax(210px, 1fr)); gap:0.45rem; padding:0.55rem 0.75rem; background:rgba(7,13,25,0.88); border-top:1px solid var(--border-subtle); font-size:0.76rem;">
+          ${highlightsArr.map((h, i) => {
+            const colors = ['var(--cyan-400)', 'var(--emerald-400)', 'var(--orange-400)'];
+            return `<div style="display:flex; align-items:flex-start; gap:0.35rem; color:var(--text-secondary); line-height:1.35;">
+              <strong style="color:${colors[i % 3]}; white-space:nowrap; font-family:var(--font-mono);">📌 重點${i + 1}:</strong>
+              <span>${h}</span>
+            </div>`;
+          }).join('')}
+        </div>
+      `
+      : '';
 
     return `
       <div class="real-media-dual-box" data-media-id="${mediaId}">
-        <!-- Left Slot: 4-Stage Real-Human Sequence & Correct/Error Biomechanics Image -->
+        <!-- Left Slot: Multi-Angle Real-Human Continuous Action & Callout Overview Image -->
         <div class="media-slot">
           <div class="media-slot-header">
             <span>${photoLabel}</span>
@@ -56,7 +75,7 @@
           <img
             class="real-human-img"
             src="${imgSrc}"
-            alt="${safeTitle} — 真人四階段連續動作與正誤力學對照圖"
+            alt="${safeTitle} — 多角度真人連續動作與重點標示圖"
             loading="lazy"
             data-lightbox-img="${imgSrc}"
             data-lightbox-vid="${vidSrc}"
@@ -65,7 +84,7 @@
           />
         </div>
 
-        <!-- Right Slot: Playable Continuous Human Motion + Correct vs Error MP4 Video -->
+        <!-- Right Slot: Playable Multi-Angle Real-Human Continuous Motion + Correct vs Error MP4 Video -->
         <div class="media-slot">
           <div class="media-slot-header video-hdr">
             <span>${videoLabel}</span>
@@ -86,18 +105,27 @@
             playsinline
             preload="metadata"
           ></video>
+          <div class="media-angle-bar" style="display:flex; flex-wrap:wrap; gap:0.35rem; padding:0.4rem 0.6rem; background:rgba(15,23,42,0.92); border-top:1px solid var(--border-subtle); align-items:center; justify-content:space-between;">
+            <span style="font-family:var(--font-mono); font-size:0.68rem; color:var(--text-muted);">切換視角：</span>
+            <div style="display:flex; gap:0.3rem; flex-wrap:wrap;">
+              <button type="button" class="angle-seek-btn speed-mini-btn active" data-vid-seek="0.08" data-target-vid="vid-${mediaId}">🎥 鏡頭1 廣角跟拍</button>
+              <button type="button" class="angle-seek-btn speed-mini-btn" data-vid-seek="1.45" data-target-vid="vid-${mediaId}">🎥 鏡頭2 特寫+俯視軌跡</button>
+              <button type="button" class="angle-seek-btn speed-mini-btn" data-vid-seek="2.75" data-target-vid="vid-${mediaId}">🎥 鏡頭3 ✅正確vs❌錯誤</button>
+            </div>
+          </div>
         </div>
+        ${highlightsHtml}
       </div>
     `;
   }
 
   /* --------------------------------------------------------------------------
-     BIND VIDEO SPEED CONTROLS & LIGHTBOX TRIGGERS WITHIN A CONTAINER
+     BIND VIDEO SPEED CONTROLS, ANGLE SEEKERS & LIGHTBOX TRIGGERS
      -------------------------------------------------------------------------- */
   function bindMediaInteractions(container) {
     if (!container) return;
 
-    container.querySelectorAll('.speed-mini-btn').forEach((btn) => {
+    container.querySelectorAll('.speed-mini-btn[data-vid-speed]').forEach((btn) => {
       btn.addEventListener('click', (e) => {
         e.stopPropagation();
         const speed = parseFloat(btn.getAttribute('data-vid-speed')) || 1.0;
@@ -109,7 +137,25 @@
         }
         const bar = btn.parentElement;
         if (bar) {
-          bar.querySelectorAll('.speed-mini-btn').forEach((b) => b.classList.remove('active'));
+          bar.querySelectorAll('.speed-mini-btn[data-vid-speed]').forEach((b) => b.classList.remove('active'));
+        }
+        btn.classList.add('active');
+      });
+    });
+
+    container.querySelectorAll('.angle-seek-btn[data-vid-seek]').forEach((btn) => {
+      btn.addEventListener('click', (e) => {
+        e.stopPropagation();
+        const seekSec = parseFloat(btn.getAttribute('data-vid-seek')) || 0;
+        const vidId = btn.getAttribute('data-target-vid');
+        const vidEl = document.getElementById(vidId);
+        if (vidEl) {
+          vidEl.currentTime = seekSec;
+          vidEl.play().catch(() => {});
+        }
+        const bar = btn.parentElement;
+        if (bar) {
+          bar.querySelectorAll('.angle-seek-btn').forEach((b) => b.classList.remove('active'));
         }
         btn.classList.add('active');
       });
@@ -258,16 +304,27 @@
         const pNum = String(pIdx + 1).padStart(2, '0');
         const mediaId = `p_${mNum}_${pNum}`;
         const badgeLabel = `${mod.code || mod.id} · PRINCIPLE 0${pIdx + 1}`;
+        const pSents = String(p.explanation || p.description || '').split(/[。；！？]+/).filter(Boolean);
         return `
         <div class="principle-card">
           <div style="display:flex; justify-content:space-between; align-items:center; gap:0.5rem;">
             <span class="tag-badge" style="font-size:0.68rem;">${badgeLabel}</span>
-            <span style="font-family:var(--font-mono); font-size:0.7rem; color:var(--emerald-400);">✓ 50人教練團審核：真人四階段 + 正誤連續動作影片</span>
+            <span style="font-family:var(--font-mono); font-size:0.7rem; color:var(--emerald-400);">✓ 50人教練團審核：多角度真人連續動作 + 文字重點標示</span>
           </div>
           <div style="font-weight:800; font-size:1.05rem; color:var(--text-primary);">${p.title || p.name}</div>
           ${p.formula ? `<div class="principle-formula">${p.formula}</div>` : ''}
           <p style="font-size:0.88rem; color:var(--text-secondary);">${p.explanation || p.description || ''}</p>
-          ${buildRealMediaDualBoxHtml(mediaId, p.title || p.name, badgeLabel, '📸 物理原理四階段真人序列 & 正誤對照圖')}
+          ${buildRealMediaDualBoxHtml(
+            mediaId,
+            p.title || p.name,
+            badgeLabel,
+            '📸 多角度真人連續動作 & 文字講解重點標示圖',
+            [
+              p.formula || p.title,
+              pSents[0] || p.title,
+              pSents[1] || pSents[0] || 'COM 穿過 BOS 維持動態平衡'
+            ]
+          )}
         </div>
       `;
       })
@@ -328,7 +385,17 @@
 
           <!-- 1. Main Skill Continuous Human Motion Demonstration -->
           <div style="margin-bottom:1.2rem;">
-            ${buildRealMediaDualBoxHtml(mainMediaId, skill.name, badgeLabel, '📸 技能全貌：真人四階段連續動作與正誤對比')}
+            ${buildRealMediaDualBoxHtml(
+              mainMediaId,
+              skill.name,
+              badgeLabel,
+              '📸 技能全貌：多角度真人連續動作與重點標示圖',
+              [
+                bio.comBos || (skill.stepByStep && skill.stepByStep[0]),
+                bio.jointAngles || (skill.stepByStep && skill.stepByStep[1]),
+                bio.edgeControl || (skill.stepByStep && skill.stepByStep[2])
+              ]
+            )}
           </div>
 
           <div class="skill-columns">
@@ -353,7 +420,17 @@
 
           <!-- 2. Dedicated Practice Steps (Step 1 to Step 4) Continuous Image & Video -->
           <div style="margin-bottom:1.2rem;">
-            ${buildRealMediaDualBoxHtml(stepMediaId, `分解練習步驟 (Step 1–4)：${skill.name}`, `${badgeLabel} · STEPS 1–4`, '📸 練習步驟 Step 1–4 真人連續分解圖')}
+            ${buildRealMediaDualBoxHtml(
+              stepMediaId,
+              `分解練習步驟 (Step 1–4)：${skill.name}`,
+              `${badgeLabel} · STEPS 1–4`,
+              '📸 練習步驟 Step 1–4 多角度真人連續動作與重點標示圖',
+              [
+                skill.stepByStep && skill.stepByStep[0] ? `Step 1: ${skill.stepByStep[0]}` : '',
+                skill.stepByStep && skill.stepByStep[1] ? `Step 2–3: ${skill.stepByStep[1]}` : '',
+                skill.stepByStep && skill.stepByStep[3] ? `Step 4: ${skill.stepByStep[3]}` : ''
+              ]
+            )}
           </div>
 
           <!-- 3. Common Errors & Expert Mindset Tips + Dedicated Correct-vs-Error Continuous Video -->
@@ -371,7 +448,17 @@
           }
 
           <div>
-            ${buildRealMediaDualBoxHtml(errMediaId, `正誤連續動作對照 & 專家 Tips：${skill.name}`, `${badgeLabel} · CORRECT vs ERROR & TIPS`, '📸 ✅正確動作 vs ❌錯誤逆刃/洗刃對照 & 專家 Tips 圖')}
+            ${buildRealMediaDualBoxHtml(
+              errMediaId,
+              `正誤連續動作對照 & 專家 Tips：${skill.name}`,
+              `${badgeLabel} · CORRECT vs ERROR & TIPS`,
+              '📸 ✅正確真人動作 vs ❌錯誤逆刃/洗刃對照 & 專家 Tips 圖',
+              [
+                `專家心法：${skill.expertMindset || bio.comBos || ''}`,
+                `矯正處方：${err.correctiveDrill || bio.jointAngles || ''}`,
+                `常見錯誤：${err.symptom || ''}`
+              ]
+            )}
           </div>
         </div>
       `;
@@ -452,7 +539,17 @@
             <p style="font-size:0.83rem; color:var(--text-secondary); margin-bottom:0.55rem;">
               ${sk.biomechanics || sk.description || ''}
             </p>
-            ${buildRealMediaDualBoxHtml(mediaId, sk.name, `ATOMIC SKILL 0${idx + 1}`, '📸 原子技能四階段真人連續分解 + 正誤對照圖')}
+            ${buildRealMediaDualBoxHtml(
+              mediaId,
+              sk.name,
+              `ATOMIC SKILL 0${idx + 1}`,
+              '📸 原子技能多角度真人連續動作 + 重點標示圖',
+              [
+                `${sk.category || '平花原子技能'} · ${sk.proficiency || ''}`,
+                `重心座標：${sk.comPosition || '動態轉移'}`,
+                sk.biomechanics || ''
+              ]
+            )}
           </div>
         `;
         })
@@ -542,7 +639,17 @@
 
           <!-- 1. Main Ground Trick Combo Continuous Action Photo + MP4 Video -->
           <div style="margin-bottom:1.25rem;">
-            ${buildRealMediaDualBoxHtml(comboMainId, activeCombo.name, `${activeCombo.id} · ${activeCombo.difficulty || 'GROUND TRICK'}`, '📸 招式全貌：真人四階段連續動作與正誤對比')}
+            ${buildRealMediaDualBoxHtml(
+              comboMainId,
+              activeCombo.name,
+              `${activeCombo.id} · ${activeCombo.difficulty || 'GROUND TRICK'}`,
+              '📸 招式全貌：多角度真人連續動作與重點標示圖',
+              [
+                `組合公式：${activeCombo.formula || ''}`,
+                `重心軌跡：${activeCombo.comSummary || ''}`,
+                `用刃邏輯：${activeCombo.edgeLogic || ''}`
+              ]
+            )}
           </div>
 
           <div style="display:grid; grid-template-columns:repeat(auto-fit, minmax(200px, 1fr)); gap:0.75rem; margin-bottom:1.1rem;">
@@ -587,7 +694,17 @@
 
           <!-- 2. Dedicated Phase 1 to Phase 4 Practice Steps Continuous Image & MP4 Video -->
           <div style="margin-bottom:1.25rem;">
-            ${buildRealMediaDualBoxHtml(comboStepId, `Phase 1–4 連續練習步驟：${activeCombo.name}`, `${activeCombo.id} · PHASE 1–4 DRILL`, '📸 Phase 1–Phase 4 練習步驟真人連續分解圖')}
+            ${buildRealMediaDualBoxHtml(
+              comboStepId,
+              `Phase 1–4 連續練習步驟：${activeCombo.name}`,
+              `${activeCombo.id} · PHASE 1–4 DRILL`,
+              '📸 Phase 1–Phase 4 多角度真人連續動作與重點標示圖',
+              [
+                phases[0] ? `${phases[0].phase}：${phases[0].action}` : '',
+                phases[1] ? `${phases[1].phase}：${phases[1].action}` : '',
+                phases[3] ? `${phases[3].phase}：${phases[3].action}` : ''
+              ]
+            )}
           </div>
 
           <!-- 3. Failure Mode & JSBA Pro Tips + Dedicated Correct-vs-Error Continuous Video -->
@@ -603,7 +720,17 @@
           </div>
 
           <div>
-            ${buildRealMediaDualBoxHtml(comboErrId, `正誤對照 & 日系專家 Tips：${activeCombo.name}`, `${activeCombo.id} · CORRECT vs ERROR & TIPS`, '📸 ✅正確鎖刃 vs ❌失敗卡刃連續動作 & 專家 Tips 圖')}
+            ${buildRealMediaDualBoxHtml(
+              comboErrId,
+              `正誤對照 & 日系專家 Tips：${activeCombo.name}`,
+              `${activeCombo.id} · CORRECT vs ERROR & TIPS`,
+              '📸 ✅正確鎖刃 vs ❌失敗卡刃真人連續動作 & 專家 Tips 圖',
+              [
+                `大師心法：${activeCombo.expertTip || ''}`,
+                `重心軌跡：${activeCombo.comSummary || ''}`,
+                `失敗斷點：${activeCombo.failureMode || ''}`
+              ]
+            )}
           </div>
         </div>
       `;
