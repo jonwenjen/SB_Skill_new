@@ -2568,3 +2568,40 @@ window.SB_CURRICULUM_DATA.experts50 = [
     auditFinding: '完成「8 原子 × 12 組合平花互動篩選器」與「10 模組 × 模擬器雙向聯動」測試，確認零外部破圖、零語法錯誤，全數通過 50 人專家團最終簽核（50/50 Signed Off）。'
   }
 ];
+
+/* AUTO-ATTACH 100 REAL-HUMAN IMAGES & VIDEOS */
+(function () {
+  const d = window.SB_CURRICULUM_DATA;
+  if (!d) return;
+  (d.modules || []).forEach((m, mi) => {
+    const mNum = String(mi + 1).padStart(2, "0");
+    m.realHeroImage = "assets/media/images/s_" + mNum + "_01.jpg";
+    m.realHeroVideo = "assets/media/videos/s_" + mNum + "_01.mp4";
+    (m.physicsPrinciples || []).forEach((pr, pi) => {
+      const pNum = String(pi + 1).padStart(2, "0");
+      pr.mediaId = "p_" + mNum + "_" + pNum;
+      pr.image = "assets/media/images/" + pr.mediaId + ".jpg";
+      pr.video = "assets/media/videos/" + pr.mediaId + ".mp4";
+    });
+    (m.coreSkills || []).forEach((sk, si) => {
+      const sNum = String(si + 1).padStart(2, "0");
+      sk.mediaId = "s_" + mNum + "_" + sNum;
+      sk.image = "assets/media/images/" + sk.mediaId + ".jpg";
+      sk.video = "assets/media/videos/" + sk.mediaId + ".mp4";
+    });
+  });
+  if (d.groundTrickComboMatrix) {
+    (d.groundTrickComboMatrix.atomicSkills || []).forEach((at, ai) => {
+      const aNum = String(ai + 1).padStart(2, "0");
+      at.mediaId = "atomic_" + aNum;
+      at.image = "assets/media/images/" + at.mediaId + ".jpg";
+      at.video = "assets/media/videos/" + at.mediaId + ".mp4";
+    });
+    (d.groundTrickComboMatrix.combos || []).forEach((cb, ci) => {
+      const cNum = String(ci + 1).padStart(2, "0");
+      cb.mediaId = "combo_" + cNum;
+      cb.image = "assets/media/images/" + cb.mediaId + ".jpg";
+      cb.video = "assets/media/videos/" + cb.mediaId + ".mp4";
+    });
+  }
+})();

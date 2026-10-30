@@ -1,6 +1,7 @@
 /**
  * SB_SKILL_NEW — MAIN APPLICATION CONTROLLER
  * Reviewed & Audited by the 50-Expert Interdisciplinary Snowboard Panel
+ * Complete Real-Human Photo & Slow-Motion Video Integration for All 100 Items
  */
 
 (function () {
@@ -22,6 +23,128 @@
       groundTrickComboMatrix: { atomicSkills: [], combos: [] },
       experts50: []
     };
+  }
+
+  /* --------------------------------------------------------------------------
+     HELPER: RENDER DUAL REAL-HUMAN PHOTO + MP4 SLOW-MOTION VIDEO SHOWCASE
+     -------------------------------------------------------------------------- */
+  function buildRealMediaDualBoxHtml(mediaId, title, badgeText) {
+    const imgSrc = `assets/media/images/${mediaId}.jpg`;
+    const vidSrc = `assets/media/videos/${mediaId}.mp4`;
+    const safeTitle = (title || '').replace(/"/g, '&quot;');
+    const safeBadge = (badgeText || mediaId).replace(/"/g, '&quot;');
+
+    return `
+      <div class="real-media-dual-box" data-media-id="${mediaId}">
+        <!-- Left Slot: Photorealistic Human Snowboarder Photo -->
+        <div class="media-slot">
+          <div class="media-slot-header">
+            <span>📸 真人實拍力學解析圖 (Real-Human Photo)</span>
+            <button
+              type="button"
+              class="zoom-mini-btn"
+              data-lightbox-img="${imgSrc}"
+              data-lightbox-vid="${vidSrc}"
+              data-lightbox-title="${safeTitle}"
+              data-lightbox-badge="${safeBadge}"
+            >
+              🔍 放大檢視真人圖影
+            </button>
+          </div>
+          <img
+            class="real-human-img"
+            src="${imgSrc}"
+            alt="${safeTitle} — 真人單板滑雪示範與力學向量圖"
+            loading="lazy"
+            data-lightbox-img="${imgSrc}"
+            data-lightbox-vid="${vidSrc}"
+            data-lightbox-title="${safeTitle}"
+            data-lightbox-badge="${safeBadge}"
+          />
+        </div>
+
+        <!-- Right Slot: Playable Real-Human Slow-Motion MP4 Video -->
+        <div class="media-slot">
+          <div class="media-slot-header video-hdr">
+            <span>🎬 真人慢動作力學分解影片 (MP4 Video)</span>
+            <div class="media-speed-bar">
+              <button type="button" class="speed-mini-btn" data-vid-speed="0.25" data-target-vid="vid-${mediaId}">0.25x 極慢</button>
+              <button type="button" class="speed-mini-btn" data-vid-speed="0.5" data-target-vid="vid-${mediaId}">0.5x 慢速</button>
+              <button type="button" class="speed-mini-btn active" data-vid-speed="1.0" data-target-vid="vid-${mediaId}">1.0x 原速</button>
+            </div>
+          </div>
+          <video
+            id="vid-${mediaId}"
+            class="real-human-video"
+            src="${vidSrc}"
+            poster="${imgSrc}"
+            controls
+            loop
+            muted
+            playsinline
+            preload="metadata"
+          ></video>
+        </div>
+      </div>
+    `;
+  }
+
+  /* --------------------------------------------------------------------------
+     BIND VIDEO SPEED CONTROLS & LIGHTBOX TRIGGERS WITHIN A CONTAINER
+     -------------------------------------------------------------------------- */
+  function bindMediaInteractions(container) {
+    if (!container) return;
+
+    // 1. Video playback speed buttons (0.25x, 0.5x, 1.0x)
+    container.querySelectorAll('.speed-mini-btn').forEach((btn) => {
+      btn.addEventListener('click', (e) => {
+        e.stopPropagation();
+        const speed = parseFloat(btn.getAttribute('data-vid-speed')) || 1.0;
+        const vidId = btn.getAttribute('data-target-vid');
+        const vidEl = document.getElementById(vidId);
+        if (vidEl) {
+          vidEl.playbackRate = speed;
+          vidEl.play().catch(() => {});
+        }
+        const bar = btn.parentElement;
+        if (bar) {
+          bar.querySelectorAll('.speed-mini-btn').forEach((b) => b.classList.remove('active'));
+        }
+        btn.classList.add('active');
+      });
+    });
+
+    // 2. Fullscreen Lightbox triggers
+    container.querySelectorAll('[data-lightbox-img]').forEach((el) => {
+      el.addEventListener('click', (e) => {
+        e.stopPropagation();
+        const imgSrc = el.getAttribute('data-lightbox-img');
+        const vidSrc = el.getAttribute('data-lightbox-vid');
+        const title = el.getAttribute('data-lightbox-title');
+        const badge = el.getAttribute('data-lightbox-badge');
+        openMediaLightbox(imgSrc, vidSrc, title, badge);
+      });
+    });
+  }
+
+  function openMediaLightbox(imgSrc, vidSrc, title, badge) {
+    const backdrop = document.getElementById('global-media-lightbox');
+    if (!backdrop) return;
+    const titleEl = document.getElementById('lightbox-title');
+    const badgeEl = document.getElementById('lightbox-badge');
+    const imgEl = document.getElementById('lightbox-img');
+    const vidEl = document.getElementById('lightbox-video');
+
+    if (titleEl) titleEl.textContent = title || '';
+    if (badgeEl) badgeEl.textContent = badge || 'REAL-HUMAN PHOTO & VIDEO';
+    if (imgEl) imgEl.src = imgSrc || '';
+    if (vidEl) {
+      vidEl.src = vidSrc || '';
+      vidEl.poster = imgSrc || '';
+      vidEl.playbackRate = 0.5;
+      vidEl.play().catch(() => {});
+    }
+    backdrop.classList.add('open');
   }
 
   /* --------------------------------------------------------------------------
@@ -104,7 +227,6 @@
         state.activeModuleId = btn.getAttribute('data-mod-id');
         renderModuleSidebar();
         renderActiveModuleDetail();
-        // Sync simulator mode if applicable
         const mod = (getCurriculum().modules || []).find(
           (m) => (m.code || m.id) === state.activeModuleId
         );
@@ -119,28 +241,44 @@
     const pane = document.getElementById('module-detail-content');
     if (!pane) return;
     const modules = getCurriculum().modules || [];
-    const mod =
-      modules.find((m) => (m.code || m.id) === state.activeModuleId) || modules[0];
+    let modIdx = modules.findIndex((m) => (m.code || m.id) === state.activeModuleId);
+    if (modIdx < 0) modIdx = 0;
+    const mod = modules[modIdx];
 
     if (!mod) {
       pane.innerHTML = `<p>載入課程模組中...</p>`;
       return;
     }
 
+    const mNum = String(modIdx + 1).padStart(2, '0');
+    const modHeroImg = `assets/media/images/s_${mNum}_01.jpg`;
+
     const principlesHtml = (mod.physicsPrinciples || [])
-      .map(
-        (p) => `
-      <div class="principle-card">
-        <div style="font-weight:800; font-size:1.02rem; color:var(--text-primary);">${p.title || p.name}</div>
-        ${p.formula ? `<div class="principle-formula">${p.formula}</div>` : ''}
-        <p style="font-size:0.88rem; color:var(--text-secondary);">${p.explanation || p.description || ''}</p>
-      </div>
-    `
-      )
+      .map((p, pIdx) => {
+        const pNum = String(pIdx + 1).padStart(2, '0');
+        const mediaId = `p_${mNum}_${pNum}`;
+        const badgeLabel = `${mod.code || mod.id} · PRINCIPLE 0${pIdx + 1}`;
+        return `
+        <div class="principle-card">
+          <div style="display:flex; justify-content:space-between; align-items:center; gap:0.5rem;">
+            <span class="tag-badge" style="font-size:0.68rem;">${badgeLabel}</span>
+            <span style="font-family:var(--font-mono); font-size:0.7rem; color:var(--emerald-400);">✓ 附真人圖解與慢動作影片</span>
+          </div>
+          <div style="font-weight:800; font-size:1.05rem; color:var(--text-primary);">${p.title || p.name}</div>
+          ${p.formula ? `<div class="principle-formula">${p.formula}</div>` : ''}
+          <p style="font-size:0.88rem; color:var(--text-secondary);">${p.explanation || p.description || ''}</p>
+          ${buildRealMediaDualBoxHtml(mediaId, p.title || p.name, badgeLabel)}
+        </div>
+      `;
+      })
       .join('');
 
     const skillsHtml = (mod.coreSkills || [])
       .map((skill, idx) => {
+        const sNum = String(idx + 1).padStart(2, '0');
+        const mediaId = `s_${mNum}_${sNum}`;
+        const badgeLabel = `${mod.code || mod.id} · SKILL 0${idx + 1}`;
+
         const bio = skill.biomechanics || {};
         const bioText =
           typeof bio === 'string'
@@ -184,6 +322,11 @@
               ${skill.level ? `<span class="tag-badge orange">${skill.level}</span>` : ''}
               ${skill.casiAasiRef ? `<span class="tag-badge emerald">${skill.casiAasiRef}</span>` : ''}
             </div>
+          </div>
+
+          <!-- Dual Photorealistic Human Photo + MP4 Video for this Skill -->
+          <div style="margin-bottom:1.15rem;">
+            ${buildRealMediaDualBoxHtml(mediaId, skill.name, badgeLabel)}
           </div>
 
           <div class="skill-columns">
@@ -242,13 +385,13 @@
           </p>
         </div>
         <div>
-          <img class="module-banner-img" src="${mod.image || 'assets/images/com_bos_mechanics.png'}" alt="${mod.title}" />
+          <img class="module-banner-img" src="${modHeroImg}" alt="${mod.title}" />
         </div>
       </div>
 
       <div>
         <h4 style="font-size:1.15rem; font-weight:800; color:var(--cyan-400); display:flex; align-items:center; gap:0.5rem;">
-          <span>⚡</span> 物理力學與生物力學核心原理 (Core Physics & Biomechanics)
+          <span>⚡</span> 物理力學與生物力學核心原理 — 每一原理皆附真人實拍力學圖與慢動作解析影片
         </h4>
         <div class="principles-grid">
           ${principlesHtml}
@@ -257,13 +400,15 @@
 
       <div>
         <h4 style="font-size:1.15rem; font-weight:800; color:var(--emerald-400); margin-bottom:1rem; display:flex; align-items:center; gap:0.5rem;">
-          <span>🏔️</span> 實戰技術拆解、重心位置、常見錯誤與專家思維 (Masterclass Drills)
+          <span>🏔️</span> 實戰技術拆解、真人動作示範圖影、常見錯誤與專家思維 (Masterclass Drills)
         </h4>
         <div class="skills-list">
           ${skillsHtml}
         </div>
       </div>
     `;
+
+    bindMediaInteractions(pane);
   }
 
   /* --------------------------------------------------------------------------
@@ -279,44 +424,52 @@
 
     if (atomicContainer && matrix.atomicSkills) {
       atomicContainer.innerHTML = matrix.atomicSkills
-        .map((sk) => {
+        .map((sk, idx) => {
           const isSel = state.selectedAtomicSkillId === (sk.id || sk.name);
+          const aNum = String(idx + 1).padStart(2, '0');
+          const mediaId = `atomic_${aNum}`;
           return `
-          <div class="atomic-card ${isSel ? 'selected' : ''}" data-atomic-id="${sk.id || sk.name}">
+          <div class="atomic-card ${isSel ? 'selected' : ''}" data-atomic-id="${sk.id || sk.name}" style="grid-column: span 2;">
             <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:0.35rem;">
-              <strong style="font-size:0.92rem; color:var(--text-primary);">${sk.name}</strong>
-              <span class="tag-badge" style="font-size:0.68rem;">${sk.category || sk.code || 'ATOMIC'}</span>
+              <strong style="font-size:1rem; color:var(--text-primary);">0${idx + 1}. ${sk.name}</strong>
+              <span class="tag-badge" style="font-size:0.68rem;">${sk.category || sk.code || 'ATOMIC'} · 點擊篩選組合招式</span>
             </div>
-            <div style="font-family:var(--font-mono); font-size:0.74rem; color:var(--orange-400); margin-bottom:0.35rem;">
-              重心：${sk.comPosition || sk.foreAft || '動態轉移'}
+            <div style="font-family:var(--font-mono); font-size:0.76rem; color:var(--orange-400); margin-bottom:0.35rem;">
+              重心座標：${sk.comPosition || sk.foreAft || '動態轉移'}
             </div>
-            <p style="font-size:0.8rem; color:var(--text-secondary);">
+            <p style="font-size:0.83rem; color:var(--text-secondary); margin-bottom:0.55rem;">
               ${sk.biomechanics || sk.description || ''}
             </p>
+            ${buildRealMediaDualBoxHtml(mediaId, sk.name, `ATOMIC SKILL 0${idx + 1}`)}
           </div>
         `;
         })
         .join('');
 
       atomicContainer.querySelectorAll('.atomic-card').forEach((card) => {
-        card.addEventListener('click', () => {
+        card.addEventListener('click', (e) => {
+          if (e.target.closest('video') || e.target.closest('button') || e.target.closest('img')) {
+            return;
+          }
           const clickedId = card.getAttribute('data-atomic-id');
           state.selectedAtomicSkillId =
             state.selectedAtomicSkillId === clickedId ? null : clickedId;
           renderGroundTrickBuilder();
         });
       });
+
+      bindMediaInteractions(atomicContainer);
     }
 
-    const combos = matrix.combos || [];
+    const allCombos = matrix.combos || [];
     const filteredCombos = state.selectedAtomicSkillId
-      ? combos.filter((c) => {
+      ? allCombos.filter((c) => {
           const blob = JSON.stringify(c).toLowerCase();
           return blob.includes(state.selectedAtomicSkillId.toLowerCase());
         })
-      : combos;
+      : allCombos;
 
-    const activeList = filteredCombos.length > 0 ? filteredCombos : combos;
+    const activeList = filteredCombos.length > 0 ? filteredCombos : allCombos;
     if (state.activeComboIndex >= activeList.length) {
       state.activeComboIndex = 0;
     }
@@ -325,14 +478,19 @@
       comboListContainer.innerHTML = activeList
         .map((c, idx) => {
           const isAct = idx === state.activeComboIndex;
+          const origIdx = allCombos.findIndex((orig) => orig.id === c.id);
+          const cNum = String((origIdx >= 0 ? origIdx : idx) + 1).padStart(2, '0');
+          const thumbImg = `assets/media/images/combo_${cNum}.jpg`;
+
           return `
-          <button class="combo-item-btn ${isAct ? 'active' : ''}" data-combo-idx="${idx}">
-            <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:0.3rem;">
-              <span style="font-family:var(--font-mono); font-size:0.72rem; color:var(--cyan-400); font-weight:700;">${c.difficulty || c.level || 'PRO COMBO'}</span>
-              <span style="font-family:var(--font-mono); font-size:0.72rem; color:var(--orange-400);">${c.rotation || c.style || 'JSBA Gra-tri'}</span>
+          <button class="combo-item-btn ${isAct ? 'active' : ''}" data-combo-idx="${idx}" style="padding:0.75rem;">
+            <img src="${thumbImg}" alt="${c.name}" loading="lazy" style="width:100%; height:110px; object-fit:cover; border-radius:6px; margin-bottom:0.5rem; border:1px solid var(--border-subtle);" />
+            <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:0.25rem;">
+              <span style="font-family:var(--font-mono); font-size:0.7rem; color:var(--cyan-400); font-weight:700;">${c.difficulty || c.level || 'PRO COMBO'}</span>
+              <span style="font-family:var(--font-mono); font-size:0.7rem; color:var(--orange-400);">${c.rotation || c.style || 'JSBA Gra-tri'}</span>
             </div>
-            <div style="font-weight:800; font-size:1rem; margin-bottom:0.25rem;">${c.name}</div>
-            <div style="font-size:0.78rem; color:var(--text-muted);">${c.formula || (c.atomicComponents || []).join(' + ')}</div>
+            <div style="font-weight:800; font-size:0.95rem; margin-bottom:0.2rem;">${c.name}</div>
+            <div style="font-size:0.75rem; color:var(--text-muted);">${c.formula || (c.atomicComponents || []).join(' + ')}</div>
           </button>
         `;
         })
@@ -348,20 +506,29 @@
 
     const activeCombo = activeList[state.activeComboIndex];
     if (comboDetailContainer && activeCombo) {
+      const origIdx = allCombos.findIndex((orig) => orig.id === activeCombo.id);
+      const cNum = String((origIdx >= 0 ? origIdx : state.activeComboIndex) + 1).padStart(2, '0');
+      const comboMediaId = `combo_${cNum}`;
       const phases = activeCombo.phases || [];
+
       comboDetailContainer.innerHTML = `
         <div style="background:rgba(15,23,42,0.7); border:1px solid var(--border-active); border-radius:var(--radius-lg); padding:1.5rem;">
           <div style="display:flex; flex-wrap:wrap; justify-content:space-between; align-items:center; gap:0.75rem; margin-bottom:1rem; border-bottom:1px solid var(--border-subtle); padding-bottom:0.9rem;">
             <div>
-              <span class="tag-badge orange" style="margin-right:0.5rem;">COMBO FORMULA</span>
+              <span class="tag-badge orange" style="margin-right:0.5rem;">${activeCombo.id || 'COMBO'}</span>
               <span style="font-family:var(--font-mono); font-size:0.9rem; color:var(--cyan-400); font-weight:700;">
                 ${activeCombo.formula || (activeCombo.atomicComponents || []).join(' ➔ ')}
               </span>
               <h4 style="font-size:1.45rem; font-weight:900; margin-top:0.35rem;">${activeCombo.name}</h4>
             </div>
             <button class="btn-primary" id="btn-trigger-groundtrick-sim" style="padding:0.55rem 1rem; font-size:0.82rem;">
-              ▶ 在上方物理模擬器播放平花慢動作分解
+              ▶ 同步至上方 60fps 物理實驗室
             </button>
+          </div>
+
+          <!-- Dual Photorealistic Human Photo + MP4 Video for this Ground Trick Combo -->
+          <div style="margin-bottom:1.25rem;">
+            ${buildRealMediaDualBoxHtml(comboMediaId, activeCombo.name, `${activeCombo.id} · ${activeCombo.difficulty || 'GROUND TRICK'}`)}
           </div>
 
           <div style="display:grid; grid-template-columns:repeat(auto-fit, minmax(200px, 1fr)); gap:0.75rem; margin-bottom:1.1rem;">
@@ -416,6 +583,8 @@
           </div>
         </div>
       `;
+
+      bindMediaInteractions(comboDetailContainer);
 
       const simBtn = document.getElementById('btn-trigger-groundtrick-sim');
       if (simBtn) {
@@ -485,7 +654,7 @@
   }
 
   /* --------------------------------------------------------------------------
-     5. INITIALIZE UI CONTROLS, SEARCH, THEME & SCROLL PROGRESS
+     5. INITIALIZE UI CONTROLS, SEARCH, LIGHTBOX, THEME & SCROLL PROGRESS
      -------------------------------------------------------------------------- */
   function initUIEvents() {
     const searchInput = document.getElementById('global-curriculum-search');
@@ -505,6 +674,26 @@
         themeBtn.innerHTML = state.snowGlareTheme
           ? '🌙 切換高山黑曜護眼模式'
           : '☀️ 切換雪地強光高對比模式';
+      });
+    }
+
+    // Lightbox close handlers
+    const backdrop = document.getElementById('global-media-lightbox');
+    const closeBtn = document.getElementById('btn-close-lightbox');
+    if (backdrop) {
+      backdrop.addEventListener('click', (e) => {
+        if (e.target === backdrop) {
+          const vidEl = document.getElementById('lightbox-video');
+          if (vidEl) vidEl.pause();
+          backdrop.classList.remove('open');
+        }
+      });
+    }
+    if (closeBtn && backdrop) {
+      closeBtn.addEventListener('click', () => {
+        const vidEl = document.getElementById('lightbox-video');
+        if (vidEl) vidEl.pause();
+        backdrop.classList.remove('open');
       });
     }
 

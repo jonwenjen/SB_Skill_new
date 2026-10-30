@@ -806,9 +806,9 @@ body.theme-snow-glare .search-input {
 /* Physics Principles Cards inside Module */
 .principles-grid {
   display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
-  gap: 1.15rem;
-  margin: 1.25rem 0 2.25rem;
+  grid-template-columns: repeat(auto-fit, minmax(420px, 1fr));
+  gap: 1.35rem;
+  margin: 1.25rem 0 2.5rem;
 }
 
 .principle-card {
@@ -816,7 +816,10 @@ body.theme-snow-glare .search-input {
   border: 1px solid var(--border-subtle);
   border-left: 4px solid var(--cyan-400);
   border-radius: var(--radius-md);
-  padding: 1.25rem;
+  padding: 1.35rem;
+  display: flex;
+  flex-direction: column;
+  gap: 0.75rem;
 }
 
 body.theme-snow-glare .principle-card {
@@ -830,8 +833,158 @@ body.theme-snow-glare .principle-card {
   background: rgba(251, 146, 60, 0.1);
   padding: 0.35rem 0.65rem;
   border-radius: 6px;
-  margin: 0.55rem 0;
+  margin: 0.2rem 0;
   display: inline-block;
+  align-self: flex-start;
+}
+
+/* Dual Real-Human Photo & Video Showcase inside Principle, Skill, Atomic & Combo Cards */
+.real-media-dual-box {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 0.85rem;
+  margin-top: 0.5rem;
+  background: rgba(7, 11, 20, 0.65);
+  border: 1px solid var(--border-subtle);
+  border-radius: var(--radius-md);
+  padding: 0.75rem;
+}
+
+body.theme-snow-glare .real-media-dual-box {
+  background: #f1f5f9;
+}
+
+.media-slot {
+  display: flex;
+  flex-direction: column;
+  gap: 0.45rem;
+}
+
+.media-slot-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  font-family: var(--font-mono);
+  font-size: 0.72rem;
+  font-weight: 700;
+  color: var(--cyan-400);
+}
+
+.media-slot-header.video-hdr {
+  color: var(--orange-400);
+}
+
+.real-human-img {
+  width: 100%;
+  aspect-ratio: 16 / 9;
+  object-fit: cover;
+  border-radius: var(--radius-sm);
+  border: 1px solid rgba(56, 189, 248, 0.3);
+  cursor: zoom-in;
+  transition: transform 0.2s ease, border-color 0.2s ease;
+  background: #070b14;
+}
+
+.real-human-img:hover {
+  transform: scale(1.015);
+  border-color: var(--cyan-400);
+}
+
+.real-human-video {
+  width: 100%;
+  aspect-ratio: 16 / 9;
+  object-fit: cover;
+  border-radius: var(--radius-sm);
+  border: 1px solid rgba(251, 146, 60, 0.35);
+  background: #070b14;
+}
+
+.media-speed-bar {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 0.35rem;
+  flex-wrap: wrap;
+}
+
+.speed-mini-btn {
+  background: rgba(15, 23, 42, 0.85);
+  border: 1px solid var(--border-subtle);
+  color: var(--text-secondary);
+  font-family: var(--font-mono);
+  font-size: 0.68rem;
+  font-weight: 700;
+  padding: 0.2rem 0.48rem;
+  border-radius: 4px;
+  cursor: pointer;
+  transition: all 0.15s ease;
+}
+
+.speed-mini-btn:hover,
+.speed-mini-btn.active {
+  background: rgba(251, 146, 60, 0.22);
+  border-color: var(--orange-400);
+  color: #fff;
+}
+
+.zoom-mini-btn {
+  background: rgba(56, 189, 248, 0.12);
+  border: 1px solid rgba(56, 189, 248, 0.35);
+  color: var(--cyan-400);
+  font-family: var(--font-mono);
+  font-size: 0.68rem;
+  font-weight: 700;
+  padding: 0.2rem 0.55rem;
+  border-radius: 4px;
+  cursor: pointer;
+  transition: all 0.15s ease;
+}
+
+.zoom-mini-btn:hover {
+  background: rgba(56, 189, 248, 0.25);
+  color: #fff;
+}
+
+/* Lightbox Modal for Fullscreen Real Human Photo + Video Inspection */
+.media-lightbox-backdrop {
+  position: fixed;
+  inset: 0;
+  z-index: 10000;
+  background: rgba(4, 7, 15, 0.92);
+  backdrop-filter: blur(12px);
+  display: none;
+  align-items: center;
+  justify-content: center;
+  padding: 1.5rem;
+}
+
+.media-lightbox-backdrop.open {
+  display: flex;
+}
+
+.media-lightbox-dialog {
+  max-width: 1280px;
+  width: 100%;
+  background: var(--bg-slate-900);
+  border: 1px solid var(--border-active);
+  border-radius: var(--radius-xl);
+  padding: 1.5rem;
+  box-shadow: 0 25px 60px rgba(0, 0, 0, 0.85);
+}
+
+.media-lightbox-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 1.25rem;
+  margin-top: 1rem;
+}
+
+@media (max-width: 900px) {
+  .real-media-dual-box,
+  .media-lightbox-grid,
+  .principles-grid {
+    grid-template-columns: 1fr;
+  }
 }
 
 /* Core Skills & Drills Cards */
