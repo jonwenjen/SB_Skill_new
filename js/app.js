@@ -1,7 +1,7 @@
 /**
  * SB_SKILL_NEW — MAIN APPLICATION CONTROLLER
- * Reviewed & Audited by the 50-Expert Interdisciplinary Snowboard Panel
- * Complete Real-Human Continuous Action & Correct-vs-Error Video Integration (204 Images + 204 MP4 Videos)
+ * Legacy generated overlay disabled; this UI does not constitute qualified review.
+ * Media labels and source/provenance remain unverified; do not imply qualified review.
  */
 
 (function () {
@@ -26,16 +26,15 @@
   }
 
   /* --------------------------------------------------------------------------
-     HELPER: RENDER DUAL REAL-HUMAN CONTINUOUS SEQUENCE PHOTO + MP4 VIDEO
-     WITH MULTI-ANGLE CAMERA SWITCHER & SYNCHRONIZED TEXT CALLOUT HIGHLIGHTS
+     HELPER: RENDER REPOSITORY IMAGE / VIDEO ASSETS WITH REVIEW DISCLAIMERS
      -------------------------------------------------------------------------- */
   function buildRealMediaDualBoxHtml(mediaId, title, badgeText, customCaption, keyHighlights) {
     const imgSrc = `assets/media/images/${mediaId}.jpg`;
     const vidSrc = `assets/media/videos/${mediaId}.mp4`;
     const safeTitle = (title || '').replace(/"/g, '&quot;');
     const safeBadge = (badgeText || mediaId).replace(/"/g, '&quot;');
-    const photoLabel = customCaption || '📸 🌐 Insta360 前方3m高空俯瞰 + 側面雙視角重點圖';
-    const videoLabel = '🎬 🌐 Insta360 前方3m俯瞰 & 多視角真人連續動作 MP4';
+    const photoLabel = '🖼️ 原稿圖片素材（來源、真人身分與內容待核實）';
+    const videoLabel = '🎬 原稿影片素材（播放、來源與內容待核實）';
 
     const highlightsArr = Array.isArray(keyHighlights) && keyHighlights.length > 0
       ? keyHighlights.filter(Boolean).slice(0, 3)
@@ -57,6 +56,9 @@
 
     return `
       <div class="real-media-dual-box" data-media-id="${mediaId}">
+        <div role="note" class="media-verification-note" style="grid-column:1/-1;padding:.55rem .75rem;border:1px solid #f59e0b;background:rgba(120,53,15,.28);color:#ffedd5;font-size:.78rem;line-height:1.5;">
+          未獨立核實：檔案存在不代表真人示範、正誤對照、影片定位點、來源、授權或文字提示正確。
+        </div>
         <!-- Left Slot: Multi-Angle Real-Human Continuous Action & Callout Overview Image -->
         <div class="media-slot">
           <div class="media-slot-header">
@@ -75,7 +77,7 @@
           <img
             class="real-human-img"
             src="${imgSrc}"
-            alt="${safeTitle} — 多角度真人連續動作與重點標示圖"
+            alt="${safeTitle} — repository image asset; source and content unverified"
             loading="lazy"
             data-lightbox-img="${imgSrc}"
             data-lightbox-vid="${vidSrc}"
@@ -106,12 +108,12 @@
             preload="metadata"
           ></video>
           <div class="media-angle-bar" style="display:flex; flex-wrap:wrap; gap:0.35rem; padding:0.4rem 0.6rem; background:rgba(15,23,42,0.92); border-top:1px solid var(--border-subtle); align-items:center; justify-content:space-between;">
-            <span style="font-family:var(--font-mono); font-size:0.68rem; color:var(--text-muted);">切換運鏡視角：</span>
+            <span style="font-family:var(--font-mono); font-size:0.68rem; color:var(--text-muted);">原稿時間定位點（片段內容待核實）：</span>
             <div style="display:flex; gap:0.28rem; flex-wrap:wrap;">
-              <button type="button" class="angle-seek-btn speed-mini-btn active" data-vid-seek="0.08" data-target-vid="vid-${mediaId}">🌐 鏡頭1 Insta360前方3m俯瞰</button>
-              <button type="button" class="angle-seek-btn speed-mini-btn" data-vid-seek="1.50" data-target-vid="vid-${mediaId}">🎥 鏡頭2 側面特寫+3m俯瞰雙鏡</button>
-              <button type="button" class="angle-seek-btn speed-mini-btn" data-vid-seek="2.60" data-target-vid="vid-${mediaId}">🏔️ 鏡頭3 全景廣角+3m俯瞰</button>
-              <button type="button" class="angle-seek-btn speed-mini-btn" data-vid-seek="3.50" data-target-vid="vid-${mediaId}">⚖️ 鏡頭4 3m俯瞰✅正確vs❌錯誤</button>
+              <button type="button" class="angle-seek-btn speed-mini-btn active" data-vid-seek="0.08" data-target-vid="vid-${mediaId}">原稿標記 0.08 秒</button>
+              <button type="button" class="angle-seek-btn speed-mini-btn" data-vid-seek="1.50" data-target-vid="vid-${mediaId}">原稿標記 1.50 秒</button>
+              <button type="button" class="angle-seek-btn speed-mini-btn" data-vid-seek="2.60" data-target-vid="vid-${mediaId}">原稿標記 2.60 秒</button>
+              <button type="button" class="angle-seek-btn speed-mini-btn" data-vid-seek="3.50" data-target-vid="vid-${mediaId}">原稿標記 3.50 秒</button>
             </div>
           </div>
         </div>
@@ -310,7 +312,7 @@
         <div class="principle-card">
           <div style="display:flex; justify-content:space-between; align-items:center; gap:0.5rem;">
             <span class="tag-badge" style="font-size:0.68rem;">${badgeLabel}</span>
-            <span style="font-family:var(--font-mono); font-size:0.7rem; color:var(--emerald-400);">✓ 50人教練團審核：多角度真人連續動作 + 文字重點標示</span>
+            <span class="tag-badge orange" style="font-size:0.68rem;">原稿審查／真人示範宣稱：未獨立核實</span>
           </div>
           <div style="font-weight:800; font-size:1.05rem; color:var(--text-primary);">${p.title || p.name}</div>
           ${p.formula ? `<div class="principle-formula">${p.formula}</div>` : ''}
@@ -365,9 +367,9 @@
             ? `<p>${err}</p>`
             : `
               <div style="font-size:0.87rem;">
-                <p><strong style="color:var(--crimson-400);">⚠️ 常見錯誤徵兆 (Symptom)：</strong>${err.symptom || ''}</p>
-                <p style="margin-top:0.3rem;"><strong style="color:var(--orange-400);">🔬 物理力學根因 (Root Cause)：</strong>${err.rootCause || ''}</p>
-                <p style="margin-top:0.3rem;"><strong style="color:var(--emerald-400);">✅ 專家修正訓練 (Corrective Drill)：</strong>${err.correctiveDrill || err.fix || ''}</p>
+                <p><strong style="color:var(--crimson-400);">⚠️ 原稿描述的錯誤徵兆（待核實）：</strong>${err.symptom || ''}</p>
+                <p style="margin-top:0.3rem;"><strong style="color:var(--orange-400);">🔬 原稿提出的原因（待核實）：</strong>${err.rootCause || ''}</p>
+                <p style="margin-top:0.3rem;"><strong style="color:var(--emerald-400);">🧭 原稿練習提案（待教練核准）：</strong>${err.correctiveDrill || err.fix || ''}</p>
               </div>
             `;
 
@@ -380,7 +382,7 @@
             </div>
             <div style="display:flex; gap:0.45rem; flex-wrap:wrap;">
               ${skill.level ? `<span class="tag-badge orange">${skill.level}</span>` : ''}
-              ${skill.casiAasiRef ? `<span class="tag-badge emerald">${skill.casiAasiRef}</span>` : ''}
+              ${skill.casiAasiRef ? `<span class="tag-badge orange">原稿機構對照（未核實）：${skill.casiAasiRef}</span>` : ''}
             </div>
           </div>
 
@@ -434,7 +436,7 @@
             )}
           </div>
 
-          <!-- 3. Common Errors & Expert Mindset Tips + Dedicated Correct-vs-Error Continuous Video -->
+          <!-- 3. Original draft tips (not independently reviewed) -->
           <div class="error-box">
             ${errHtml}
           </div>
@@ -442,7 +444,7 @@
           ${
             skill.expertMindset
               ? `<div class="mindset-box" style="margin-bottom:0.9rem;">
-                  <strong style="color:var(--orange-400);">🧠 50人專家團隊思維 Tips (Expert Coaching Mindset)：</strong>
+                  <strong style="color:var(--orange-400);">🧠 原稿提示（待來源與教練核實）：</strong>
                   <span>${skill.expertMindset}</span>
                 </div>`
               : ''
@@ -455,7 +457,7 @@
               `${badgeLabel} · CORRECT vs ERROR & TIPS`,
               '📸 ✅正確真人動作 vs ❌錯誤逆刃/洗刃對照 & 專家 Tips 圖',
               [
-                `專家心法：${skill.expertMindset || bio.comBos || ''}`,
+                `原稿提示（待核驗）：${skill.expertMindset || bio.comBos || ''}`,
                 `矯正處方：${err.correctiveDrill || bio.jointAngles || ''}`,
                 `常見錯誤：${err.symptom || ''}`
               ]
@@ -467,12 +469,15 @@
       .join('');
 
     pane.innerHTML = `
+      <div role="note" style="margin-bottom:1rem;padding:.85rem 1rem;border:2px solid #f59e0b;border-radius:10px;background:#451a03;color:#ffedd5;font-weight:700;line-height:1.55;">
+        本模組顯示 repo 原稿；公式、數值、動作與機構標籤未逐項核驗，不構成教練、安全或醫療指引。請勿只依本頁嘗試高風險動作。
+      </div>
       <div class="module-hero-banner">
         <div>
           <div class="module-meta-tags">
             <span class="tag-badge">${mod.code || mod.id}</span>
             <span class="tag-badge orange">${mod.difficulty || ''}</span>
-            <span class="tag-badge emerald">${mod.systemsRef || 'CASI / AASI / SBINZ / JSBA / BASI'}</span>
+            <span class="tag-badge orange">${mod.systemsRef ? `原稿機構對照（未核實）：${mod.systemsRef}` : '機構／課綱對照未核實'}</span>
           </div>
           <h3 style="font-size:1.75rem; font-weight:900; line-height:1.25; margin-bottom:0.5rem;">
             ${mod.title}
@@ -491,7 +496,7 @@
 
       <div>
         <h4 style="font-size:1.15rem; font-weight:800; color:var(--cyan-400); display:flex; align-items:center; gap:0.5rem;">
-          <span>⚡</span> 物理力學與生物力學核心原理（每一原理皆附真人四階段連續動作與 ✅正確 vs ❌錯誤對照影片）
+          <span>⚡</span> 原稿物理與生物力學主張（數值與媒體示範待核實）
         </h4>
         <div class="principles-grid">
           ${principlesHtml}
@@ -500,7 +505,7 @@
 
       <div>
         <h4 style="font-size:1.15rem; font-weight:800; color:var(--emerald-400); margin-bottom:1rem; display:flex; align-items:center; gap:0.5rem;">
-          <span>🏔️</span> 實戰技術拆解、練習步驟 (Step 1–4) 與正誤對比 Tips（每一技術、練習步驟與 Tips 皆附專屬真人連續動作圖影）
+          <span>🏔️</span> 原稿技術步驟與提示（未經合格教練逐項核准）
         </h4>
         <div class="skills-list">
           ${skillsHtml}

@@ -1,0 +1,21 @@
+{
+  "repository": "jonwenjen/SB_Skill_new",
+  "branch": "main",
+  "commit": "aaab0c96414bc637fbf509dc39f9802ebb9b53c6",
+  "tree_truncated": false,
+  "media_file_count": 408,
+  "extension_counts": {
+    "jpg": 204,
+    "mp4": 204
+  },
+  "animation_spec_count": 204,
+  "unique_animation_video_paths": 204,
+  "missing_spec_paths": [],
+  "unreferenced_mp4_count": 0,
+  "zero_byte_media_count": 0,
+  "verified_by": "GitHub recursive Git tree metadata; compared against generated animation-specs.json",
+  "limitations": [
+    "File names and nonzero byte sizes do not establish that clips play correctly.",
+    "Human-performer identity, consent/releases, licensing, originality, safety, and technique accuracy were not verified from the Git tree."
+  ]
+}
