@@ -6,15 +6,15 @@
 
 2026-11-23 01:30 的 Claude Code／Opus 執行索引顯示 5 個審查角色中僅 1 個完成：`carving_freestyle`（MOD-05／06）。`foundations_safety`（MOD-01／02）、`biomechanics_progression`（MOD-03／04）、`park_terrain`（MOD-07／08）皆達到 12-turn 上限；`backcountry_integrity`（MOD-09／10）遇到 Claude session limit。06:54 的全角色續跑亦僅 1/5 完成。07:13 的選擇性續跑以 24-turn 上限請求其餘 4 角色，但只完成 `foundations_safety`（MOD-01／02）；另外 3 角色因 Claude session limit 失敗，索引記錄額度於 11:40（台灣時間）重設。三份索引位於 `docs/course-review/run-20261123-0130/index.json`、`docs/course-review/run-20261123-065438/index.json`、`docs/course-review/run-20261123-071334/index.json`；均不能視為完整全課審查。
 
-另有五個獨立唯讀代理各審一組模組，MOD-01 至 MOD-10 均獲至少一組覆核；此為有界審查，不是全面來源驗證或專業簽核。最新 Claude run `run-20261123-122432-full` 僅完成 3/5（MOD-01–06），MOD-07／08、MOD-09／10 因 session limit 未執行。三份已完成 reviewer 的人類可讀報告保存於本文件下表；原始 JSON 僅保留在本機工作檔案，不作為公開審查文件。五組獨立覆核確認多數未核實主張仍須教練或合格專業者核准，並直接更正 MOD-09／10 救援程序中有來源支持的三項數字。所有審查均為唯讀，未改教材或模擬器。
+另有五份獨立唯讀模組配對補充報告；MOD-01／02 的補充只抽查指定高風險主張，不代表整個模組逐項覆核。較新的 Claude run `run-20261123-172606-complete` 完成 4/5 角色（MOD-01–08）；`backcountry_integrity`（MOD-09／10）達 24-turn 上限。單角色重試 `run-20261123-180057-backcountry-retry` 完成 0/1，失敗原因是 Claude session limit，額度重設時間為 22:20（台灣時間）。其後完成一項精簡、有界替代覆核，聚焦五項 MOD-09／10 高風險主張；發現已在 [MOD-09／10 報告](mod-09-10-review-2026-11-23.md)中依程式與一手／同行評審來源核對後整合，但它不等於缺失的 Opus 角色、完整全來源稽核或專業簽核。已保存的人類可讀報告仍以表列文件為準；新的原始 JSON 僅作本機工作檔案，不作為公開審查文件。所有檢視均為唯讀，未改教材或模擬器指引。
 
 | 模組 | 可追溯狀態 |
 |---|---|
 | MOD-01／02 | 最新 Claude run 有唯讀報告，另有一組獨立複核；詳見 [MOD-01／02 Opus 報告](mod-01-02-opus-review-2026-11-23.md)及 [選定高風險主張核對](mod-01-02-selected-review-2026-11-23.md)。精確傷害比例、生理門檻等仍待醫療／教練核准。 |
 | MOD-03／04 | 最新 Claude run 有唯讀報告，另有一組獨立複核；詳見 [MOD-03／04 Opus 報告](mod-03-04-opus-review-2026-11-23.md)及 [有界來源補充報告](mod-03-04-review-2026-11-23.md)。公式條件、協會分類及專家背書仍待核驗／核准。 |
 | MOD-05／06 | 最新 Claude run 有唯讀報告，另有一組獨立複核，詳見 [MOD-05／06 Opus 報告](mod-05-06-opus-review-2026-11-23.md)。報告列出 17 項發現；多數是「未核實／情境依賴」，不等於內容已被證明錯誤。 |
-| MOD-07／08 | 有界來源審查列出 12 項發現，另有一組獨立複核，見 [MOD-07／08 報告](mod-07-08-review-2026-11-23.md)。Claude run 的此角色因 session limit 未執行；不是教練核准或安全簽核。 |
-| MOD-09／10 | 有界來源審查及程式路徑核對，另有一組獨立複核，見 [MOD-09／10 報告](mod-09-10-review-2026-11-23.md)。該報告已區分三項來源支持的救援程序數值與仍待核驗的 `>80%` 電量、`1.5×` 挖掘位置、7 分鐘目標及模擬器安全診斷。Claude run 的此角色因 session limit 未執行。 |
+| MOD-07／08 | 有界來源審查列出 12 項發現，另有一組獨立複核，見 [MOD-07／08 報告](mod-07-08-review-2026-11-23.md)。17:26 Claude run 的 `park_terrain` 角色完成；這不是教練核准或安全簽核。 |
+| MOD-09／10 | 有界來源審查及程式路徑核對，另有一組獨立複核，見 [MOD-09／10 報告](mod-09-10-review-2026-11-23.md)。補充報告核實 40 m 搜尋者間距、約 3 m 進入 fine search、25 cm 探針間距、fine-search 持機方式與挖掘者 1 m 隊列；`>80%` 電量、`1.5×` 挖掘位置、7 分鐘目標仍未核實。JAMA 歷史／現代存活統計已區分 cohort 與時間分組；另記錄一般生物力學 Lab 在約 36.88 G 輸出綠色診斷的程式行為，效度未核實。Claude `backcountry_integrity` 角色仍未完成；精簡替代覆核不等於完整全來源稽核或專業簽核。 |
 
 ## 動畫規格狀態
 
@@ -38,7 +38,7 @@
 
 8. **跨章節 — 專家、認證與真人媒體宣稱沒有獨立佐證。** 本次報告未驗證專家名冊身分／證照、機構背書、真人身分、素材授權或動作真實性。repo 有 204 組媒體檔名配對，只能證明基礎 Git tree 中存在對應 JPG／MP4 路徑，不證明檔案能播放、內容是真人、來源正確或已取得授權。建議保持網站明確警示，不再宣稱 50 位專家已簽核或「真人示範已驗收」。
 
-## 已核對來源（2026-11-23）
+## 代表性已核對來源（2026-11-23）
 
 - Jentschura & Fahrbach, [*Physics of Skiing: The Ideal-Carving Equation and Its Applications*](https://arxiv.org/abs/physics/0310086)（理想模型；非教學／安全標準）。
 - PSIA-AASI, [*Snowboard Certification Standards, Levels 1–3*](https://thesnowpros.org/wp-content/uploads/2025/10/AASI_Snowboard_Standards0224_updated_100325_v3.pdf)（PDF 標示 Updated September 2026）。
@@ -46,9 +46,12 @@
 - Seleznev et al., [*Trends of snowboarding-related fractures that presented to emergency departments in the United States, 2010 to 2016*](https://pmc.ncbi.nlm.nih.gov/articles/PMC6035969/), *Annals of Translational Medicine* (2018), doi:10.21037/atm.2018.04.32。
 - Huber et al., [*Design optimization of a snowboard performing an ollie*](https://doi.org/10.1007/s12283-024-00470-8), *Sports Engineering* (2024)。
 - Fushimi et al., [*Studies on kinematics analysis of Ollie motions in snowboarding*](https://www.jstage.jst.go.jp/article/jskisciences/15/1/15_1/_article/-char/en) (2018; J-STAGE 2019)。
+- Avalanche Canada, AvySavvy: [Signal Search](https://avysavvy.avalanche.ca/en-ca/signal-search), [Fine Search](https://avysavvy.avalanche.ca/en-ca/fine-search), [Probing](https://avysavvy.avalanche.ca/en-ca/probing), and [Shovelling](https://avysavvy.avalanche.ca/en-ca/shovelling) (specific rescue techniques and spacing; not evidence for the course's unverified battery, digging-position, or 7-minute thresholds).
+- [*Avalanche Survival Rates in Switzerland, 1981-2020*](https://jamanetwork.com/journals/jamanetworkopen/fullarticle/2824053), *JAMA Network Open* (2024; reports historical and later cohorts separately).
+- [*Head impact in a snowboarding accident*](https://pubmed.ncbi.nlm.nih.gov/27185578/) (modelled head-impact scenarios; not an observed wrist-fracture rate or a safety certification for the simulator).
 
 ## 核准與未完成事項
 
 - 此報告不取代教練審核、醫療審核、物理覆核、機構確認或媒體授權查核。
 - 未經合格教練核可，不應把此處提案改寫為新技術／安全指引，也不應讓高風險動作以「已驗證」的方式呈現。
-- 最新 Claude run 僅完成 3/5 角色，未完成 MOD-07／08、MOD-09／10；五組獨立唯讀複核補足了模組覆蓋，但沒有替代來源逐項核驗或專業核准。任何報告都須由相關專業人員逐項確認後，才可改教材或宣稱已獲安全／教練簽核。動畫規格目前是待教練補完的分鏡骨架，不能作為攝影／製作指令。
+- 最新 Claude run 完成 4/5 角色；MOD-09／10 的 `backcountry_integrity` 未完成（先達 turn 上限，後遇 session limit）。精簡替代覆核補充核對五項高風險主張，但未替代完整來源逐項核驗或專業核准。任何報告都須由相關專業人員逐項確認後，才可改教材或宣稱已獲安全／教練簽核。動畫規格目前是待教練補完的分鏡骨架，不能作為攝影／製作指令。
