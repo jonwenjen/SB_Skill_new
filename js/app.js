@@ -772,7 +772,7 @@
         .map(
           (g) => `
         <button class="pill-btn ${state.expertPanelFilter === g ? 'active' : ''}" data-panel-group="${g}">
-          ${g === 'ALL' ? '全部 50 位跨領域專家 (All 50 Experts)' : g}
+          ${g === 'ALL' ? `全部 ${experts.length} 筆名冊資料（身分未核實）` : g}
         </button>
       `
         )
@@ -796,12 +796,12 @@
       <article class="expert-card">
         <div class="expert-header">
           <span class="expert-id">${ex.id || `EXP-${String(i + 1).padStart(2, '0')}`}</span>
-          <span class="expert-status">✓ 教材 · 真人圖解 · 正誤連續影片 驗收通過</span>
+          <span class="expert-status expert-status-unverified">⚠ 人員身分、教材與媒體驗收未獨立核實</span>
         </div>
         <div class="expert-name">${ex.name}</div>
         <div class="expert-role">${ex.title || ex.role} · ${ex.certification || ex.specialty || ''}</div>
         <div class="expert-audit-note">
-          <strong style="color:var(--cyan-400);">審查問題、圖影校驗與修正重點：</strong><br/>
+          <strong style="color:var(--orange-400);">原始資料自述（未獨立核實）：</strong><br/>
           ${ex.auditFinding || ex.reviewNote || ex.correction || ''}
         </div>
       </article>

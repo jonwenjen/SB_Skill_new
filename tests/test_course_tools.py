@@ -173,5 +173,52 @@ class ReviewOrchestrationTests(unittest.TestCase):
         self.assertIn("WebFetch", rendered)
 
 
+class PublicDisclosureTests(unittest.TestCase):
+    root = Path(__file__).resolve().parents[1]
+
+    def test_expert_panel_disclaims_unverified_identity_and_signoff(self):
+        app = (self.root / "js/app.js").read_text(encoding="utf-8")
+        self.assertTrue(
+            'class="expert-status expert-status-unverified">⚠ 人員身分、教材與媒體驗收未獨立核實</span>' in app,
+            "expert panel must display the unverified status",
+        )
+        self.assertTrue("原始資料自述（未獨立核實）" in app, "self-reported notes must be caveated")
+        self.assertTrue(
+            "全部 ${experts.length} 筆名冊資料（身分未核實）" in app,
+            "roster count must not claim 50 verified experts",
+        )
+        self.assertFalse(
+            "✓ 教材 · 真人圖解 · 正誤連續影片 驗收通過" in app,
+            "unsupported signoff claim must not be rendered",
+        )
+
+    def test_legacy_audit_claims_are_hidden_and_labeled_unverified(self):
+        html = (self.root / "index.html").read_text(encoding="utf-8")
+        self.assertTrue('<div hidden data-unverified-legacy-report' in html, "legacy report must remain hidden")
+        self.assertTrue("UNVERIFIED LEGACY CLAIM: 50-COACH TEAM" in html, "legacy claim needs a warning label")
+        self.assertTrue(
+            "408 media paths in Git tree (204 JPG/MP4 pairs); content/playback/identity/rights unverified" in html,
+            "media path count must not imply content or playback verification",
+        )
+        self.assertFalse(
+            '<span class="tag-badge emerald">50-COACH TEAM' in html,
+            "legacy signoff must not use verified styling",
+        )
+
+    def test_unverified_expert_status_uses_warning_color(self):
+        css = (self.root / "css/styles.css").read_text(encoding="utf-8")
+        self.assertTrue(".expert-status-unverified" in css, "status needs a dedicated warning style")
+        self.assertTrue("color: var(--orange-400)" in css, "status text must use warning color")
+        self.assertTrue(
+            "border-left: 3px solid var(--orange-400)" in css,
+            "self-reported audit note must use warning styling",
+        )
+
+    def test_curriculum_typo_uses_traditional_chinese(self):
+        data = (self.root / "js/curriculum_data.js").read_text(encoding="utf-8")
+        self.assertTrue("信號搜尋與粗略搜尋" in data, "correct Traditional Chinese conjunction must be present")
+        self.assertFalse("信號搜尋与粗略搜尋" in data, "simplified conjunction typo must be absent")
+
+
 if __name__ == "__main__":
     unittest.main()

@@ -1,6 +1,6 @@
 {
   "schema_version": "1.1",
-  "source_revision": "3c8cbac",
+  "source_revision": "8cac309",
   "source_policy": "原稿只作資料來源；未核驗內容標註草稿，不可當作技術事實或直接發布。未映射的肢體、刃向、重心及視覺提示須由教練逐 phase 補核。",
   "count": 204,
   "specifications": [
@@ -27268,7 +27268,7 @@
       "video_path": "assets/media/videos/s_09_03.mp4",
       "image_path": "assets/media/images/s_09_03.jpg",
       "content_status": "draft_unverified",
-      "source_content": "【出發前雙重檢測（Trailhead Check）】在登山口或纜車頂，領隊將 Beacon 切至 Search（接收），隊員逐一走過確認每人 Send（發射）信號正常且電量 > 80%，接著領隊切回 Send 由隊員確認。\n【Phase 1 & 2: 信號搜尋与粗略搜尋（Signal & Coarse Search）】事故發生後，全體生還者立即將 Beacon 切至 **SEARCH**，從最後消失點（LSP）向下坡呈 40m 間距之字形快跑搜尋；一旦捕捉到信號（如顯示 28.0m），立即順著螢幕方向箭頭沿電磁弧線快跑，確保距離讀數持續變小。\n【Phase 3: 精細十字定位（Fine Search < 3.0m）】當距離讀數小於 3.0 公尺時，立即減速蹲下，將 Beacon **貼平雪面** 緩慢往前推至讀數最小點，接著不轉動機身改做左右橫移找出最小讀數點（Bracketing 十字定位法），在最小讀數處插下標記！\n【Phase 4: 螺旋探針與下坡側鏟雪（Pinpoint Probe & Strategic Shoveling）】組裝探針，以最小讀數點為中心、垂直於雪坡表面插入；若未觸及，以每 25cm 間距向外做同心螺旋插探。一旦刺中柔軟人體（具備回彈感），**絕對不要拔出探針**！立即退至探針正下坡方向約「1.5 倍埋深距離處」（例如埋深 1.2m 則往下坡退 1.8m），以 V 型傳送帶隊形向內水平挖出救援通道，第一時間清除受困者口鼻冰雪建立呼吸空間（Airway First）！",
+      "source_content": "【出發前雙重檢測（Trailhead Check）】在登山口或纜車頂，領隊將 Beacon 切至 Search（接收），隊員逐一走過確認每人 Send（發射）信號正常且電量 > 80%，接著領隊切回 Send 由隊員確認。\n【Phase 1 & 2: 信號搜尋與粗略搜尋（Signal & Coarse Search）】事故發生後，全體生還者立即將 Beacon 切至 **SEARCH**，從最後消失點（LSP）向下坡呈 40m 間距之字形快跑搜尋；一旦捕捉到信號（如顯示 28.0m），立即順著螢幕方向箭頭沿電磁弧線快跑，確保距離讀數持續變小。\n【Phase 3: 精細十字定位（Fine Search < 3.0m）】當距離讀數小於 3.0 公尺時，立即減速蹲下，將 Beacon **貼平雪面** 緩慢往前推至讀數最小點，接著不轉動機身改做左右橫移找出最小讀數點（Bracketing 十字定位法），在最小讀數處插下標記！\n【Phase 4: 螺旋探針與下坡側鏟雪（Pinpoint Probe & Strategic Shoveling）】組裝探針，以最小讀數點為中心、垂直於雪坡表面插入；若未觸及，以每 25cm 間距向外做同心螺旋插探。一旦刺中柔軟人體（具備回彈感），**絕對不要拔出探針**！立即退至探針正下坡方向約「1.5 倍埋深距離處」（例如埋深 1.2m 則往下坡退 1.8m），以 V 型傳送帶隊形向內水平挖出救援通道，第一時間清除受困者口鼻冰雪建立呼吸空間（Airway First）！",
       "critical_points": [
         {
           "label": "重心／支撐範圍",
@@ -27337,7 +27337,7 @@
         {
           "phase": 2,
           "phase_label": "步驟 2",
-          "source_action": "【Phase 1 & 2: 信號搜尋与粗略搜尋（Signal & Coarse Search）】事故發生後，全體生還者立即將 Beacon 切至 **SEARCH**，從最後消失點（LSP）向下坡呈 40m 間距之字形快跑搜尋；一旦捕捉到信號（如顯示 28.0m），立即順著螢幕方向箭頭沿電磁弧線快跑，確保距離讀數持續變小。",
+          "source_action": "【Phase 1 & 2: 信號搜尋與粗略搜尋（Signal & Coarse Search）】事故發生後，全體生還者立即將 Beacon 切至 **SEARCH**，從最後消失點（LSP）向下坡呈 40m 間距之字形快跑搜尋；一旦捕捉到信號（如顯示 28.0m），立即順著螢幕方向箭頭沿電磁弧線快跑，確保距離讀數持續變小。",
           "source_com": "",
           "source_edge": "",
           "body_part": {
@@ -27358,7 +27358,7 @@
             "source_candidates": []
           },
           "subtitle_narration_cue": {
-            "text": "【Phase 1 & 2: 信號搜尋与粗略搜尋（Signal & Coarse Search）】事故發生後，全體生還者立即將 Beacon 切至 **SEARCH**，從最後消失點（LSP）向下坡呈 40m 間距之字形快跑搜尋；一旦捕捉到信號（如顯示 28.0m），立即順著螢幕方向箭頭沿電磁弧線快跑，確保距離讀數持續變小。",
+            "text": "【Phase 1 & 2: 信號搜尋與粗略搜尋（Signal & Coarse Search）】事故發生後，全體生還者立即將 Beacon 切至 **SEARCH**，從最後消失點（LSP）向下坡呈 40m 間距之字形快跑搜尋；一旦捕捉到信號（如顯示 28.0m），立即順著螢幕方向箭頭沿電磁弧線快跑，確保距離讀數持續變小。",
             "status": "draft_unverified"
           },
           "source_text_cues": {
@@ -27531,7 +27531,7 @@
       "video_path": "assets/media/videos/step_09_03.mp4",
       "image_path": "assets/media/images/step_09_03.jpg",
       "content_status": "draft_unverified",
-      "source_content": "【出發前雙重檢測（Trailhead Check）】在登山口或纜車頂，領隊將 Beacon 切至 Search（接收），隊員逐一走過確認每人 Send（發射）信號正常且電量 > 80%，接著領隊切回 Send 由隊員確認。\n【Phase 1 & 2: 信號搜尋与粗略搜尋（Signal & Coarse Search）】事故發生後，全體生還者立即將 Beacon 切至 **SEARCH**，從最後消失點（LSP）向下坡呈 40m 間距之字形快跑搜尋；一旦捕捉到信號（如顯示 28.0m），立即順著螢幕方向箭頭沿電磁弧線快跑，確保距離讀數持續變小。\n【Phase 3: 精細十字定位（Fine Search < 3.0m）】當距離讀數小於 3.0 公尺時，立即減速蹲下，將 Beacon **貼平雪面** 緩慢往前推至讀數最小點，接著不轉動機身改做左右橫移找出最小讀數點（Bracketing 十字定位法），在最小讀數處插下標記！\n【Phase 4: 螺旋探針與下坡側鏟雪（Pinpoint Probe & Strategic Shoveling）】組裝探針，以最小讀數點為中心、垂直於雪坡表面插入；若未觸及，以每 25cm 間距向外做同心螺旋插探。一旦刺中柔軟人體（具備回彈感），**絕對不要拔出探針**！立即退至探針正下坡方向約「1.5 倍埋深距離處」（例如埋深 1.2m 則往下坡退 1.8m），以 V 型傳送帶隊形向內水平挖出救援通道，第一時間清除受困者口鼻冰雪建立呼吸空間（Airway First）！",
+      "source_content": "【出發前雙重檢測（Trailhead Check）】在登山口或纜車頂，領隊將 Beacon 切至 Search（接收），隊員逐一走過確認每人 Send（發射）信號正常且電量 > 80%，接著領隊切回 Send 由隊員確認。\n【Phase 1 & 2: 信號搜尋與粗略搜尋（Signal & Coarse Search）】事故發生後，全體生還者立即將 Beacon 切至 **SEARCH**，從最後消失點（LSP）向下坡呈 40m 間距之字形快跑搜尋；一旦捕捉到信號（如顯示 28.0m），立即順著螢幕方向箭頭沿電磁弧線快跑，確保距離讀數持續變小。\n【Phase 3: 精細十字定位（Fine Search < 3.0m）】當距離讀數小於 3.0 公尺時，立即減速蹲下，將 Beacon **貼平雪面** 緩慢往前推至讀數最小點，接著不轉動機身改做左右橫移找出最小讀數點（Bracketing 十字定位法），在最小讀數處插下標記！\n【Phase 4: 螺旋探針與下坡側鏟雪（Pinpoint Probe & Strategic Shoveling）】組裝探針，以最小讀數點為中心、垂直於雪坡表面插入；若未觸及，以每 25cm 間距向外做同心螺旋插探。一旦刺中柔軟人體（具備回彈感），**絕對不要拔出探針**！立即退至探針正下坡方向約「1.5 倍埋深距離處」（例如埋深 1.2m 則往下坡退 1.8m），以 V 型傳送帶隊形向內水平挖出救援通道，第一時間清除受困者口鼻冰雪建立呼吸空間（Airway First）！",
       "critical_points": [
         {
           "label": "重心／支撐範圍",
@@ -27600,7 +27600,7 @@
         {
           "phase": 2,
           "phase_label": "步驟 2",
-          "source_action": "【Phase 1 & 2: 信號搜尋与粗略搜尋（Signal & Coarse Search）】事故發生後，全體生還者立即將 Beacon 切至 **SEARCH**，從最後消失點（LSP）向下坡呈 40m 間距之字形快跑搜尋；一旦捕捉到信號（如顯示 28.0m），立即順著螢幕方向箭頭沿電磁弧線快跑，確保距離讀數持續變小。",
+          "source_action": "【Phase 1 & 2: 信號搜尋與粗略搜尋（Signal & Coarse Search）】事故發生後，全體生還者立即將 Beacon 切至 **SEARCH**，從最後消失點（LSP）向下坡呈 40m 間距之字形快跑搜尋；一旦捕捉到信號（如顯示 28.0m），立即順著螢幕方向箭頭沿電磁弧線快跑，確保距離讀數持續變小。",
           "source_com": "",
           "source_edge": "",
           "body_part": {
@@ -27621,7 +27621,7 @@
             "source_candidates": []
           },
           "subtitle_narration_cue": {
-            "text": "【Phase 1 & 2: 信號搜尋与粗略搜尋（Signal & Coarse Search）】事故發生後，全體生還者立即將 Beacon 切至 **SEARCH**，從最後消失點（LSP）向下坡呈 40m 間距之字形快跑搜尋；一旦捕捉到信號（如顯示 28.0m），立即順著螢幕方向箭頭沿電磁弧線快跑，確保距離讀數持續變小。",
+            "text": "【Phase 1 & 2: 信號搜尋與粗略搜尋（Signal & Coarse Search）】事故發生後，全體生還者立即將 Beacon 切至 **SEARCH**，從最後消失點（LSP）向下坡呈 40m 間距之字形快跑搜尋；一旦捕捉到信號（如顯示 28.0m），立即順著螢幕方向箭頭沿電磁弧線快跑，確保距離讀數持續變小。",
             "status": "draft_unverified"
           },
           "source_text_cues": {

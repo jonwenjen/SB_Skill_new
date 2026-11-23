@@ -1219,6 +1219,11 @@ body.theme-snow-glare .phase-step-card {
   border-radius: 4px;
 }
 
+.expert-status-unverified {
+  color: var(--orange-400);
+  background: rgba(251, 146, 60, 0.12);
+}
+
 .expert-name {
   font-weight: 800;
   font-size: 0.98rem;
@@ -1236,7 +1241,7 @@ body.theme-snow-glare .phase-step-card {
   background: rgba(15, 23, 42, 0.5);
   padding: 0.65rem;
   border-radius: var(--radius-sm);
-  border-left: 3px solid var(--emerald-400);
+  border-left: 3px solid var(--orange-400);
 }
 
 body.theme-snow-glare .expert-audit-note {
