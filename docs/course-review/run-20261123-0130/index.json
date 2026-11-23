@@ -1,0 +1,55 @@
+{
+  "model": "opus",
+  "completed_at": "2026-11-23T01:52:56+08:00",
+  "reviewer_count": 5,
+  "completed_count": 1,
+  "failures": {
+    "foundations_safety": "Claude error (error_max_turns): Reached maximum number of turns (12)",
+    "biomechanics_progression": "Claude error (error_max_turns): Reached maximum number of turns (12)",
+    "park_terrain": "Claude error (error_max_turns): Reached maximum number of turns (12)",
+    "backcountry_integrity": "Claude error (success): You've hit your session limit · resets 6:30am (Asia/Taipei)"
+  },
+  "reviewers": [
+    {
+      "id": "foundations_safety",
+      "modules": [
+        "MOD-01",
+        "MOD-02"
+      ],
+      "file": null
+    },
+    {
+      "id": "biomechanics_progression",
+      "modules": [
+        "MOD-03",
+        "MOD-04"
+      ],
+      "file": null
+    },
+    {
+      "id": "carving_freestyle",
+      "modules": [
+        "MOD-05",
+        "MOD-06"
+      ],
+      "file": "carving_freestyle.json"
+    },
+    {
+      "id": "park_terrain",
+      "modules": [
+        "MOD-07",
+        "MOD-08"
+      ],
+      "file": null
+    },
+    {
+      "id": "backcountry_integrity",
+      "modules": [
+        "MOD-09",
+        "MOD-10"
+      ],
+      "file": null
+    }
+  ],
+  "complete": false
+}

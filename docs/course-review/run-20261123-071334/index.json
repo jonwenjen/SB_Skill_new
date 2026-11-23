@@ -1,0 +1,67 @@
+{
+  "model": "opus",
+  "completed_at": "2026-11-23T07:19:38+08:00",
+  "reviewer_count": 5,
+  "requested_count": 4,
+  "requested_reviewers": [
+    "foundations_safety",
+    "biomechanics_progression",
+    "park_terrain",
+    "backcountry_integrity"
+  ],
+  "completed_count": 1,
+  "failures": {
+    "biomechanics_progression": "Claude error (success): You've hit your session limit · resets 11:40am (Asia/Taipei)",
+    "park_terrain": "Claude error (success): You've hit your session limit · resets 11:40am (Asia/Taipei)",
+    "backcountry_integrity": "Claude error (success): You've hit your session limit · resets 11:40am (Asia/Taipei)"
+  },
+  "reviewers": [
+    {
+      "id": "foundations_safety",
+      "modules": [
+        "MOD-01",
+        "MOD-02"
+      ],
+      "status": "completed",
+      "file": "foundations_safety.json"
+    },
+    {
+      "id": "biomechanics_progression",
+      "modules": [
+        "MOD-03",
+        "MOD-04"
+      ],
+      "status": "failed",
+      "file": null
+    },
+    {
+      "id": "carving_freestyle",
+      "modules": [
+        "MOD-05",
+        "MOD-06"
+      ],
+      "status": "not_run",
+      "file": null
+    },
+    {
+      "id": "park_terrain",
+      "modules": [
+        "MOD-07",
+        "MOD-08"
+      ],
+      "status": "failed",
+      "file": null
+    },
+    {
+      "id": "backcountry_integrity",
+      "modules": [
+        "MOD-09",
+        "MOD-10"
+      ],
+      "status": "failed",
+      "file": null
+    }
+  ],
+  "run_complete": false,
+  "complete": false
+}

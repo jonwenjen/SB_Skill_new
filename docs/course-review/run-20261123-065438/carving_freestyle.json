@@ -1,0 +1,117 @@
+{
+  "duration_api_ms": 340326,
+  "stop_reason": "end_turn",
+  "session_id": "fe481c14-6356-479d-872c-cfc4f7f4538d",
+  "total_cost_usd": 3.2777750999999986,
+  "usage": {
+    "input_tokens": 24,
+    "cache_creation_input_tokens": 269890,
+    "cache_read_input_tokens": 2499445,
+    "output_tokens": 26981,
+    "output_tokens_details": {
+      "thinking_tokens": 14531
+    },
+    "server_tool_use": {
+      "web_search_requests": 0,
+      "web_fetch_requests": 0
+    },
+    "service_tier": "standard",
+    "cache_creation": {
+      "ephemeral_1h_input_tokens": 269890,
+      "ephemeral_5m_input_tokens": 0
+    },
+    "inference_geo": "global",
+    "iterations": [
+      {
+        "input_tokens": 2,
+        "output_tokens": 12708,
+        "cache_read_input_tokens": 266246,
+        "cache_creation_input_tokens": 7840,
+        "cache_creation": {
+          "ephemeral_5m_input_tokens": 0,
+          "ephemeral_1h_input_tokens": 7840
+        },
+        "type": "message"
+      }
+    ],
+    "speed": "standard",
+    "fallback_credit": null
+  },
+  "modelUsage": {
+    "claude-opus-5-5": {
+      "inputTokens": 24,
+      "outputTokens": 26981,
+      "cacheReadInputTokens": 2499445,
+      "cacheCreationInputTokens": 269890,
+      "webSearchRequests": 0,
+      "costUSD": 3.198724999999999,
+      "contextWindow": 1000000,
+      "maxOutputTokens": 128000,
+      "thinkingTokens": 14531,
+      "cacheCreationEphemeral5mInputTokens": 0,
+      "cacheCreationEphemeral1hInputTokens": 269890,
+      "canonicalModel": "claude-opus-5-5",
+      "provider": "firstParty",
+      "costBasis": "list"
+    },
+    "claude-haiku-5-5": {
+      "inputTokens": 326801,
+      "outputTokens": 12740,
+      "cacheReadInputTokens": 0,
+      "cacheCreationInputTokens": 0,
+      "webSearchRequests": 4,
+      "costUSD": 0.0790501,
+      "contextWindow": 1000000,
+      "maxOutputTokens": 128000,
+      "thinkingTokens": 7167,
+      "cacheCreationEphemeral5mInputTokens": 0,
+      "cacheCreationEphemeral1hInputTokens": 0,
+      "canonicalModel": "claude-haiku-5-5",
+      "provider": "firstParty",
+      "costBasis": "list"
+    }
+  },
+  "permission_denials": [],
+  "terminal_reason": "completed",
+  "fast_mode_state": "off",
+  "fast_mode_disabled_reason": "sdk_opt_in_required",
+  "subagent_stats": {
+    "spawned": 0,
+    "requested": {
+      "background": 0,
+      "foreground": 0,
+      "unset": 0
+    },
+    "started_in_background": 0,
+    "max_depth": 0,
+    "spawned_by_subagents": 0,
+    "completed": 0,
+    "failed": 0,
+    "killed": {
+      "parent": 0,
+      "user": 0,
+      "system": 0
+    },
+    "refused": {
+      "depth_limit": 0,
+      "concurrency_limit": 0,
+      "budget": 0
+    },
+    "by_type": {}
+  },
+  "safety_stops": 0,
+  "is_error": false,
+  "num_turns": 25,
+  "subtype": "success",
+  "api_error_status": null,
+  "result": "我沒有改任何檔案，以下是 MOD-05、MOD-06 的唯讀稽核報告。\n\n# MOD-05 / MOD-06 唯讀內容稽核報告\n\n## 稽核範圍與限制\n- **讀過的位置**：`js/curriculum_data.js` 的 MOD-05（`:696-839`）、MOD-06（`:841-984`）；MOD-06 引用的平花招式組合矩陣（`:1575-2027`）；專家名冊中和這兩個模組有關的條目（`:2150-2360`）；`README.md`；`js/app.js` 的矩陣渲染部分（`:526-640`）。\n- **Repo 版本**：這次 Bash 被停用，無法執行 `git rev-parse`。依對話開始時的 git 快照，HEAD 為 `e04eec7`，`curriculum_data.js` 不在修改清單中，但我沒有自行驗證這一點。\n- **沒做到的事**：\n  - 沒有跑測試，也沒有寫 plan 檔（這次沒有 Write 工具）。\n  - 外部來源都是透過 WebFetch 取得，它會先摘要頁面；下面標「引文」的段落是工具回傳的內容，正式採用前請人工再開一次原文確認。\n  - 幾份日文 PDF 是壓縮格式，工具無法解析，相關事實維持 UNVERIFIED。\n- **基本判讀**：除了少數已直接比對來源的項目外，所有角度、百分比、G 值、速度、坡度、裝備數字、專家引述與署名都是 **UNVERIFIED**。`README.md:3,8` 也已聲明這些內容尚未驗證。\n\n---\n\n## 一、MOD-05 刻滑：逐項發現\n\n**M5-01｜high｜CONTEXT_DEPENDENT（與外部模型推算的上限有衝突）**\n- **位置**：`:821`（Euro-Carve Step 1）\n- **原文**：「選擇坡度 18°–25°…建立時速 40–50 km/h 的穩定初速」\n- **來源**：Jentschura & Fahrbach（Can. J. Phys. 2004）在理想刻滑模型中給出上限 v_limit = √(g·R_SC·cos α)，並說超過此速度「impossible to maintain ideal-carving conditions」。\n- **推算**：用本模組自己的例子 R_sc = 8 m（`:716`），坡度 18°–25° 時上限約 30–31 km/h，低於教材建議的 40–50 km/h。\n- **限制**：這是滑雪（ski）的理想化模型，不是單板實測；學員雪板的側切半徑未知。所以只能說「教材的建議速度缺乏依據，且與它自己的範例參數互相矛盾」，不能說已被推翻。\n- **建議**：移除精確的速度與坡度數字，改標「待核驗」。\n- **核可**：需合格教練，建議同時請醫療人員評估。\n\n**M5-02｜medium｜CONTRADICTED（教材自己的公式算不出它寫的數字）**\n- **位置**：`:732`\n- **原文**：「v_min = √(g · R_eff · tan(θ_laydown)) | 當 θ = 80° 時需 a_centripetal ≥ 5.67 m/s²」\n- **證據**：\n  - 同一論文的 Eq. (29) 在平地（α = 0）時化為 tanΦ = v²/(gR)，所以公式的形式在理想化前提下成立。\n  - 但 a = g·tan80° ≈ 9.81 × 5.67 ≈ 55.6 m/s²，也就是約 5.67 **g**，不是 5.67 m/s²，單位錯了約 10 倍。\n  - 論文的 Φ 是身體傾角，不是板刃角，`:733-734` 把兩者混用。\n- **建議**：移除這個數字，或標註「待核驗：單位疑誤」；斜坡情況要用 Eq. (29) 的完整形式。\n- **核可**：需教練或具力學背景的審查者。\n\n**M5-03｜medium｜CONTRADICTED（公式寫法）＋ CONTEXT_DEPENDENT（適用範圍）**\n- **位置**：`:714`，對照 `:710`\n- **原文**：`:714` 寫「R_eff = R_sidecut · cos(θ_edge) / cos(α_slope)」，但 `:710` 寫 R_eff = R_sc·cosθ。\n- **來源**：同論文 Eq. (28) 為 R(Φ) = R_SC cos Φ，前提是理想刻滑、無側滑、雪板夠硬。工具回傳的摘要沒有提到 `/cos α` 這一項。\n- **另見**：`:716` 把半徑縮小歸因於「Reverse Camber Decambering」，但論文是幾何模型。\n- **建議**：刪除 `/cos(α_slope)`，或標「待核驗」；並註明這是理想化的滑雪模型，套用到單板需再查證。\n- **核可**：需教練。\n\n**M5-04｜high｜CONTRADICTED（repo 內部比對）**\n- **位置**：`:2316`（EXP-20），對照 MOD-05 全文與 MOD-02 `:293`\n- **原文**：EXP-20 宣稱「強制在 MOD-02 與 MOD-05 加入『每一次入彎前越過後肩回頭掃描盲區』」。\n- **證據**：\n  - 在 MOD-05 搜尋「盲區／回頭」，只在 Euro-Carve 步驟 `:821` 出現一次。\n  - J-Carve（`:749`，會橫越雪道並停在上坡）、Cross-Under（`:774`）、Heelside（`:798`）的步驟都沒有這項檢查。\n  - MOD-02 `:293` 自己規定「每次啟動 Heelside 大彎或平花旋轉前，必須執行…回頭掃描」。\n- **建議**：\n  - 把 EXP-20 這條「已加入」的宣稱標為不實或移除。\n  - 是否在各步驟補上掃描提示，由教練決定。我不在這裡撰寫具體的教學指令。\n- **核可**：需教練。\n\n**M5-05｜high｜UNVERIFIED（絕對化的安全承諾）**\n- **位置**：`:794`\n- **原文**：「立刃角穩定維持於 65°–75°，即使在硬雪與冰面上也絕不發生後刃抽動滑脫」\n- **問題**：沒有任何來源；在冰面上承諾「絕不」滑脫可能誤導學員冒險。\n- **建議**：刪除「絕不」這類絕對用語與角度範圍，改標「待核驗」。\n- **核可**：需教練。\n\n**M5-06｜high｜UNVERIFIED（可能涉及膝關節負荷）**\n- **位置**：`:792`、`:799`、`:805`\n- **原文**：「後膝大膽向內側前膝窩方向微收（Knee-to-Knee drive）」、「把後刃板腰死死釘進冰面」；矯正練習為「後刃前手摸後靴外側」。\n- **問題**：\n  - 這條提示是否會造成膝外翻（valgus）負荷，我沒有找到單板領域的可靠來源，因此不下結論。\n  - `:805` 的練習描述語意不清，可教性差。\n- **建議**：標為待核驗。\n- **核可**：需教練，建議加醫療或物理治療人員。\n\n**M5-07｜high｜UNVERIFIED**\n- **位置**：`:815-818`、`:829`\n- **原文**：「80° 立刃」、「膝 160° · 髖 165°」、「85% 的重量永遠在雙腳鋼邊上，手套貼雪只承受不到 15%」、「必須使用寬板（Waist ≥ 260mm）或增高墊板」\n- **問題**：「重量要留在板刃上、不要撲向雪面」這個方向是否正確，需要教練判斷；85/15 與 260mm 都是沒有來源的精確數字。\n- **建議**：保留原文，標 `needs_coach_review`，並移除精確數字。\n- **核可**：需教練；裝備數字應查各廠商手冊。\n\n**M5-08｜medium｜UNVERIFIED（一組精確力學數字）**\n- **位置**：\n  - `:722`：「換刃時間縮短 60%」\n  - `:728`：「60° 以上高立刃角」\n  - `:744-745`：「踝 38° · 膝 115° · 髖 110°」、「55%/45%」\n  - `:768-769`：「膝 95°」、「135°–145°」、「承受高達 2.0G」\n  - `:793`：「髖部深折角 25°」、「60%」\n  - `:749`：「25 km/h」、「1.5 秒」\n- **建議**：一律移除精確數字，或標「待核驗」，不要用另一組數字取代。\n- **核可**：需教練。\n\n**M5-09｜medium｜CONTEXT_DEPENDENT（體系名稱可能混淆）**\n- **位置**：`:705` systemsRef「JSBA Tech Test (技術選)」，以及 `:710`、`:784`\n- **來源**：JSBA 官網只列出「バッジテスト・TECH.TEST」（徽章檢定）與「テクニカル選手権」（比賽）。\n- **問題**：教材把「Tech Test」和「技術選」畫上等號，官網上看不到這樣的對應。\n- **另外**：搜尋結果的摘要顯示「全日本スノーボード技術選手権大会」由 SAJ 主辦，但相關 PDF 無法解析，所以「主辦單位是 SAJ」仍是 UNVERIFIED。\n- **建議**：先釐清體系名稱再決定是否保留。\n- **核可**：需教練，並查證協會正式文件。\n\n**M5-10｜medium｜UNVERIFIED**\n- **位置**：`:727-728`\n- **原文**：谷回り／山回り的定義，以及「谷回りへの抜け」（`:722`）。\n- **問題**：沒有找到可開啟的 JSBA 或 SAJ 正式教材。\n- **建議**：標「待核驗」，等取得協會教程原文再定。\n- **核可**：需教練。\n\n**M5-11｜medium｜UNVERIFIED（署名與引述）**\n- **位置**：`:760`、`:784`、`:808`、`:832` 的專家引述，以及 `:710` 的「Ryan Knapton 雙向深弧自由式刻滑」\n- **問題**：\n  - 「所有世界盃與技術選選手的共同引擎」（`:784`）是全稱斷言。\n  - 「45 度突破到 75 度」（`:808`）是沒有來源的數字。\n  - 這些署名對應到專家名冊，而名冊的身分與簽核記錄未經驗證（`README.md:3,8`）。\n- **建議**：移除署名，或改成「未經驗證之說法」。\n\n**M5-12｜low｜CONTRADICTED（repo 內部數字矛盾）**\n- **位置**：`:710` 寫「2 公釐細溝」，`:746` 寫「寬度不超過 2 公分」。\n- **建議**：移除精確寬度，不要自己挑一個值。\n- **核可**：需教練（影響很低）。\n\n**M5-13｜low｜CONTEXT_DEPENDENT**\n- **位置**：`:774`「在紅線中高速滑行」\n- **問題**：「紅線」是歐洲雪道分級（紅色＝中級），北美與日本的分級不同，學員容易誤讀。\n\n---\n\n## 二、MOD-06 平花：逐項發現\n\n**M6-01｜high｜UNVERIFIED（醫療統計）**\n- **位置**：`:855`\n- **原文**：「90% 的自學者…頻繁發生逆刃腦震盪或手腕骨折」\n- **來源**：\n  - Rønning 等人 2001 年的隨機對照試驗（Am J Sports Med 29(5):581-585，5,029 名滑手）：護腕組 8 例腕傷、對照組 29 例；作者結論為護腕可保護滑手免於腕傷，初學者屬高風險族群。\n  - Slaney 等人 2008 年在 MJA 的讀者來信：「The most common site of injury is the wrist, accounting for 21.6%」。\n- **結論**：「腕傷是單板常見傷害」這個大方向有來源支持；「90% 自學者」與「逆刃造成腦震盪」都沒有來源。\n- **建議**：移除 90%。\n- **核可**：MOD-06 目前完全沒有提到護具；是否加入護腕與安全帽提醒，由教練與醫療人員決定。\n\n**M6-02｜high｜UNVERIFIED（背書與權威宣稱）**\n- **位置**：`:855`「本教材由日本 JSBA 平花大賽冠軍與自由式生物力學專家聯合拆解」、`:977`「50人專家團日系平花總教練組」、`:2326`（EXP-21「JSBA グラトリ全日本大會優勝」）\n- **證據**：JSBA 官網首頁列出的比賽與活動中沒有グラトリ大會。這只代表首頁沒有，不能證明這項比賽不存在。\n- **建議**：移除這些宣稱，或改標「未經驗證」。\n\n**M6-03｜high｜CONTRADICTED（repo 內部矛盾，涉及板刃安全）**\n- **位置**：`:1702`（COMBO-01 Phase 3）\n- **原文**：「Up-hill Edge Raised (下坡刃微翹)」\n- **問題**：英文寫抬上坡刃，中文寫抬下坡刃，自相矛盾；而 MOD-06 自己的規則（`:878`）是「永遠抬起下坡側鋼邊」。\n- **建議**：雖然看起來像筆誤，但這是板刃指令，不列為直接修正，需教練確認。\n\n**M6-04｜high｜CONTRADICTED（與 MOD-02 規則不一致）**\n- **位置**：Drive Spin 的 `:942-945`，以及 Owen、Andy 的 `:966-968`\n- **問題**：這些在雪面上的 180°/360° 旋轉步驟都沒有出現 MOD-02 `:293` 要求的「平花旋轉前回頭掃描」。\n- **建議**：標 `needs_coach_review`，由教練決定是否補上掃描要求。\n\n**M6-05｜medium｜CONTEXT_DEPENDENT（絕對化規則）**\n- **位置**：`:878`\n- **原文**：「無論你的板頭板尾轉到哪個角度，永遠要把朝向下坡…那條鋼邊微幅抬離雪面」\n- **問題**：\n  - 我沒有找到可開啟的正式教材來確認這條規則。\n  - 旋轉過程中哪一側是「下坡刃」會不斷改變，而且 `:896` 自己就要求「板底平放」，和「永遠抬刃」有張力。\n- **核可**：需教練。\n\n**M6-06｜medium｜CONTRADICTED（教材自己的物理論述互相矛盾）**\n- **位置**：`:861`、`:867`、`:871`\n- **問題**：\n  - `:861` 說彈性位能是「高轉速 540/720 的唯一物理來源」，但 `:873` 又說旋轉來自預轉，自相矛盾。\n  - `:867`「100% 轉化為旋轉角速度」、「嚴禁 Flat Base」，與 COMBO-01 的「Nose Flat Point」衝突。\n  - `:871` 的 L_total = 0 只在空中、起始角動量為零時成立，卻被拿來解釋在雪面上進行的 Owen／Nose Block。\n- **建議**：標「待核驗」，並刪除「唯一」「100%」這類用語。\n\n**M6-07｜medium｜UNVERIFIED（一組精確數字）**\n- **位置**：\n  - `:861`：「1.6x–2.2x」\n  - `:929` 與 `:1599`：「強上 40%」與「高 40% 的瞬間角速度」（一個講力道、一個講角速度，兩處也不一致）\n  - `:889-890`：「105°」、「85/15」、「95/5」\n  - `:913`：「0.15 秒」、「165°」\n  - `:961-962`：「±55°」、「0.4 秒」\n  - `:902`：口訣「80% 靠橫移骨盆，20% 才靠提膝蓋」\n- **建議**：移除精確數字，口訣也需教練確認可教性。\n\n**M6-08｜medium｜UNVERIFIED（招式定義）＋ CONTRADICTED（內部方向不一致）**\n- **位置**：`:966-968`，對照矩陣 `:1681`、`:1961-1964`、`:2002`\n- **問題**：\n  - Owen、Sone、Andy 540、Drive Spin 的定義都沒有找到可靠的原始來源。\n  - 同樣叫「FS Nose Roll 180」：Owen 寫 Toeside 入刃（`:967`、`:1963`），COMBO-01 與 Andy 寫 Heelside 入刃（`:1681`、`:2002`）。\n  - Drive Spin 的鎖刃也不一致：`:939` 說 Toeside 鎖刃，`:1840` 說「原刃鎖定」，`:1864` 又說 Toeside。\n- **核可**：需教練。\n\n**M6-09｜low｜CONTRADICTED（內部數字不一致）**\n- **位置**：`:855` 與副標 `:848` 寫「六大原子／6 Atomic Skills」；`:977`、`:2326` 寫「8 個原子」；矩陣實際有 8 個條目（`:1576-1672`），而且名稱和 `:855` 列的六項不一樣。\n\n**M6-10｜low｜CONTRADICTED（內部數字不一致）**\n- **位置**：\n  - 板頭翹起高度：`:894` 寫 30 公分，`:1611` 寫 25 公分。\n  - 板尾離地：`:938` 寫 2–5 公分，`:943` 與 `:2334` 寫 3 公分，`:953` 寫 5 公分。\n  - 前腳重量：`:938` 寫 85%，`:943` 寫 80%，`:1851` 寫 88%。\n  - Owen 難度：`:957` 寫 Lv.3–Pro，`:1952` 寫 Lv.4。\n- **建議**：移除精確數字；難度分級需教練決定。\n\n**M6-11｜low｜CONTRADICTED（描述錯誤）**\n- **位置**：`:968`、`:2015`\n- **原文**：「總計完成 180 + 360 = 540 度空中旋轉」\n- **問題**：依教材自己的定義，第一段 180 是雪面上的 Nose Roll，只有 360 是在空中。\n\n**M6-12｜low｜CONTEXT_DEPENDENT**\n- **位置**：`:926`「在雪地上放一根雪杖」\n- **問題**：單板滑手通常不帶雪杖；讓學員騎過放在地上的硬物可能有絆倒風險。\n\n---\n\n## 三、可直接做的低風險文字修正（只動措辭，不改技術內容）\n1. **統一原子數量**（`:848`、`:855`、`:977`）：例如在 `:977` 寫明「互動矩陣中的 8 個原子條目」，並把 `:855` 的「六大」改成「六大類」。這只是用詞對齊，不改分類內容。\n2. **Andy 540 的描述**（`:968`、`:2015`）：「540 度空中旋轉」改為「合計 540 度旋轉（其中 360 度為空中）」。這是依教材自己的定義更正，招式定義本身仍待核驗。\n3. **「紅線」加註**（`:774`）：補上「歐洲雪道分級：紅色＝中級」。\n\n## 四、需人工核准、標「待教練核可」的內容修正\n- **M5-01**：Euro-Carve 的速度與坡度建議。\n- **M5-02**：5.67 m/s² 單位錯誤（可用算術驗證，但屬力學數字）。\n- **M5-03**：`/cos α` 項。\n- **M5-04**：補上盲區掃描要求，並處理 EXP-20 的不實宣稱。\n- **M5-05**：冰面上「絕不」滑脫的承諾。\n- **M5-06**：Knee-to-Knee 提示（建議加醫療或物理治療人員）。\n- **M5-07**：85/15 規則與 Waist ≥ 260mm。\n- **M5-08**：MOD-05 的全部精確角度、百分比與 G 值。\n- **M5-09**：JSBA Tech Test 與技術選的名稱混淆。\n- **M5-12**：2 公釐與 2 公分。\n- **M6-01**：移除 90% 統計，並決定是否加入護具提醒（教練與醫療人員）。\n- **M6-03**：COMBO-01 上坡刃與下坡刃的矛盾。\n- **M6-04**：旋轉前的盲區掃描。\n- **M6-05**：「永遠抬下坡刃」規則。\n- **M6-06**：物理論述的內部矛盾。\n- **M6-07**：MOD-06 的精確數字與口訣。\n- **M6-08**：招式定義與旋轉方向。\n- **M6-10**：數字不一致與難度分級。\n- **M6-12**：雪杖練習。\n\n> **須移除或改標的權威宣稱**（不需改教學內容，但需作者決定）：M5-11 與 M6-02 的所有專家引述與署名、「50人專家團」、「JSBA 平花大賽冠軍」。\n\n## 五、未能核驗清單\n- JSBA 或 SAJ 正式教材中「谷回り／山回り」的定義，以及「谷回りへの抜け」。\n- 全日本技術選的主辦單位：只看到搜尋摘要，PDF 無法解析。\n- 是否存在「JSBA グラトリ」比賽。\n- Owen、Sone、Andy 540、Drive Spin 的招式定義。\n- Cross-under、Cross-through、Push-Pull 的協會定義。\n- 教材列出的課程或檢定參照：CASI「Carved Turns／Cross-Under」、AASI「Pure Tilt」、SBINZ「Vertical Retraction」、BASI「Steep Carve」。\n- Ryan Knapton 刻滑風格的出處。\n- 所有關節角度、重量百分比、G 值、時間、速度、坡度、側切範例。\n- 裝備數字：Waist ≥ 260mm、增高墊板、固定器角度 +24/+9 與 +27/+12。\n- 「逆刃造成腦震盪」與「90% 自學者」。\n- 所有專家身分、證照與簽核記錄。\n- R_eff 模型套用到單板的有效性：來源是滑雪模型。\n\n## 六、參考來源（存取日期 2026-11-23）\n- **刻滑理想模型**：Jentschura & Fahrbach, \"Physics of Skiing: The Ideal-Carving Equation and Its Applications\", Can. J. Phys. 82 (2004) 249–261。透過 [ar5iv HTML](https://ar5iv.labs.arxiv.org/html/physics/0310086) 開啟；原始頁面為 [arXiv:physics/0310086](https://arxiv.org/abs/physics/0310086)。\n- **護腕隨機試驗**：Rønning R, et al., \"The efficacy of wrist protectors in preventing snowboarding injuries\", Am J Sports Med 2001;29(5):581-585。透過 [PEDro 記錄](https://search.pedro.org.au/search-results/record-detail/36443) 開啟；[PubMed 頁面](https://pubmed.ncbi.nlm.nih.gov/11573916/) 需要 cookie，無法開啟。\n- **腕傷比例**：Slaney GM, et al., \"Wrist guards and wrist and elbow injury in snowboarders\", [Med J Aust 2008;189(7):412](https://www.mja.com.au/journal/2008/189/7/wrist-guards-and-wrist-and-elbow-injury-snowboarders)。這是讀者來信，不是完整的同行評審論文。\n- **JSBA 官網**：[JSBA 首頁](https://www.jsba.or.jp/)，列有 TECH.TEST 與テクニカル選手権。\n- **找到但無法開啟或解析的來源**（相關事實維持 UNVERIFIED）：\n  - [nsa.jpn.com 大會要項 PDF](https://nsa.jpn.com/wp/wp-content/uploads/2022/12/添付資料②大会開催要項.pdf)\n  - [ski-japan.or.jp PDF](https://www.ski-japan.or.jp/wp-content/uploads/0000002928.pdf)\n  - [White Rose pend-v2.pdf](https://eprints.whiterose.ac.uk/158134/1/pend-v2.pdf)",
+  "ttft_ms": 4823,
+  "type": "result",
+  "duration_ms": 308546,
+  "uuid": "7033147e-5d1e-4b8a-9c2a-e628d8cfd025",
+  "ttft_stream_ms": 2829,
+  "time_to_request_ms": 560,
+  "first_content_frame_ms": 2829,
+  "queued_turn_count": 0,
+  "result_index": 0
+}

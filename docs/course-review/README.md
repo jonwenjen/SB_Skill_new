@@ -10,7 +10,7 @@ Requirements: Node.js, Python 3, Claude Code CLI authenticated with Opus access,
 python3 scripts/run_course_review.py
 ```
 
-The runner starts five separate `claude -p --model opus` sessions sequentially to avoid session contention. Each is read-only: it receives Read/Grep/Glob/WebSearch/WebFetch only, has plan permissions, and cannot edit course files. It writes each raw JSON response plus `index.json` into a timestamped `docs/course-review/run-*` directory. A failed reviewer makes the run incomplete; review responses and citations still require human verification.
+The runner starts five separate `claude -p --model opus` sessions sequentially by default to avoid session contention. Each is read-only: it receives Read/Grep/Glob/WebSearch/WebFetch only, has plan permissions, and cannot edit course files. It writes each raw JSON response plus `index.json` into a timestamped `docs/course-review/run-*` directory. The default `--max-turns` is 24. To retry only specific failed roles, repeat `--reviewer` in a new output directory; see `python3 scripts/run_course_review.py --help` for valid IDs. A successful subset run has `run_complete: true` but still `complete: false` until all five roles succeed. Review responses and citations still require human verification.
 
 To direct output to a chosen new directory:
 
@@ -20,13 +20,21 @@ python3 scripts/run_course_review.py --output-dir docs/course-review/run-YYYYMMD
 
 The runner refuses to overwrite a non-empty directory.
 
+Example selective retry:
+
+```sh
+python3 scripts/run_course_review.py --output-dir docs/course-review/run-YYYYMMDD-HHMMSS \
+  --reviewer foundations_safety --reviewer biomechanics_progression \
+  --reviewer park_terrain --reviewer backcountry_integrity
+```
+
 ## Build animation specifications
 
 ```sh
 python3 scripts/build_animation_specs.py
 ```
 
-This writes `docs/animation/animation-specs.json`, one draft record for each video media ID referenced by the curriculum. It preserves source cues but marks them unverified, leaves timecodes unset, and requires qualified coach approval. It does not generate or overwrite media.
+This writes `docs/animation/animation-specs.json`, one draft record for each video media ID referenced by the curriculum, with a phase entry for each source action. Phase-level body-part, edge, COM, direction, and angle candidates are literal text matches only, not validated technique or approved graphics. Missing fields remain explicitly pending coach input; the manifest is a first-pass storyboard skeleton, not camera-ready. Timecodes stay unset. It does not generate or overwrite media.
 
 ## Validate
 
@@ -42,4 +50,4 @@ Treat source-based counts as file inventory only. A filename does not establish 
 
 ## Current status
 
-See [the 2026-11-23 audit status and proposed corrections](audit-status-2026-11-23.md). It records incomplete reviewer coverage; it is not a course sign-off. The current Opus run completed only MOD-05/06 (1 of 5 reviewer roles). MOD-07/08 and MOD-09/10 remain unreviewed.
+See [the 2026-11-23 audit status and proposed corrections](audit-status-2026-11-23.md). It records incomplete runner coverage and is not a course sign-off. The 07:13 selective Claude run completed only the MOD-01/02 role; the remaining requested roles hit the session limit. Separate read-only bounded reviews are available for [selected MOD-01/02 claims](mod-01-02-selected-review-2026-11-23.md), [MOD-03/04](mod-03-04-review-2026-11-23.md), [MOD-07/08](mod-07-08-review-2026-11-23.md), and [MOD-09/10](mod-09-10-review-2026-11-23.md); none is a full audit or approval. The 204 animation records / 516 phases are first-pass storyboard skeletons with literal, unverified cue candidates—not camera-ready specifications.

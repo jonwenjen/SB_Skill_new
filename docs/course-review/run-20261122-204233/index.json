@@ -1,0 +1,56 @@
+{
+  "model": "opus",
+  "completed_at": "2026-11-22T20:45:06+08:00",
+  "reviewer_count": 5,
+  "completed_count": 0,
+  "failures": {
+    "backcountry_integrity": "claude exited 1: ",
+    "foundations_safety": "claude exited 1: ",
+    "park_terrain": "claude exited 1: ",
+    "biomechanics_progression": "claude exited 1: ",
+    "carving_freestyle": "claude exited 1: "
+  },
+  "reviewers": [
+    {
+      "id": "foundations_safety",
+      "modules": [
+        "MOD-01",
+        "MOD-02"
+      ],
+      "file": null
+    },
+    {
+      "id": "biomechanics_progression",
+      "modules": [
+        "MOD-03",
+        "MOD-04"
+      ],
+      "file": null
+    },
+    {
+      "id": "carving_freestyle",
+      "modules": [
+        "MOD-05",
+        "MOD-06"
+      ],
+      "file": null
+    },
+    {
+      "id": "park_terrain",
+      "modules": [
+        "MOD-07",
+        "MOD-08"
+      ],
+      "file": null
+    },
+    {
+      "id": "backcountry_integrity",
+      "modules": [
+        "MOD-09",
+        "MOD-10"
+      ],
+      "file": null
+    }
+  ],
+  "complete": false
+}

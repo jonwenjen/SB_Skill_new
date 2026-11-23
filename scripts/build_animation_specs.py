@@ -8,6 +8,7 @@ from __future__ import annotations
 
 import argparse
 import json
+import re
 import subprocess
 import sys
 from pathlib import Path
@@ -26,6 +27,15 @@ vm.runInContext(fs.readFileSync(source, "utf8"), sandbox, {
 if (!sandbox.window.SB_CURRICULUM_DATA) throw new Error("Curriculum data not found");
 process.stdout.write(JSON.stringify(sandbox.window.SB_CURRICULUM_DATA));'''
 PUBLICATION_RULE = "教練核可及來源查證前不得作為教學定論"
+BODY_PART_TERMS = (
+    "股四頭肌", "膕繩肌", "胸椎", "腰椎", "脛骨", "腳踝", "足弓", "膝蓋", "腳跟", "腳尖",
+    "手腕", "手肘", "肩胛", "上半身", "下半身", "前腳", "後腳", "小腿", "大腿", "手臂",
+    "骨盆", "臀部", "肩膀", "膝", "踝", "髖", "臀", "頭", "頸", "手掌", "腳掌", "腰", "胸", "核心",
+)
+EDGE_TERMS = ("上坡刃", "下坡刃", "後刃", "前刃", "內刃", "外刃", "腳跟刃", "腳尖刃", "Heelside", "Toeside")
+COM_TERMS = ("重心", "骨盆", "承重", "重量", "負重", "支撐", "壓力", "前腳", "後腳", "板頭", "板尾")
+DIRECTION_TERMS = ("向前", "向後", "向內", "向外", "上坡", "下坡", "前移", "後移", "前壓", "後壓", "推向", "抬起", "下壓", "旋轉", "轉向", "離地", "滑出", "收回", "蹬地", "靠前", "靠後")
+ANGLE_PATTERN = re.compile(r"\d+(?:\.\d+)?\s*(?:°|度)")
 
 
 def read_curriculum(source: Path) -> dict[str, Any]:
@@ -53,21 +63,99 @@ def _points(values: dict[str, Any] | None) -> list[dict[str, str]]:
     ]
 
 
+def _annotation_value(value: Any) -> dict[str, Any]:
+    present = value not in (None, "")
+    return {
+        "value": value if present else None,
+        "status": "draft_unverified" if present else "needs_coach_input",
+    }
+
+
+def _literal_terms(text: str, terms: tuple[str, ...]) -> list[str]:
+    matches = []
+    for term in terms:
+        for match in re.finditer(re.escape(term), text, flags=re.IGNORECASE):
+            matches.append((match.start(), match.end(), match.group(0)))
+    selected = []
+    last_end = -1
+    for start, end, matched_text in sorted(matches, key=lambda item: (item[0], -(item[1] - item[0]))):
+        if start < last_end:
+            continue
+        selected.append(matched_text)
+        last_end = end
+    return list(dict.fromkeys(selected))
+
+
+def _source_text_cues(text: str) -> dict[str, Any]:
+    """Extract literal cue candidates only; do not infer technique or render graphics."""
+    return {
+        "body_part_terms": _literal_terms(text, BODY_PART_TERMS),
+        "edge_terms": _literal_terms(text, EDGE_TERMS),
+        "center_of_mass_terms": _literal_terms(text, COM_TERMS),
+        "direction_terms": _literal_terms(text, DIRECTION_TERMS),
+        "angle_terms": list(dict.fromkeys(match.group(0) for match in ANGLE_PATTERN.finditer(text))),
+        "status": "literal_matches_only_unverified",
+    }
+
+
+def _cue_candidates(values: dict[str, Any] | None) -> list[dict[str, str]]:
+    return [
+        {"field": key, "source_text": str(value), "status": "unmapped_needs_coach_review"}
+        for key, value in (values or {}).items() if value not in (None, "", [], {})
+    ]
+
+
 def _spec(
     *, media_id: str, video_path: str, image_path: str | None,
     kind: str, module_id: str | None, module_title: str | None,
     title: str, source_ref: str, source_content: str,
     critical_points: list[dict[str, str]] | None = None,
     actions: list[dict[str, str]] | None = None,
+    source_cue_candidates: dict[str, Any] | None = None,
 ) -> dict[str, Any]:
     plan = []
-    for index, item in enumerate(actions or [], 1):
+    phase_actions = actions or [{"phase": "動作分鏡待補", "action": ""}]
+    for index, item in enumerate(phase_actions, 1):
+        action = str(item.get("action") or "")
+        com = item.get("com") or None
+        edge = item.get("edge") or None
+        body_part = item.get("body_part") or item.get("bodyPart") or None
+        text_cues = _source_text_cues(action)
+        arrows = item.get("arrow_cues") or item.get("arrows") or []
+        angle_callouts = item.get("angle_cues") or item.get("angles") or []
+        if isinstance(arrows, str):
+            arrows = [arrows]
+        if isinstance(angle_callouts, str):
+            angle_callouts = [angle_callouts]
+        angle_callouts = [*angle_callouts, *text_cues["angle_terms"]]
+        if edge and "°" in str(edge):
+            angle_callouts = [*angle_callouts, edge]
+        angle_callouts = list(dict.fromkeys(angle_callouts))
+        visual_annotations = {
+            "arrows": [{"text": str(cue), "status": "draft_unverified"} for cue in arrows],
+            "arrow_term_candidates": [
+                {"text": cue, "status": "needs_coach_mapping"} for cue in text_cues["direction_terms"]
+            ],
+            "angle_callouts": [
+                {"text": str(cue), "status": "draft_unverified"} for cue in angle_callouts
+            ],
+            "status": "draft_unverified" if arrows or angle_callouts or text_cues["direction_terms"] else "needs_coach_input",
+        }
         plan.append({
             "phase": index,
             "phase_label": item.get("phase", f"階段 {index}"),
-            "source_action": item.get("action", ""),
-            "source_com": item.get("com", ""),
-            "source_edge": item.get("edge", ""),
+            "source_action": action,
+            "source_com": com or "",
+            "source_edge": edge or "",
+            "body_part": {**_annotation_value(body_part), "source_candidates": text_cues["body_part_terms"]},
+            "board_edge_direction": {**_annotation_value(edge), "source_candidates": text_cues["edge_terms"]},
+            "center_of_mass": {**_annotation_value(com), "source_candidates": text_cues["center_of_mass_terms"]},
+            "subtitle_narration_cue": {
+                "text": action,
+                "status": "draft_unverified" if action else "needs_coach_input",
+            },
+            "source_text_cues": text_cues,
+            "visual_annotations": visual_annotations,
             "timecode": None,
             "annotation_status": "原稿待核驗—需教練簽核",
         })
@@ -84,6 +172,7 @@ def _spec(
         "source_content": source_content,
         "critical_points": critical_points or [],
         "shot_plan": plan,
+        "unmapped_source_cues": _cue_candidates(source_cue_candidates),
         "timecode_policy": "未有核准拍攝素材前不填時間碼；不得估造時長或影格",
         "review_gate": "待教練核可",
         "publication_rule": PUBLICATION_RULE,
@@ -112,6 +201,7 @@ def build_specs(data: dict[str, Any], source_revision: str = "unknown") -> dict[
                 critical_points=[{"label": "原稿公式／解說", "source_text": x, "status": "原稿待核驗—需來源／教練簽核"}
                                  for x in [principle.get("formula", ""), principle.get("explanation", "")] if x],
                 actions=[{"phase": "概念視覺化", "action": principle.get("explanation", "")}],
+                source_cue_candidates={"formula": principle.get("formula", ""), "explanation": principle.get("explanation", "")},
             ))
         for index, skill in enumerate(module.get("coreSkills", []), 1):
             source_ref = f"{module_id}.coreSkills[{index - 1}]"
@@ -124,7 +214,7 @@ def build_specs(data: dict[str, Any], source_revision: str = "unknown") -> dict[
                 image_path=skill.get("image"), kind="core_skill", module_id=module_id,
                 module_title=module_title, title=title, source_ref=source_ref,
                 source_content="\n".join(text for text in skill.get("stepByStep", [])),
-                critical_points=points, actions=steps,
+                critical_points=points, actions=steps, source_cue_candidates=skill.get("biomechanics", {}),
             ))
             if skill.get("stepMediaId") or skill.get("stepVideo"):
                 step_id = skill.get("stepMediaId") or f"step_{module_id[-2:]}_{index:02}"
@@ -133,7 +223,7 @@ def build_specs(data: dict[str, Any], source_revision: str = "unknown") -> dict[
                     image_path=skill.get("stepImage"), kind="skill_steps", module_id=module_id,
                     module_title=module_title, title=f"{title}｜逐步拆解", source_ref=source_ref + ".stepByStep",
                     source_content="\n".join(text for text in skill.get("stepByStep", [])),
-                    critical_points=points, actions=steps,
+                    critical_points=points, actions=steps, source_cue_candidates=skill.get("biomechanics", {}),
                 ))
             errors = skill.get("commonErrors") or {}
             if skill.get("errMediaId") or skill.get("errVideo"):
@@ -146,6 +236,7 @@ def build_specs(data: dict[str, Any], source_revision: str = "unknown") -> dict[
                     critical_points=[{"label": key, "source_text": str(value), "status": "原稿待核驗—需來源／教練簽核"}
                                      for key, value in errors.items()],
                     actions=[{"phase": "安全示範", "action": str(errors.get("symptom", "錯誤動作需教練設計安全替代呈現"))}],
+                    source_cue_candidates=skill.get("biomechanics", {}),
                 ))
     matrix = data.get("groundTrickComboMatrix") or {}
     for index, atomic in enumerate(matrix.get("atomicSkills", []), 1):
@@ -160,6 +251,7 @@ def build_specs(data: dict[str, Any], source_revision: str = "unknown") -> dict[
             source_content="\n".join(f"{key}: {value}" for key, value in details.items()),
             critical_points=[{"label": key, "source_text": value, "status": "原稿待核驗—需來源／教練簽核"} for key, value in details.items()],
             actions=[{"phase": "動作分解", "action": atomic.get("biomechanics", "")}],
+            source_cue_candidates=details,
         ))
     for index, combo in enumerate(matrix.get("combos", []), 1):
         source_ref = f"groundTrickComboMatrix.combos[{index - 1}]"
@@ -175,6 +267,8 @@ def build_specs(data: dict[str, Any], source_revision: str = "unknown") -> dict[
             image_path=combo.get("image"), kind="combo_skill", module_id="MOD-06",
             module_title="平花技能矩陣", title=title, source_ref=source_ref,
             source_content="\n".join(p["action"] for p in phases), critical_points=points, actions=phases,
+            source_cue_candidates={key: combo.get(key) for key in ("comSummary", "edgeLogic", "formula", "torsionAngle")
+                                   if combo.get(key) not in (None, "")},
         ))
         if combo.get("stepMediaId") or combo.get("stepVideo"):
             step_id = combo.get("stepMediaId") or f"combo_step_{index:02}"
@@ -183,6 +277,8 @@ def build_specs(data: dict[str, Any], source_revision: str = "unknown") -> dict[
                 image_path=combo.get("stepImage"), kind="combo_steps", module_id="MOD-06",
                 module_title="平花技能矩陣", title=f"{title}｜逐步拆解", source_ref=source_ref + ".phases",
                 source_content="\n".join(p["action"] for p in phases), critical_points=points, actions=phases,
+                source_cue_candidates={key: combo.get(key) for key in ("comSummary", "edgeLogic", "formula", "torsionAngle")
+                                       if combo.get(key) not in (None, "")},
             ))
         failure = combo.get("failureMode", "")
         if combo.get("errMediaId") or combo.get("errVideo"):
@@ -194,14 +290,16 @@ def build_specs(data: dict[str, Any], source_revision: str = "unknown") -> dict[
                 source_content=failure, critical_points=[{"label": "原稿失誤描述", "source_text": failure,
                     "status": "原稿待核驗—需來源／教練簽核"}] if failure else [],
                 actions=[{"phase": "安全示範", "action": failure}],
+                source_cue_candidates={key: combo.get(key) for key in ("comSummary", "edgeLogic", "formula", "torsionAngle")
+                                       if combo.get(key) not in (None, "")},
             ))
     ids = [item["media_id"] for item in specs]
     if len(ids) != len(set(ids)):
         raise ValueError("Duplicate media IDs in generated specifications")
     return {
-        "schema_version": "1.0",
+        "schema_version": "1.1",
         "source_revision": source_revision,
-        "source_policy": "原稿只作資料來源；未核驗內容標註草稿，不可當作技術事實或直接發布。",
+        "source_policy": "原稿只作資料來源；未核驗內容標註草稿，不可當作技術事實或直接發布。未映射的肢體、刃向、重心及視覺提示須由教練逐 phase 補核。",
         "count": len(specs),
         "specifications": specs,
     }

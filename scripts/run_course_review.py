@@ -24,6 +24,20 @@ REVIEWERS = [
 ALLOWED_TOOLS = "Read,Grep,Glob,WebSearch,WebFetch"
 
 
+def select_reviewers(reviewer_ids: list[str] | None = None) -> list[dict[str, Any]]:
+    """Select a canonical-order subset, rejecting empty and unknown scopes."""
+    if reviewer_ids is None:
+        return REVIEWERS
+    if not reviewer_ids:
+        raise ValueError("Select at least one reviewer.")
+    requested = set(reviewer_ids)
+    known = {reviewer["id"] for reviewer in REVIEWERS}
+    unknown = requested - known
+    if unknown:
+        raise ValueError(f"unknown reviewer(s): {', '.join(sorted(unknown))}")
+    return [reviewer for reviewer in REVIEWERS if reviewer["id"] in requested]
+
+
 def render_agent_prompt(reviewer: dict[str, Any]) -> str:
     module_list = ", ".join(reviewer["modules"])
     return f'''執行唯讀內容稽核：只審閱課程，不修改任何檔案。你的範圍為 {module_list}；重點：{reviewer["focus"]}。
@@ -70,8 +84,9 @@ def _run_one(command: list[str], repo: Path, timeout: int) -> dict[str, Any]:
 
 
 def run_reviews(
-    *, repo: Path, output_dir: Path, model: str = "opus", max_turns: int = 12,
+    *, repo: Path, output_dir: Path, model: str = "opus", max_turns: int = 24,
     timeout: int = 900, claude: str | None = None,
+    reviewer_ids: list[str] | None = None,
 ) -> dict[str, Any]:
     repo = repo.resolve()
     skill_path = repo / ".agents/skills/snowboard-course-review/SKILL.md"
@@ -79,6 +94,7 @@ def run_reviews(
         raise FileNotFoundError(f"Project skill missing: {skill_path}")
     skill_text = skill_path.read_text(encoding="utf-8")
     executable = claude or shutil.which("claude") or "claude"
+    selected_reviewers = select_reviewers(reviewer_ids)
     output_dir = output_dir if output_dir.is_absolute() else repo / output_dir
     output_dir.mkdir(parents=True, exist_ok=True)
     if any(output_dir.iterdir()):
@@ -89,12 +105,12 @@ def run_reviews(
         reviewer["id"]: build_agent_command(
             claude=executable, model=model, reviewer=reviewer, repo=repo,
             skill_text=skill_text, max_turns=max_turns,
-        ) for reviewer in REVIEWERS
+        ) for reviewer in selected_reviewers
     }
     with concurrent.futures.ThreadPoolExecutor(max_workers=1) as pool:
         futures = {
             pool.submit(_run_one, commands[reviewer["id"]], repo, timeout): reviewer
-            for reviewer in REVIEWERS
+            for reviewer in selected_reviewers
         }
         for future in concurrent.futures.as_completed(futures):
             reviewer = futures[future]
@@ -110,15 +126,32 @@ def run_reviews(
         "model": model,
         "completed_at": datetime.now().astimezone().isoformat(timespec="seconds"),
         "reviewer_count": len(REVIEWERS),
+        "requested_count": len(selected_reviewers),
+        "requested_reviewers": [reviewer["id"] for reviewer in selected_reviewers],
         "completed_count": len(results),
         "failures": failures,
-        "reviewers": [{"id": r["id"], "modules": r["modules"], "file": f"{r['id']}.json" if r["id"] in results else None}
-                      for r in REVIEWERS],
+        "reviewers": [
+            {
+                "id": reviewer["id"],
+                "modules": reviewer["modules"],
+                "status": (
+                    "completed" if reviewer["id"] in results
+                    else "failed" if reviewer["id"] in failures
+                    else "not_run"
+                ),
+                "file": f"{reviewer['id']}.json" if reviewer["id"] in results else None,
+            }
+            for reviewer in REVIEWERS
+        ],
+        "run_complete": len(results) == len(selected_reviewers) and not failures,
         "complete": len(results) == len(REVIEWERS) and not failures,
     }
     (output_dir / "index.json").write_text(json.dumps(index, ensure_ascii=False, indent=2) + "\n", encoding="utf-8")
     if failures:
-        raise RuntimeError(f"Only {len(results)}/{len(REVIEWERS)} reviews completed; see {output_dir / 'index.json'}")
+        raise RuntimeError(
+            f"Only {len(results)}/{len(selected_reviewers)} requested reviews completed; "
+            f"see {output_dir / 'index.json'}"
+        )
     return index
 
 
@@ -127,17 +160,25 @@ def main(argv: list[str] | None = None) -> int:
     parser.add_argument("--repo", type=Path, default=ROOT)
     parser.add_argument("--output-dir", type=Path, default=None)
     parser.add_argument("--model", default="opus")
-    parser.add_argument("--max-turns", type=int, default=12)
+    parser.add_argument("--max-turns", type=int, default=24)
     parser.add_argument("--timeout", type=int, default=900)
     parser.add_argument("--claude", default=None)
+    parser.add_argument(
+        "--reviewer", action="append", choices=[reviewer["id"] for reviewer in REVIEWERS],
+        help="Run only this reviewer (repeat the option to select more than one).",
+    )
     args = parser.parse_args(argv)
     outdir = args.output_dir or Path("docs/course-review/run-" + datetime.now().astimezone().strftime("%Y%m%d-%H%M%S"))
     try:
         index = run_reviews(
             repo=args.repo, output_dir=outdir, model=args.model,
             max_turns=args.max_turns, timeout=args.timeout, claude=args.claude,
+            reviewer_ids=args.reviewer,
         )
-        print(f"Completed {index['completed_count']}/{index['reviewer_count']} read-only reviews in {outdir}")
+        print(
+            f"Completed {index['completed_count']}/{index['requested_count']} requested "
+            f"read-only reviews; whole-course-complete={index['complete']} in {outdir}"
+        )
         return 0
     except (OSError, RuntimeError, subprocess.SubprocessError) as exc:
         print(f"Review run incomplete: {exc}", file=sys.stderr)

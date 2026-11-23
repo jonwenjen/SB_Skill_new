@@ -3,8 +3,8 @@ import tempfile
 import unittest
 from pathlib import Path
 
-from scripts.build_animation_specs import build_specs
-from scripts.run_course_review import REVIEWERS, build_agent_command, render_agent_prompt
+from scripts.build_animation_specs import _source_text_cues, build_specs
+from scripts.run_course_review import REVIEWERS, build_agent_command, render_agent_prompt, select_reviewers
 
 
 class AnimationSpecTests(unittest.TestCase):
@@ -53,7 +53,7 @@ class AnimationSpecTests(unittest.TestCase):
                 }],
                 "combos": [{
                     "id": "COMBO-01", "name": "Combo", "phases": [
-                        {"phase": "Phase 1", "action": "組合動作一", "com": "50/50", "edge": "flat"}
+                        {"phase": "Phase 1", "action": "組合動作一", "com": "50/50", "edge": "Heelside 20°"}
                     ],
                     "failureMode": "錯誤模式",
                     "mediaId": "combo_01", "video": "assets/media/videos/combo_01.mp4",
@@ -72,10 +72,55 @@ class AnimationSpecTests(unittest.TestCase):
         skill = next(item for item in specs["specifications"] if item["media_id"] == "s_01_01")
         self.assertEqual(["動作一", "動作二"], [p["source_action"] for p in skill["shot_plan"]])
         self.assertTrue(all(p["timecode"] is None for p in skill["shot_plan"]))
+        first_phase = skill["shot_plan"][0]
+        self.assertEqual(
+            {"value": None, "status": "needs_coach_input", "source_candidates": []},
+            first_phase["body_part"],
+        )
+        self.assertEqual({"text": "動作一", "status": "draft_unverified"}, first_phase["subtitle_narration_cue"])
+        self.assertEqual(
+            {"arrows": [], "arrow_term_candidates": [], "angle_callouts": [], "status": "needs_coach_input"},
+            first_phase["visual_annotations"],
+        )
+        self.assertIn(
+            {"field": "edgeControl", "source_text": "原稿板刃", "status": "unmapped_needs_coach_review"},
+            skill["unmapped_source_cues"],
+        )
+        combo = next(item for item in specs["specifications"] if item["media_id"] == "combo_01")
+        self.assertEqual("50/50", combo["shot_plan"][0]["center_of_mass"]["value"])
+        self.assertEqual("draft_unverified", combo["shot_plan"][0]["center_of_mass"]["status"])
+        self.assertEqual(
+            [{"text": "Heelside 20°", "status": "draft_unverified"}],
+            combo["shot_plan"][0]["visual_annotations"]["angle_callouts"],
+        )
         self.assertEqual("待教練核可", skill["review_gate"])
         self.assertIn("待核驗", skill["critical_points"][0]["status"])
         error = next(item for item in specs["specifications"] if item["media_id"] == "err_01_01")
         self.assertIn("錯誤症狀", error["source_content"])
+
+    def test_annotation_candidates_are_literal_and_never_approved(self):
+        cues = _source_text_cues("前腳膝蓋向前壓重心45°後刃")
+        self.assertEqual(["前腳", "膝蓋"], cues["body_part_terms"])
+        self.assertEqual(["後刃"], cues["edge_terms"])
+        self.assertEqual(["前腳", "重心"], cues["center_of_mass_terms"])
+        self.assertEqual(["向前"], cues["direction_terms"])
+        self.assertEqual(["45°"], cues["angle_terms"])
+        self.assertEqual("literal_matches_only_unverified", cues["status"])
+
+    def test_every_phase_has_structured_visual_and_teaching_cues(self):
+        specs = build_specs(self.sample_data(), source_revision="test-rev")
+        for spec in specs["specifications"]:
+            self.assertTrue(spec["shot_plan"], spec["media_id"])
+            for phase in spec["shot_plan"]:
+                for key in (
+                    "body_part", "board_edge_direction", "center_of_mass",
+                    "subtitle_narration_cue", "visual_annotations", "annotation_status",
+                ):
+                    self.assertIn(key, phase, f"{spec['media_id']} missing {key}")
+                self.assertIn("status", phase["body_part"])
+                self.assertIn("status", phase["board_edge_direction"])
+                self.assertIn("status", phase["center_of_mass"])
+                self.assertEqual("draft_unverified", phase["subtitle_narration_cue"]["status"])
 
     def test_skill_content_is_not_presented_as_verified_fact(self):
         specs = build_specs(self.sample_data(), source_revision="test-rev")
@@ -85,6 +130,19 @@ class AnimationSpecTests(unittest.TestCase):
 
 
 class ReviewOrchestrationTests(unittest.TestCase):
+    def test_selecting_reviewers_preserves_canonical_order(self):
+        selected = select_reviewers(["park_terrain", "foundations_safety"])
+        self.assertEqual(
+            ["foundations_safety", "park_terrain"],
+            [reviewer["id"] for reviewer in selected],
+        )
+
+    def test_rejects_empty_or_unknown_reviewer_selection(self):
+        with self.assertRaisesRegex(ValueError, "at least one"):
+            select_reviewers([])
+        with self.assertRaisesRegex(ValueError, "unknown reviewer"):
+            select_reviewers(["not_a_reviewer"])
+
     def test_five_reviewers_cover_all_ten_modules_without_overlap(self):
         self.assertEqual(5, len(REVIEWERS))
         modules = [module for reviewer in REVIEWERS for module in reviewer["modules"]]

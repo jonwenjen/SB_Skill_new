@@ -1,0 +1,117 @@
+{
+  "duration_api_ms": 411262,
+  "stop_reason": "end_turn",
+  "session_id": "2c0f1d51-e54f-476f-81a9-69eed52ab63a",
+  "total_cost_usd": 3.657398500000001,
+  "usage": {
+    "input_tokens": 30,
+    "cache_creation_input_tokens": 286183,
+    "cache_read_input_tokens": 3301138,
+    "output_tokens": 28865,
+    "output_tokens_details": {
+      "thinking_tokens": 14725
+    },
+    "server_tool_use": {
+      "web_search_requests": 0,
+      "web_fetch_requests": 0
+    },
+    "service_tier": "standard",
+    "cache_creation": {
+      "ephemeral_1h_input_tokens": 286183,
+      "ephemeral_5m_input_tokens": 0
+    },
+    "inference_geo": "global",
+    "iterations": [
+      {
+        "input_tokens": 2,
+        "output_tokens": 12025,
+        "cache_read_input_tokens": 277310,
+        "cache_creation_input_tokens": 9433,
+        "cache_creation": {
+          "ephemeral_5m_input_tokens": 0,
+          "ephemeral_1h_input_tokens": 9433
+        },
+        "type": "message"
+      }
+    ],
+    "speed": "standard",
+    "fallback_credit": null
+  },
+  "modelUsage": {
+    "claude-opus-5-5": {
+      "inputTokens": 30,
+      "outputTokens": 28865,
+      "cacheReadInputTokens": 3301138,
+      "cacheCreationInputTokens": 286183,
+      "webSearchRequests": 0,
+      "costUSD": 3.5271116000000005,
+      "contextWindow": 1000000,
+      "maxOutputTokens": 128000,
+      "thinkingTokens": 14725,
+      "cacheCreationEphemeral5mInputTokens": 0,
+      "cacheCreationEphemeral1hInputTokens": 286183,
+      "canonicalModel": "claude-opus-5-5",
+      "provider": "firstParty",
+      "costBasis": "list"
+    },
+    "claude-haiku-5-5": {
+      "inputTokens": 279889,
+      "outputTokens": 24596,
+      "cacheReadInputTokens": 0,
+      "cacheCreationInputTokens": 0,
+      "webSearchRequests": 9,
+      "costUSD": 0.1302869,
+      "contextWindow": 1000000,
+      "maxOutputTokens": 128000,
+      "thinkingTokens": 13270,
+      "cacheCreationEphemeral5mInputTokens": 0,
+      "cacheCreationEphemeral1hInputTokens": 0,
+      "canonicalModel": "claude-haiku-5-5",
+      "provider": "firstParty",
+      "costBasis": "list"
+    }
+  },
+  "permission_denials": [],
+  "terminal_reason": "completed",
+  "fast_mode_state": "off",
+  "fast_mode_disabled_reason": "sdk_opt_in_required",
+  "subagent_stats": {
+    "spawned": 0,
+    "requested": {
+      "background": 0,
+      "foreground": 0,
+      "unset": 0
+    },
+    "started_in_background": 0,
+    "max_depth": 0,
+    "spawned_by_subagents": 0,
+    "completed": 0,
+    "failed": 0,
+    "killed": {
+      "parent": 0,
+      "user": 0,
+      "system": 0
+    },
+    "refused": {
+      "depth_limit": 0,
+      "concurrency_limit": 0,
+      "budget": 0
+    },
+    "by_type": {}
+  },
+  "safety_stops": 0,
+  "is_error": false,
+  "num_turns": 39,
+  "subtype": "success",
+  "api_error_status": null,
+  "result": "# MOD-01／MOD-02 唯讀內容稽核報告（2026-11-23）\n\n**範圍與版本：** 審閱的是 `js/curriculum_data.js` 第 1–398 行（MOD-01、MOD-02），加上 `index.html`、`README.md`、`js/app.js` 中相關的資料流與對外宣稱，以及專家名冊第 2170–2520 行。\n- 依工作階段開始時的 git 狀態，HEAD 為 `e04eec7`，分支 `feat/snowboard-course-review-skill`，`js/curriculum_data.js` 沒有未提交的變更。\n- 本次沒有 shell 可用，無法再次執行 git 確認版本。\n- 我沒有修改任何檔案。\n\n**工具與限制：** web 工具可以用，但部分來源打不開：\n- FIS 文件庫頁面回傳 404。\n- PubMed 被 cookie 牆擋住，Bennell 與 Behm 兩篇改用 Europe PMC API 讀摘要。\n- skicanada.org 頁面內容被截斷。\n\nFIS 守則是我直接讀取官方 PDF 的原文。其他頁面是經 WebFetch 轉換後的文字，所以「證據」欄只寫我實際讀到的內容。搜尋摘要沒有當作證據。\n\n---\n\n## 一、發現清單\n\n### MOD-01\n\n**F01｜high｜UNVERIFIED｜`js/curriculum_data.js:124`**\n- 原稿：「高達 68% 的雪場初期運動傷害與技術卡關…源於『足踝背屈活動度不足（Ankle Dorsiflexion ROM < 35°）』…」；同一段還提到「奧運國家隊季前 8 週週期化體能課表」。\n- 證據：沒有找到可以打開的來源，支持這個比例、研究母體、因果歸因或國家隊課表的出處。這項與 `docs/course-review/audit-status-2026-11-23.md` 第 1 項重複，我獨立確認結果相同。\n- 建議：刪除 68%、<35° 與「奧運國家隊」這幾個說法，或標成待核實。不要補上替代數字。\n- 核可：需要醫療人員或運動科學人員。\n\n**F02｜high｜UNVERIFIED｜`:128–130`**\n- 原稿：「G-force 可達 1.8G–2.5G」「目標 H:Q Ratio ≥ 0.65」「低於 0.60…ACL 撕裂風險暴增 3.4 倍」。\n- 證據：最接近的文獻是 Myer et al. 2009（PMC9928500）。它是配對病例對照研究，對象是 22 名之後發生非接觸性 ACL 斷裂的女性足球與籃球員。\n  - 結論是這些人的腿後肌肌力比男性對照組低 15%。\n  - 文中沒有 0.60／0.65 的 H:Q 門檻，也沒有 3.4 倍這類風險倍數。\n  - 研究對象不是單板滑雪者。\n  - G 值找不到來源。\n- 建議：移除 0.65、0.60、3.4 倍與 1.8–2.5G，或標成待核實。\n- 核可：需要醫療人員（骨科或物理治療）。\n\n**F03｜medium｜UNVERIFIED，且原稿自相矛盾｜`:124, 134, 136, 206, 211, 222, 2468`**\n- 原稿的門檻前後不一：\n  - 第 124 行寫 <35°。\n  - 第 134 行寫「≥ 38° (Knee-to-Wall ≥ 10–12 cm)」。\n  - 第 136 行寫 <32°。\n  - 第 211 行寫「距牆 11 公分…碰到牆面，代表…≥38°」。\n  - 第 222 行舉例 28°。\n- 證據：Bennell et al. 1998（Aust J Physiother 44(3)，經 Europe PMC 讀摘要）。\n  - 這篇研究把「趾尖到牆的距離」和「傾角儀量的脛骨角度」當作兩種分開的量法，兩者信度都很高（ICC 0.97–0.99）。\n  - 摘要裡沒有及格門檻，也沒有公分換算成度數的方法。\n- 建議：先拿掉「11 cm＝38°」這種換算和及格門檻，或標成待核實。\n- 核可：需要物理治療師。\n\n**F04｜medium｜UNVERIFIED｜`:136, 140, 146`**\n- 原稿：「踝：膝：髖 = 40:40:20」「η_loss < 8%」「T_muscle ↑ 2.0°C ➔ 神經傳導速率 ↑ 14% · 肌腱黏滯阻力 ↓ 22%」。\n- 證據：沒有找到來源。\n- 建議：移除精確數字，或標成待核實。\n- 核可：需要運動科學或物理背景的審核者。\n\n**F05｜medium｜CONTEXT_DEPENDENT｜`:148`**\n- 原稿：「靜態拉筋會降低爆發力達 9%」。\n- 證據：Behm et al. 2016（APNM 41(1)，經 Europe PMC 讀摘要）。\n  - 靜態拉伸在拉完當下造成小到中度的表現下降，下降幅度跟拉伸時間長短有關。\n  - 動態伸展則帶來小到中度的提升。\n  - 我讀到的摘要文字沒有 9% 這個數字。\n- 建議：移除 9%，或標成待核實。之後如要保留，也只能寫「效果依拉伸時長而定」這種來源範圍內的說法，且要先經審核。\n- 核可：需要運動科學審核者。\n\n**F06｜high｜UNVERIFIED｜`:246`（另見 `:145–148`）**\n- 原稿：「8 分鐘 RAMP 能把全天韌帶拉傷機率降低 50% 以上」。\n- 證據：Behm 2016 摘要指出，動態伸展對傷害風險沒有資料，靜態伸展與 PNF 對傷害也沒有明確效果。所以這篇不能支持「降低 50%」。\n- RAMP 架構一般歸給 Jeffreys 2007，但原文我沒有打開，所以這個出處也標 UNVERIFIED。\n- 建議：移除 50%。RAMP 的出處等打開原文後再標註。\n- 核可：需要醫療人員或教練。\n\n**F07｜high｜UNVERIFIED（高風險動作指示）｜`:238`**\n- 原稿：「扣上單腳（前腳），進行 8 次輕量單腳小跳落地緩衝…微幅豚跳（Ollie）」。\n- 證據：沒有來源支持「只扣前腳就跳躍落地」。這個動作牽涉雪板對膝關節的扭力風險。\n- 建議：標成「待教練核可」。我不另外提出替代動作。\n- 核可：必須由合格教練核可。\n\n**F08｜medium｜UNVERIFIED（類醫療處置）｜`:212, 214`**\n- 原稿：第 212 行是「彈力帶套於距骨頸…向後下方牽引…鬆動術」；第 214 行是「閉上雙眼維持單腳單板屈膝站姿 30 秒」。\n- 證據：沒有來源。前者屬於自我關節鬆動，後者有跌倒風險。\n- 建議：標成待物理治療師核可。\n- 核可：需要物理治療師。\n\n**F09｜medium｜UNVERIFIED，且可能自相矛盾｜`:163–166`**\n- 原稿：椅高 35–40cm、「4-0-1-0 節奏」、每側 10–12 下 × 4 組、60 秒靠牆靜蹲。\n- 證據：這些訓練處方都沒有來源。\n- 另外，「4-0-1-0」通常表示底部不停頓，但同一段第 165 行寫「在最低點停留 1 秒」。這個節奏記法的慣例我沒有查證，所以只列為「待確認是否矛盾」。\n- 核可：需要肌力體能教練或物理治療師。\n\n**F10｜low｜UNVERIFIED｜多處數字**\n- 位置：`:156–159, 181–183, 205, 230, 243`。\n- 內容：踝 36°／膝 95°、85/15 配重、「BOS 8–10cm」、ROM 30%→95%、「第一趟只滑 60% 速度」等。\n- 處理：一律標成待核實。\n\n**F10b｜low｜UNVERIFIED｜`:174, 242`**\n- 原稿：第 174 行是「90% 都是在季前少做了離心訓練」；第 242 行是「坐在冰冷雪地會導致…血管收縮…靜態拉伸會暫時抑制肌梭反射」。\n- 證據：沒有來源。\n\n### MOD-02\n\n**F11｜medium｜CONTRADICTED（名稱錯置）｜`:262`、`:97`、`:265`**\n- 原稿：副標題「FIS Alpine Responsibility Code」；第 97 行「FIS 國際雪聯十大安全守則（Alpine Responsibility Code）」。\n- 證據：\n  - FIS 官方 PDF 的標題是「FIS Code of Conduct for Skiers and Snowboarders」。\n  - 「Alpine Responsibility Code」是加拿大西部雪場使用的守則（Banff Norquay 頁面寫明「consistent across all Ski Areas of Western Canada」），十點內容與 NSAA *Your Responsibility Code* (2022) 相同。\n  - 這是兩套不同的守則。\n- 建議：由作者決定要引用哪一套，再更正名稱。這只是改標籤，不涉及教學內容。\n- 核可：不需要教練；作者確認即可。\n\n**F12｜medium｜CONTEXT_DEPENDENT｜`:308`**\n- 原稿：「位處下坡前方的滑手擁有絕對路權…後方滑手…負有 100% 避讓責任」。\n- 證據：\n  - 支持的部分：FIS 第 3 條「coming from behind must choose their route…not endanger skiers…ahead」；NSAA 第 2 點「People ahead or downhill of you have the right-of-way」。\n  - 但 FIS 第 5 條與 NSAA 第 4 點也要求進入雪道或重新起步的人要往上坡看。責任是雙方分擔的，原文沒有「絕對」或「100%」。\n- 建議：拿掉「絕對」「100%」，改用守則原文的措辭。\n- 核可：需要教練。\n\n**F13｜low｜部分 SUPPORTED｜`:309`**\n- 原稿：禁止停在 Rollover 下方或雪道狹窄處，以及跳台落地區。\n- 證據：FIS 第 6 條「avoid stopping…in narrow places or where visibility is restricted」與 NSAA 第 3 點支持前兩項。\n- 「跳台落地區」不在我讀到的這兩份守則內，這部分 UNVERIFIED。FIS 的 snowpark 指引我沒有打開。\n\n**F14｜medium｜CONTEXT_DEPENDENT｜`:293, 305, 310, 2316`**\n- 原稿：「每一個 Heelside 入彎點都必須轉頭看」「0.5 秒」「入彎前 1.5 秒」「±60°」。\n- 證據：FIS 第 5 條與 NSAA 第 4 點只要求在進入雪道或起步前往上坡看，沒有規定每次轉彎都要回頭。這和稽核狀態文件中 MOD-06 第 7 項是同一個問題。秒數與角度找不到來源。\n- 核可：需要教練。\n\n**F15｜low｜目的 SUPPORTED，方法 UNVERIFIED｜`:311`**\n- 原稿：脫板後把雪板「倒放（固定器朝下貼雪）」，並用單腳踩住。\n- 證據：NSAA 第 5 點「You must prevent runaway equipment」支持防止雪板滑走這個目的；但具體做法不在我讀到的來源中。\n- 核可：需要教練。\n\n**F16｜high｜UNVERIFIED｜`:269`**\n- 原稿：「右後方…有高達 135° 的視野死角」；「雪場中 75% 的嚴重碰撞事故皆發生於『雙向刻滑交會處』與『坡頂變坡盲區』」。\n- 證據：沒有找到來源。\n- 建議：移除 135° 與 75%，或標成待核實。\n\n**F17｜high｜UNVERIFIED（纜車安全指示）｜`:350–359, 364, 2182`**\n- 原稿：\n  - 第 357 行「坐穩後再放下安全護欄」。\n  - 第 358 行「抵達山頂前 15 公尺抬起安全欄」。\n  - 第 353 行「直滑 3 公尺」。\n  - 前腳承重在第 350、364 行寫 80%，在第 352 行寫 75%，原稿前後不一致。\n- 證據：NSAA 第 8 點只要求「know how…to load, ride and unload lifts safely…ask the lift attendant」。各纜車的護欄操作是雪場各自規定的，15 m、3 m、80%／75% 都沒有來源。\n- 建議：把數字標成待核實。目前可以保留的措辭只到「依纜車站標示與工作人員指示」，這是 NSAA 原文的範圍。\n- 核可：必須由合格教練核可。\n\n**F18｜medium｜CONTEXT_DEPENDENT｜`:273–275, 332, 2208`**\n- 原稿：「W_stance = H_tibial_tuberosity × (1.05 ~ 1.15)」；「L × 1.10 作為初始兩固定器中心距」；名冊稱這是「精準公式」。\n- 證據：Burton 的建議是「slightly wider than shoulder width to start」，並參考各板的 reference stance。Burton 沒有提出脛骨乘數公式。我也沒有找到任何來源支持這個公式。\n- 核可：需要教練或器材技師。\n\n**F19｜medium｜CONTEXT_DEPENDENT｜`:285, 333`**\n- 原稿：「初學者…建議設為前腳 +15°、後腳 -9° 或 -12°」。\n- 證據：Burton 的固定器設定說明寫「Start with Positive / 0」，作為初學者的建議。這是廠商說明，不是教學標準；兩者只是建議不同，不能說原稿被證明錯誤。\n- 核可：需要教練。\n\n**F20｜medium｜CONTEXT_DEPENDENT｜`:335, 340`**\n- 原稿：Lv.1–Lv.4 一律「前傾調至 F2（約 12°–14°）」；矯正時「高背前傾角調高 2 格」並把圓盤移一格。\n- 證據：Burton 寫「most beginners apply 'zero' forward lean until they have a few days on the mountain」。F2 對應的度數因固定器型號而異，未經查證。高背旋轉到「平行後刃」這點，Burton 的頁面沒有提到。\n- 核可：需要教練或器材技師。\n\n**F21｜medium｜UNVERIFIED（醫療）｜`:269, 287`**\n- 原稿：錯誤的固定器角度與前傾角「直接造成膝關節內側副韌帶（MCL）慢性扭傷」，以及某種角度可以「消除…內扣扭力」。\n- 證據：Burton 的角度說明頁完全沒有提到膝傷。我也沒有找到醫學來源。\n- 核可：需要醫療人員。\n\n**F22｜low｜概念 SUPPORTED，數字 UNVERIFIED｜`:326, 334`**\n- 原稿：鞋頭與鞋跟凸出板邊的距離要「完全相等」，誤差小於 2mm。\n- 證據：Burton 支持檢查 toe／heel drag，要求「boot shouldn't hang too far over the edges」。但它的標準是「不拖雪」，不是「完全相等」或「<2mm」。\n\n**F23｜low｜SUPPORTED｜`:374, 380`**\n- 原稿：選板以體重優先於身高。\n- 證據：Burton 選板指南寫「recommendations (based on weight) are suggestions and not rules」。\n\n**F24｜medium｜UNVERIFIED｜`:375–377, 381–382`**\n- 原稿：\n  - 板腰寬度等於「雪靴外長減去 1.5–2.0 cm」。\n  - 「US 10.5／28.5cm 以上…Wide 板腰 ≥ 260mm」。\n  - Flex 3–9 的分級。\n  - Setback 20–40mm。\n- 證據：Burton 只說板腰寬度是對應鞋碼的「primary indicator」，沒有公式，也沒有寫出跨品牌統一的 Flex 分級。\n\n**F25｜medium｜CONTEXT_DEPENDENT（需物理審核）｜`:291–293`**\n- 原稿：「E_collision = ½ · m_eff · (v_1 - v_2)²」，同一段又說兩人軌跡呈 60°–90° 交角。\n- 問題：用純量 `(v₁−v₂)²` 只在兩人同一直線運動時成立。斜交時應該用速度向量差的大小。這是原稿內部的一致性問題，不是實證主張。\n- 核可：需要物理審核者。\n\n**F26｜low｜UNVERIFIED｜`:279–281`**\n- 正拱、反拱、混合拱的定性描述，我這次沒有拿來源核對。\n\n**F27｜medium｜UNVERIFIED｜`:319, 343, 366`**\n- 原稿：「超過一半卡在 CASI Lv2 考不過的學員…」；「下纜車摔倒只有一個物理原因」等引述。\n- 證據：沒有來源。後者把原因說成只有一個，屬於過度斷言。\n\n### 跨章節（對外宣稱與資料流）\n\n**F28｜medium｜UNVERIFIED｜專家背書宣稱**\n- 位置：`curriculum_data.js:3, 9, 12, 124, 246, 391`；專家名冊 `:2182, 2208, 2468, 2476, 2510`（含「高達 70% 的…Shin Bang」與「初學者退坑率最高」）；`index.html:2`。\n- 內容：專家姓名、證照與簽核都沒有獨立證據。`index.html:2` 的導覽標籤寫「🏆 50人跨領域專家審核報告」，但 `index.html:391` 同一區段的標題是「來源與審查狀態：尚待獨立核實」，兩者互相矛盾。\n\n**F29｜low｜資料流觀察｜`js/app.js`**\n- `app.js` 會加上「未核實」標示的地方：\n  - 錯誤徵兆、原因與練習提案（第 370–372 行）。\n  - mindset 區塊（第 447 行）。\n  - 機構對照（第 385、480 行）。\n  - 整個模組頂端的警示橫幅（第 473 行）。\n- 但 `summary`、`biomechanics`、`stepByStep` 的內容是直接顯示的，只有模組頂端那一條警示。\n- 媒體框標題仍寫「多角度真人連續動作」（第 324、395、430、458 行），沒有任何證據顯示真人身分或拍攝來源。\n- 屬於顯示層的措辭問題，建議由作者處理。\n\n---\n\n## 二、可直接做的低風險文字修正\n以下都只是標示或名稱，不改變任何教學內容。依你的指示，我沒有寫回任何檔案。\n1. `index.html:2` 導覽標籤「50人跨領域專家審核報告」改成和第 391 行一致的「來源與審查狀態（尚待獨立核實）」。\n2. `curriculum_data.js:262`、`:97` 的守則名稱：作者確認要引用 FIS 後，改成「FIS Code of Conduct for Skiers and Snowboarders」；若要引用的是加拿大或 NSAA 守則，就改標那一套的名稱（F11）。\n3. 對 F01–F06、F16、F24 中的精確數字加上「待核實」標記，原文不刪改。\n\n## 三、需人工核准的內容修正（全部標為「待教練核可」）\n- **需合格教練：**\n  - F07：只扣單腳的跳躍。\n  - F17：纜車護欄、15 m、承重比例。\n  - F12、F14、F15：路權措辭、每彎回頭、脫板方法。\n  - F18–F20：站寬、角度、前傾。\n  - F27：過度斷言的引述。\n- **需醫療人員或物理治療師：**\n  - F01、F02、F06：68%、H:Q／ACL 3.4 倍、韌帶傷害降低 50%。\n  - F03、F08：踝背屈門檻、距骨鬆動與閉眼平衡。\n  - F09：訓練處方。\n  - F21：MCL。\n- **需物理審核者：** F04、F25。\n\n## 四、未能核驗的清單\n- **數字與比例：** 68%、<35°／38°／32°、11 cm 換算、40:40:20、H:Q 0.65／0.60、3.4 倍、1.8–2.5G、η<8%、+2°C→14%／22%、9%、50%、90%、60% 速度、135°、75%、0.5 秒／1.5 秒、±60°、15 m、3 m、80%／75%、站寬 ×1.1、F2 ≈ 12–14°、<2mm、板腰公式、US 10.5→260mm、Flex 分級、Setback 20–40mm、70% Shin Bang。\n- **出處與背書：** RAMP 原始出處（Jeffreys 2007 原文未打開）、正拱／反拱描述、全部專家身分與簽核、「奧運國家隊課表」。\n- **限制：** 每條主張只查了上面列出的來源；凡是沒找到來源的，都不能下「沒有問題」的結論。\n\n## 參考來源（存取日期 2026-11-23）\n- FIS, [*FIS Code of Conduct for Skiers and Snowboarders*](https://assets.fis-ski.com/f/252177/49280306c8/fis-code-of-conduct-for-skiers-and-snowboarders-en.pdf)（PDF 中繼資料日期 2023-08-24；原文由我直接讀取）\n- NSAA, [*Your Responsibility Code* (2022)](https://nsaa.org/NSAA/NSAA/Safety/Your_Responsibility_Code/Your_Responsibility_Code.aspx)\n- Banff Norquay, [*Alpine Responsibility Code*](https://banffnorquay.com/?p=5255)\n- Myer GD et al., [*The relationship of hamstrings and quadriceps strength to ACL injury in female athletes*](https://pmc.ncbi.nlm.nih.gov/articles/PMC9928500/), *Clin J Sport Med* 2009;19(1):3–8\n- Bennell KL et al., [*Intra-rater and inter-rater reliability of a weight-bearing lunge measure of ankle dorsiflexion*](https://www.ebi.ac.uk/europepmc/webservices/rest/search?query=EXT_ID:11676731&resultType=core&format=json), *Aust J Physiother* 1998;44(3)（讀 Europe PMC 摘要）\n- Behm DG et al., [*Acute effects of muscle stretching on physical performance, range of motion, and injury incidence…*](https://www.ebi.ac.uk/europepmc/webservices/rest/search?query=EXT_ID:26642915&resultType=core&format=json), *APNM* 2016;41(1):1–11（讀 Europe PMC 摘要）\n- Burton, [*How to Set Up a Snowboard*](https://www.burton.com/blogs/the-burton-blog/how-to-set-up-a-snowboard)、[*Goofy vs Regular*（站姿指南）](https://www.burton.com/blogs/the-burton-blog/goofy-vs-regular)、[*Snowboard Stance Angles*](https://www.burton.com/blogs/the-burton-blog/snowboard-stance-angles)、[*Snowboard Buying Guide*](https://www.burton.com/en-ca/blogs/the-burton-blog/snowboard-buying-guide)\n- **搜尋到但沒有實際打開、不作證據：** Jeffreys 2007 RAMP（[USW 書目頁](https://pure.southwales.ac.uk/en/publications/warm-up-revisited-the-ramp-method-of-optimizing-performance-prepa/)）、[skicanada.org](https://www.skicanada.org/?p=1017)（頁面截斷）、[evo 尺寸表](https://www.evo.com/snowboard-sizing-chart)",
+  "ttft_ms": 4603,
+  "type": "result",
+  "duration_ms": 345560,
+  "uuid": "d8997166-0b41-4f05-a7cf-eb78bb37146c",
+  "ttft_stream_ms": 2857,
+  "time_to_request_ms": 376,
+  "first_content_frame_ms": 2857,
+  "queued_turn_count": 0,
+  "result_index": 0
+}

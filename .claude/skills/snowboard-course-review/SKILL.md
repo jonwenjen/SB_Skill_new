@@ -17,18 +17,18 @@ Use this skill to audit `SB_Skill_new` course content and produce reviewable spe
 ## Required workflow
 
 1. **Establish scope and source revision.** Read the target modules in `js/curriculum_data.js`; inspect `index.html`, `js/app.js`, and asset paths only where needed. Record repository revision and files/sections reviewed.
-2. **Run five independent read-only Opus reviews.** From the repository root run:
+2. **Run the independent read-only Opus reviews.** From the repository root, the default command runs all five roles:
    ```sh
    python3 scripts/run_course_review.py --output-dir docs/course-review/run-YYYYMMDD-HHMMSS
    ```
-   The script runs five separate reviewers sequentially across MOD-01–10, passes this skill into every `claude -p` session, and omits all write/command tools. If any reviewer fails, mark the run incomplete; never report full coverage.
+   The script runs separate reviewers sequentially across MOD-01–10, passes this skill into every `claude -p` session, and omits all write/command tools. The default `--max-turns` is 24. To retry only failed roles, repeat `--reviewer <id>` (IDs: `foundations_safety`, `biomechanics_progression`, `carving_freestyle`, `park_terrain`, `backcountry_integrity`) and choose a new output directory. A subset run may have `run_complete: true` but must have `complete: false`; only all five successful roles establish full automated coverage. Any failed requested reviewer makes that run incomplete.
 3. **Verify evidence yourself.** Reviewers are fallible. Open every cited source and confirm it supports the exact claim. Repository assertions, agent counts, expert lists, search snippets, AI output, and model memory are not independent evidence. Record `SUPPORTED`, `CONTRADICTED`, `CONTEXT_DEPENDENT`, or `UNVERIFIED`; explain limits and cite exact repo location plus source URL/title/access date.
 4. **Separate proposals from edits.** Low-risk spelling, formatting, broken-link, and ID/path fixes may be applied only after direct verification. Safety, medical, biomechanics, rescue, avalanche, equipment, and movement instruction changes require a reliable source and qualified human approval. Without both, preserve the source text and file a proposed correction tagged `needs_coach_review`; do not silently rewrite it.
 5. **Generate all current media specifications.** Run:
    ```sh
    python3 scripts/build_animation_specs.py
    ```
-   The output is a draft manifest at `docs/animation/animation-specs.json`. It is derived from source data, not an endorsement of its claims. Keep quoted source cues and mark them unverified until checked.
+   The output is a draft manifest at `docs/animation/animation-specs.json`. It is derived from source data, not an endorsement of its claims. Phase text and keyword matches are literal source candidates only: never treat them as validated technique, infer a body position, or render them as approved graphics. The manifest intentionally leaves coach-dependent fields unresolved; a coach must map and approve body part, edge, COM, arrow/angle, and safe filming cues before it is camera-ready.
 6. **Validate and report.** Run `python3 -m unittest discover -s tests -v`; check media IDs for uniqueness and reconcile expected video slots against the repository tree. State which paths/counts were checked and what remains unverified (playback, human provenance, releases, and actual technique accuracy are not established by a filename or file count).
 
 ## Evidence and safety rules
@@ -45,4 +45,4 @@ Use this skill to audit `SB_Skill_new` course content and produce reviewable spe
 
 For each finding include severity, status, module and exact line/field, verbatim claim, opened source and relevant evidence, bounded correction proposal, confidence/limitations, and whether a qualified instructor or medical professional must approve it. Keep unresolved content in a proposal report; keep verified low-risk edits separate. Do not make a “no findings” claim when any source could not be checked.
 
-For every animation record include media ID and path, module/action source, source step(s), highlighted point(s), verification status, a safe real-person filming note, coach-review gate, and `timecode: null` unless it was measured on approved footage. The generated manifest follows this format and remains a draft until reviewed.
+For every animation record include media ID and path, module/action source, source step(s), phase-specific body part, edge, COM, subtitle/narration cue, arrow or angle cue, verification status, safe real-person filming note, coach-review gate, and `timecode: null` unless it was measured on approved footage. Literal-match candidates are not approval; the generated manifest is a first-pass storyboard skeleton, not a camera-ready spec, until qualified review fills and approves each phase.
