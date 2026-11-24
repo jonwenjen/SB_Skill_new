@@ -20,14 +20,15 @@
   };
 
   // AI-generated (not filmed) style samples, keyed by curriculum media id.
-  const AI_SAMPLES = {
-    s_01_01: {
-      video: 'assets/media/ai-samples/s_01_01_ai_live_action.mp4',
-      poster: 'assets/media/ai-samples/s_01_01_ai_live_action.jpg',
+  const AI_NOTE = 'AI 生成的寫實風格樣片（Google Gemini / Veo）：非真人拍攝，動作、角度與負荷尚待合格教練核可，不是訓練處方。';
+  const AI_SAMPLES = Object.fromEntries(
+    (window.SB_AI_SAMPLE_IDS || []).map((id) => [id, {
+      video: `assets/media/ai-samples/${id}_ai_live_action.mp4`,
+      poster: `assets/media/ai-samples/${id}_ai_live_action.jpg`,
       label: 'AI 生成示範 · 非真人拍攝',
-      note: 'AI 生成的寫實風格樣片（Google Gemini / Veo）：非真人拍攝，動作、角度與負荷尚待合格教練核可，不是訓練處方。'
-    }
-  };
+      note: AI_NOTE
+    }])
+  );
 
   const state = {
     view: 'overview',

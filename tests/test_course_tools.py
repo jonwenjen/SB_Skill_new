@@ -1,3 +1,4 @@
+import re
 import json
 import tempfile
 import unittest
@@ -218,8 +219,15 @@ class PublicDisclosureTests(unittest.TestCase):
         app = (self.root / "js/app.js").read_text(encoding="utf-8")
         self.assertIn("AI 生成示範 · 非真人拍攝", app, "AI sample must carry a visible not-filmed label")
         self.assertIn("尚待合格教練核可", app, "AI sample must not read as approved coaching")
-        for name in ("s_01_01_ai_live_action.mp4", "s_01_01_ai_live_action.jpg"):
-            self.assertTrue((self.root / "assets/media/ai-samples" / name).is_file(), f"missing {name}")
+        manifest = (self.root / "js/ai_samples.js").read_text(encoding="utf-8")
+        self.assertIn("not filmed", manifest)
+        ids = re.findall(r'"([a-z]+(?:_[a-z]+)?_\d{2}(?:_\d{2})?)"', manifest)
+        self.assertIn("s_01_01", ids)
+        on_disk = sorted(p.name.replace("_ai_live_action.mp4", "")
+                         for p in (self.root / "assets/media/ai-samples").glob("*_ai_live_action.mp4"))
+        self.assertEqual(sorted(ids), on_disk, "manifest must list exactly the clips on disk")
+        for mid in ids:
+            self.assertTrue((self.root / f"assets/media/ai-samples/{mid}_ai_live_action.jpg").is_file(), f"missing poster {mid}")
 
     def test_mobile_shell_keeps_single_view_navigation(self):
         html = (self.root / "index.html").read_text(encoding="utf-8")
