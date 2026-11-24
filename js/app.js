@@ -7,7 +7,7 @@
 (function () {
   'use strict';
 
-  const VIEWS = ['overview', 'curriculum', 'lab', 'tricks', 'library'];
+  const VIEWS = ['overview', 'curriculum', 'lab', 'tricks', 'skills', 'library'];
   // Legacy anchors from the old single-page layout map onto the new views.
   const LEGACY_ANCHORS = {
     top: 'overview',

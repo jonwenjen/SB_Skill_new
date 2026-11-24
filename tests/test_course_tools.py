@@ -232,9 +232,34 @@ class PublicDisclosureTests(unittest.TestCase):
     def test_mobile_shell_keeps_single_view_navigation(self):
         html = (self.root / "index.html").read_text(encoding="utf-8")
         self.assertIn('<nav class="tabbar" aria-label="主導覽列">', html)
-        for view in ("overview", "curriculum", "lab", "tricks", "library"):
+        for view in ("overview", "curriculum", "lab", "tricks", "skills", "library"):
             self.assertIn(f'data-view-link="{view}"', html)
         self.assertIn('id="review-status-banner"', html, "review-pending notice must stay on the landing view")
+
+    def test_carvingeek_reference_is_attributed_and_consistent(self):
+        import json, re
+        raw = (self.root / "js/carvingeek_data.js").read_text(encoding="utf-8")
+        data = json.loads(raw.split("window.SB_CARVINGEEK = ", 1)[1].rstrip().rstrip(";"))
+        tricks = data["tricks"]
+        self.assertEqual(len(tricks), 58, "carvingeek tree had 58 nodes when retrieved")
+        self.assertEqual({t["level"] for t in tricks}, {"B", "A", "S"})
+        ids = {t["id"] for t in tricks}
+        for t in tricks:
+            for p in t["parents"]:
+                self.assertIn(p, ids, f"{t['id']} prerequisite {p} missing")
+                self.assertIn(t["id"], next(x for x in tricks if x["id"] == p)["unlocks"])
+            for v in t["videos"]:
+                self.assertRegex(v["yt"], r"^[\w-]{11}$")
+            if t["detail"]:
+                self.assertTrue(t["detail"].startswith("https://carvingeek.com/tricks/"))
+        eps = [e for g in data["carving"] for e in g["eps"]]
+        self.assertEqual(len(eps), 25)
+        self.assertTrue(all(re.fullmatch(r"[\w-]{11}", e["yt"]) for e in eps))
+        html = (self.root / "index.html").read_text(encoding="utf-8")
+        for needle in ('data-view-link="skills"', "來源：極刻滑行", "https://carvingeek.com/tricks", "https://carvingeek.com/carving", "未經本專案審查"):
+            self.assertIn(needle, html)
+        js = (self.root / "js/reference.js").read_text(encoding="utf-8")
+        self.assertIn("youtube-nocookie.com/embed/", js, "embeds must use privacy-enhanced mode")
 
     def test_curriculum_typo_uses_traditional_chinese(self):
         data = (self.root / "js/curriculum_data.js").read_text(encoding="utf-8")
