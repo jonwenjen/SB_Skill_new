@@ -1,14 +1,38 @@
 /**
- * SB_SKILL_NEW — MAIN APPLICATION CONTROLLER
- * Legacy generated overlay disabled; this UI does not constitute qualified review.
- * Media labels and source/provenance remain unverified; do not imply qualified review.
+ * SB_SKILL_NEW — MAIN APPLICATION CONTROLLER (mobile-first view shell)
+ * Presentation layer only: curriculum content comes unchanged from curriculum_data.js.
+ * Media labels and source/provenance remain unverified; this UI does not constitute qualified review.
  */
 
 (function () {
   'use strict';
 
+  const VIEWS = ['overview', 'curriculum', 'lab', 'tricks', 'library'];
+  // Legacy anchors from the old single-page layout map onto the new views.
+  const LEGACY_ANCHORS = {
+    top: 'overview',
+    'systems-section': 'overview',
+    'curriculum-section': 'curriculum',
+    'interactive-studio': 'lab',
+    'groundtrick-section': 'tricks',
+    'gallery-section': 'library',
+    'experts-audit-section': 'library'
+  };
+
+  // AI-generated (not filmed) style samples, keyed by curriculum media id.
+  const AI_SAMPLES = {
+    s_01_01: {
+      video: 'assets/media/ai-samples/s_01_01_ai_live_action.mp4',
+      poster: 'assets/media/ai-samples/s_01_01_ai_live_action.jpg',
+      label: 'AI 生成示範 · 非真人拍攝',
+      note: 'AI 生成的寫實風格樣片（Google Gemini / Veo）：非真人拍攝，動作、角度與負荷尚待合格教練核可，不是訓練處方。'
+    }
+  };
+
   const state = {
+    view: 'overview',
     activeModuleId: 'MOD-01',
+    moduleTab: 'skills',
     activeComboIndex: 0,
     selectedAtomicSkillId: null,
     expertPanelFilter: 'ALL',
@@ -25,141 +49,116 @@
     };
   }
 
-  /* --------------------------------------------------------------------------
-     HELPER: RENDER REPOSITORY IMAGE / VIDEO ASSETS WITH REVIEW DISCLAIMERS
-     -------------------------------------------------------------------------- */
-  function buildRealMediaDualBoxHtml(mediaId, title, badgeText, customCaption, keyHighlights) {
-    const imgSrc = `assets/media/images/${mediaId}.jpg`;
-    const vidSrc = `assets/media/videos/${mediaId}.mp4`;
-    const safeTitle = (title || '').replace(/"/g, '&quot;');
-    const safeBadge = (badgeText || mediaId).replace(/"/g, '&quot;');
-    const photoLabel = '🖼️ 原稿圖片素材（來源、真人身分與內容待核實）';
-    const videoLabel = '🎬 原稿影片素材（播放、來源與內容待核實）';
+  const attr = (s) => String(s == null ? '' : s).replace(/&/g, '&amp;').replace(/"/g, '&quot;');
+  const pad2 = (n) => String(n).padStart(2, '0');
 
-    const highlightsArr = Array.isArray(keyHighlights) && keyHighlights.length > 0
-      ? keyHighlights.filter(Boolean).slice(0, 3)
-      : [];
-
-    const highlightsHtml = highlightsArr.length > 0
-      ? `
-        <div class="media-sync-highlights" style="grid-column: 1 / -1; display:grid; grid-template-columns:repeat(auto-fit, minmax(210px, 1fr)); gap:0.45rem; padding:0.55rem 0.75rem; background:rgba(7,13,25,0.88); border-top:1px solid var(--border-subtle); font-size:0.76rem;">
-          ${highlightsArr.map((h, i) => {
-            const colors = ['var(--cyan-400)', 'var(--emerald-400)', 'var(--orange-400)'];
-            return `<div style="display:flex; align-items:flex-start; gap:0.35rem; color:var(--text-secondary); line-height:1.35;">
-              <strong style="color:${colors[i % 3]}; white-space:nowrap; font-family:var(--font-mono);">📌 重點${i + 1}:</strong>
-              <span>${h}</span>
-            </div>`;
-          }).join('')}
-        </div>
-      `
-      : '';
-
-    return `
-      <div class="real-media-dual-box" data-media-id="${mediaId}">
-        <div role="note" class="media-verification-note" style="grid-column:1/-1;padding:.55rem .75rem;border:1px solid #f59e0b;background:rgba(120,53,15,.28);color:#ffedd5;font-size:.78rem;line-height:1.5;">
-          未獨立核實：檔案存在不代表真人示範、正誤對照、影片定位點、來源、授權或文字提示正確。
-        </div>
-        <!-- Left Slot: Multi-Angle Real-Human Continuous Action & Callout Overview Image -->
-        <div class="media-slot">
-          <div class="media-slot-header">
-            <span>${photoLabel}</span>
-            <button
-              type="button"
-              class="zoom-mini-btn"
-              data-lightbox-img="${imgSrc}"
-              data-lightbox-vid="${vidSrc}"
-              data-lightbox-title="${safeTitle}"
-              data-lightbox-badge="${safeBadge}"
-            >
-              🔍 全螢幕檢視
-            </button>
-          </div>
-          <img
-            class="real-human-img"
-            src="${imgSrc}"
-            alt="${safeTitle} — repository image asset; source and content unverified"
-            loading="lazy"
-            data-lightbox-img="${imgSrc}"
-            data-lightbox-vid="${vidSrc}"
-            data-lightbox-title="${safeTitle}"
-            data-lightbox-badge="${safeBadge}"
-          />
-        </div>
-
-        <!-- Right Slot: Playable Multi-Angle Real-Human Continuous Motion + Correct vs Error MP4 Video -->
-        <div class="media-slot">
-          <div class="media-slot-header video-hdr">
-            <span>${videoLabel}</span>
-            <div class="media-speed-bar">
-              <button type="button" class="speed-mini-btn" data-vid-speed="0.25" data-target-vid="vid-${mediaId}">0.25x 極慢</button>
-              <button type="button" class="speed-mini-btn" data-vid-speed="0.5" data-target-vid="vid-${mediaId}">0.5x 慢速</button>
-              <button type="button" class="speed-mini-btn active" data-vid-speed="1.0" data-target-vid="vid-${mediaId}">1.0x 原速</button>
-            </div>
-          </div>
-          <video
-            id="vid-${mediaId}"
-            class="real-human-video"
-            src="${vidSrc}"
-            poster="${imgSrc}"
-            controls
-            loop
-            muted
-            playsinline
-            preload="metadata"
-          ></video>
-          <div class="media-angle-bar" style="display:flex; flex-wrap:wrap; gap:0.35rem; padding:0.4rem 0.6rem; background:rgba(15,23,42,0.92); border-top:1px solid var(--border-subtle); align-items:center; justify-content:space-between;">
-            <span style="font-family:var(--font-mono); font-size:0.68rem; color:var(--text-muted);">原稿時間定位點（片段內容待核實）：</span>
-            <div style="display:flex; gap:0.28rem; flex-wrap:wrap;">
-              <button type="button" class="angle-seek-btn speed-mini-btn active" data-vid-seek="0.08" data-target-vid="vid-${mediaId}">原稿標記 0.08 秒</button>
-              <button type="button" class="angle-seek-btn speed-mini-btn" data-vid-seek="1.50" data-target-vid="vid-${mediaId}">原稿標記 1.50 秒</button>
-              <button type="button" class="angle-seek-btn speed-mini-btn" data-vid-seek="2.60" data-target-vid="vid-${mediaId}">原稿標記 2.60 秒</button>
-              <button type="button" class="angle-seek-btn speed-mini-btn" data-vid-seek="3.50" data-target-vid="vid-${mediaId}">原稿標記 3.50 秒</button>
-            </div>
-          </div>
-        </div>
-        ${highlightsHtml}
-      </div>
-    `;
+  /** Split a dense paragraph into scannable points without changing its wording. */
+  function toPoints(text, cls) {
+    const raw = String(text || '').trim();
+    if (!raw) return '';
+    const parts = raw.split(/(?<=[。；！？])/).map((s) => s.trim()).filter(Boolean);
+    if (parts.length < 2) return `<p class="${cls || 'body'}">${raw}</p>`;
+    return `<ul class="points ${cls || ''}">${parts.map((p) => `<li>${p}</li>`).join('')}</ul>`;
   }
 
+  const chevron = '<svg class="chev" viewBox="0 0 24 24" aria-hidden="true"><path d="M6 9l6 6 6-6"/></svg>';
+  const expandIcon = '<svg viewBox="0 0 24 24" aria-hidden="true"><path d="M4 9V4h5M20 9V4h-5M4 15v5h5M20 15v5h-5"/></svg>';
+
   /* --------------------------------------------------------------------------
-     BIND VIDEO SPEED CONTROLS, ANGLE SEEKERS & LIGHTBOX TRIGGERS
+     MEDIA: one compact player per item, with source switching.
+     sources: [{ key, label, img, vid, ai? }]
      -------------------------------------------------------------------------- */
+  let mediaSeq = 0;
+  function buildMediaBlock(sources, title) {
+    const list = (sources || []).filter((s) => s && (s.img || s.vid));
+    if (!list.length) return '';
+    const uid = `m${++mediaSeq}`;
+    const first = list[0];
+    const tabs = list.length > 1
+      ? `<div class="segmented small" role="tablist" aria-label="切換素材">
+          ${list.map((s, i) => `<button type="button" role="tab" aria-selected="${i === 0}" data-media-src="${uid}"
+              data-img="${attr(s.img)}" data-vid="${attr(s.vid)}" data-ai="${s.ai ? '1' : ''}" data-label="${attr(s.label)}">${s.tab}</button>`).join('')}
+        </div>`
+      : '';
+    return `
+      <div class="media-block" data-media-block="${uid}">
+        ${tabs}
+        <div class="media-frame">
+          <span class="media-label ${first.ai ? 'ai' : ''}" data-media-label="${uid}">${first.label}</span>
+          <button type="button" class="media-expand" aria-label="全螢幕檢視" data-lightbox-img="${attr(first.img)}" data-lightbox-vid="${attr(first.vid)}"
+            data-lightbox-title="${attr(title)}" data-lightbox-badge="${attr(first.label)}">${expandIcon}</button>
+          <video id="vid-${uid}" src="${attr(first.vid)}" poster="${attr(first.img)}" controls loop muted playsinline preload="none"></video>
+        </div>
+        <div class="media-tools">
+          <div class="speed-row" role="group" aria-label="播放速度">
+            <span>速度</span>
+            <button type="button" class="speed-mini-btn" data-vid-speed="0.25" data-target-vid="vid-${uid}">0.25×</button>
+            <button type="button" class="speed-mini-btn" data-vid-speed="0.5" data-target-vid="vid-${uid}">0.5×</button>
+            <button type="button" class="speed-mini-btn active" data-vid-speed="1.0" data-target-vid="vid-${uid}">1×</button>
+          </div>
+        </div>
+        <p class="fine media-caption" data-media-note="${uid}">${first.ai ? first.note : '原稿素材：檔案存在不代表真人示範、正誤對照、來源、授權或文字提示正確。'}</p>
+      </div>`;
+  }
+
+  function repoSource(tab, mediaId, img, vid) {
+    return {
+      tab,
+      label: '原稿素材 · 來源未核實',
+      img: img || `assets/media/images/${mediaId}.jpg`,
+      vid: vid || `assets/media/videos/${mediaId}.mp4`
+    };
+  }
+
+  function withAiSample(mediaId, sources) {
+    const ai = AI_SAMPLES[mediaId];
+    if (!ai) return sources;
+    return [{ tab: 'AI 示範', label: ai.label, img: ai.poster, vid: ai.video, ai: true, note: ai.note }, ...sources];
+  }
+
   function bindMediaInteractions(container) {
     if (!container) return;
+
+    container.querySelectorAll('[data-media-src]').forEach((btn) => {
+      btn.addEventListener('click', (e) => {
+        e.stopPropagation();
+        const uid = btn.getAttribute('data-media-src');
+        const block = container.querySelector(`[data-media-block="${uid}"]`);
+        if (!block) return;
+        const vid = block.querySelector('video');
+        const label = block.querySelector(`[data-media-label="${uid}"]`);
+        const note = block.querySelector(`[data-media-note="${uid}"]`);
+        const expand = block.querySelector('.media-expand');
+        const isAi = btn.getAttribute('data-ai') === '1';
+        const img = btn.getAttribute('data-img');
+        const src = btn.getAttribute('data-vid');
+        vid.pause();
+        vid.poster = img;
+        vid.src = src;
+        vid.load();
+        label.textContent = btn.getAttribute('data-label');
+        label.classList.toggle('ai', isAi);
+        if (note) {
+          const ai = Object.values(AI_SAMPLES).find((s) => s.video === src);
+          note.textContent = isAi && ai ? ai.note : '原稿素材：檔案存在不代表真人示範、正誤對照、來源、授權或文字提示正確。';
+        }
+        expand.setAttribute('data-lightbox-img', img);
+        expand.setAttribute('data-lightbox-vid', src);
+        expand.setAttribute('data-lightbox-badge', btn.getAttribute('data-label'));
+        btn.parentElement.querySelectorAll('[role="tab"]').forEach((b) => b.setAttribute('aria-selected', String(b === btn)));
+      });
+    });
 
     container.querySelectorAll('.speed-mini-btn[data-vid-speed]').forEach((btn) => {
       btn.addEventListener('click', (e) => {
         e.stopPropagation();
         const speed = parseFloat(btn.getAttribute('data-vid-speed')) || 1.0;
-        const vidId = btn.getAttribute('data-target-vid');
-        const vidEl = document.getElementById(vidId);
+        const vidEl = document.getElementById(btn.getAttribute('data-target-vid'));
         if (vidEl) {
           vidEl.playbackRate = speed;
           vidEl.play().catch(() => {});
         }
-        const bar = btn.parentElement;
-        if (bar) {
-          bar.querySelectorAll('.speed-mini-btn[data-vid-speed]').forEach((b) => b.classList.remove('active'));
-        }
-        btn.classList.add('active');
-      });
-    });
-
-    container.querySelectorAll('.angle-seek-btn[data-vid-seek]').forEach((btn) => {
-      btn.addEventListener('click', (e) => {
-        e.stopPropagation();
-        const seekSec = parseFloat(btn.getAttribute('data-vid-seek')) || 0;
-        const vidId = btn.getAttribute('data-target-vid');
-        const vidEl = document.getElementById(vidId);
-        if (vidEl) {
-          vidEl.currentTime = seekSec;
-          vidEl.play().catch(() => {});
-        }
-        const bar = btn.parentElement;
-        if (bar) {
-          bar.querySelectorAll('.angle-seek-btn').forEach((b) => b.classList.remove('active'));
-        }
+        btn.parentElement.querySelectorAll('.speed-mini-btn').forEach((b) => b.classList.remove('active'));
         btn.classList.add('active');
       });
     });
@@ -167,11 +166,12 @@
     container.querySelectorAll('[data-lightbox-img]').forEach((el) => {
       el.addEventListener('click', (e) => {
         e.stopPropagation();
-        const imgSrc = el.getAttribute('data-lightbox-img');
-        const vidSrc = el.getAttribute('data-lightbox-vid');
-        const title = el.getAttribute('data-lightbox-title');
-        const badge = el.getAttribute('data-lightbox-badge');
-        openMediaLightbox(imgSrc, vidSrc, title, badge);
+        openMediaLightbox(
+          el.getAttribute('data-lightbox-img'),
+          el.getAttribute('data-lightbox-vid'),
+          el.getAttribute('data-lightbox-title'),
+          el.getAttribute('data-lightbox-badge')
+        );
       });
     });
   }
@@ -185,19 +185,66 @@
     const vidEl = document.getElementById('lightbox-video');
 
     if (titleEl) titleEl.textContent = title || '';
-    if (badgeEl) badgeEl.textContent = badge || 'REAL-HUMAN CONTINUOUS MOTION';
+    if (badgeEl) badgeEl.textContent = badge || '原稿媒體素材｜來源待核實';
     if (imgEl) imgEl.src = imgSrc || '';
     if (vidEl) {
+      const wrap = vidEl.closest('figure');
+      if (wrap) wrap.hidden = !vidSrc;
       vidEl.src = vidSrc || '';
       vidEl.poster = imgSrc || '';
-      vidEl.playbackRate = 0.5;
-      vidEl.play().catch(() => {});
+      if (vidSrc) {
+        vidEl.playbackRate = 0.5;
+        vidEl.play().catch(() => {});
+      }
     }
     backdrop.classList.add('open');
+    document.body.classList.add('sheet-open');
+    const closeBtn = document.getElementById('btn-close-lightbox');
+    if (closeBtn) closeBtn.focus();
+  }
+
+  function closeMediaLightbox() {
+    const backdrop = document.getElementById('global-media-lightbox');
+    const vidEl = document.getElementById('lightbox-video');
+    if (vidEl) vidEl.pause();
+    if (backdrop) backdrop.classList.remove('open');
+    document.body.classList.remove('sheet-open');
   }
 
   /* --------------------------------------------------------------------------
-     1. RENDER INTERNATIONAL CERTIFICATION SYSTEMS MATRIX (CASI/AASI/SBINZ/JSBA/BASI)
+     VIEW ROUTER (hash based, one view on screen at a time)
+     -------------------------------------------------------------------------- */
+  function viewFromHash() {
+    const h = (location.hash || '').replace('#', '');
+    if (VIEWS.includes(h)) return h;
+    if (LEGACY_ANCHORS[h]) return LEGACY_ANCHORS[h];
+    return 'overview';
+  }
+
+  function showView(view, opts) {
+    const next = VIEWS.includes(view) ? view : 'overview';
+    state.view = next;
+    document.querySelectorAll('[data-view]').forEach((sec) => {
+      sec.hidden = sec.getAttribute('data-view') !== next;
+    });
+    document.querySelectorAll('.tab[data-view-link]').forEach((t) => {
+      if (t.getAttribute('data-view-link') === next) t.setAttribute('aria-current', 'page');
+      else t.removeAttribute('aria-current');
+    });
+    document.body.classList.remove('appbar-hidden');
+    if (!opts || opts.scroll !== false) window.scrollTo({ top: 0, behavior: 'auto' });
+    updateScrollProgress();
+  }
+
+  function navigate(view) {
+    if (location.hash !== `#${view}`) {
+      history.pushState(null, '', `#${view}`);
+    }
+    showView(view);
+  }
+
+  /* --------------------------------------------------------------------------
+     1. TEACHING SYSTEMS (horizontal rail)
      -------------------------------------------------------------------------- */
   function renderSystemsComparison() {
     const container = document.getElementById('systems-matrix-container');
@@ -209,50 +256,48 @@
         (sys) => `
       <article class="system-card">
         <div class="system-card-header">
-          <div>
-            <div class="system-org">${sys.code || sys.org || sys.id}</div>
-            <div style="font-size:0.78rem; color:var(--text-muted); font-weight:600;">${sys.fullName || ''}</div>
-          </div>
+          <span class="system-org">${sys.code || sys.org || sys.id}</span>
           <span class="system-country">${sys.country || sys.region || ''}</span>
         </div>
-        <p style="font-size:0.88rem; color:var(--text-primary); font-weight:600;">
-          ${sys.philosophy || sys.tagline || ''}
-        </p>
+        <span class="system-full">${sys.fullName || ''}</span>
+        <p class="system-philosophy">${sys.philosophy || sys.tagline || ''}</p>
         <ul class="system-list">
-          ${(sys.corePillars || sys.highlights || [])
-            .map((item) => `<li>${item}</li>`)
-            .join('')}
+          ${(sys.corePillars || sys.highlights || []).slice(0, 3).map((item) => `<li>${item}</li>`).join('')}
         </ul>
-        ${
-          sys.technicalFocus
-            ? `<div style="margin-top:auto; padding-top:0.75rem; border-top:1px solid var(--border-subtle); font-size:0.8rem; color:var(--cyan-400); font-family:var(--font-mono);">
-                <strong>技術核心：</strong>${sys.technicalFocus}
-              </div>`
-            : ''
-        }
-      </article>
-    `
+        <p class="fine">原稿描述，未取得機構確認。</p>
+      </article>`
       )
       .join('');
   }
 
   /* --------------------------------------------------------------------------
-     2. RENDER 10 COMPREHENSIVE MODULES SIDEBAR & DETAIL VIEW
+     2. CURRICULUM: sticky module rail + one module at a time
      -------------------------------------------------------------------------- */
+  function filteredModules() {
+    const modules = getCurriculum().modules || [];
+    if (!state.searchQuery) return modules;
+    const q = state.searchQuery.toLowerCase();
+    return modules.filter((m) => JSON.stringify(m).toLowerCase().includes(q));
+  }
+
+  function shortTitle(title) {
+    const t = String(title || '');
+    const cut = t.split(/[：:、，,（(]/)[0];
+    return cut.length > 12 ? `${cut.slice(0, 12)}…` : cut;
+  }
+
   function renderModuleSidebar() {
     const sidebar = document.getElementById('module-sidebar-nav');
     if (!sidebar) return;
-    const modules = getCurriculum().modules || [];
-
-    const filtered = modules.filter((m) => {
-      if (!state.searchQuery) return true;
-      const q = state.searchQuery.toLowerCase();
-      const blob = JSON.stringify(m).toLowerCase();
-      return blob.includes(q);
-    });
+    const filtered = filteredModules();
 
     if (filtered.length > 0 && !filtered.some((m) => (m.code || m.id) === state.activeModuleId)) {
       state.activeModuleId = filtered[0].code || filtered[0].id;
+    }
+
+    if (!filtered.length) {
+      sidebar.innerHTML = `<p class="rail-empty">找不到「${attr(state.searchQuery)}」相關模組。</p>`;
+      return;
     }
 
     sidebar.innerHTML = filtered
@@ -260,14 +305,10 @@
         const modKey = mod.code || mod.id;
         const isActive = modKey === state.activeModuleId;
         return `
-        <button class="module-tab-btn ${isActive ? 'active' : ''}" data-mod-id="${modKey}">
-          <div class="module-tab-code">
-            <span>${mod.code || mod.id}</span>
-            <span style="color:var(--orange-400);">${mod.difficulty || mod.badge || ''}</span>
-          </div>
-          <div class="module-tab-title">${mod.title}</div>
-        </button>
-      `;
+        <button type="button" class="module-tab-btn ${isActive ? 'active' : ''}" data-mod-id="${modKey}" aria-pressed="${isActive}" title="${attr(mod.title)}">
+          <span class="module-tab-code">${String(modKey).replace('MOD-', '')}</span>
+          <span class="module-tab-title">${shortTitle(mod.title)}</span>
+        </button>`;
       })
       .join('');
 
@@ -276,338 +317,279 @@
         state.activeModuleId = btn.getAttribute('data-mod-id');
         renderModuleSidebar();
         renderActiveModuleDetail();
-        const mod = (getCurriculum().modules || []).find(
-          (m) => (m.code || m.id) === state.activeModuleId
-        );
+        const mod = (getCurriculum().modules || []).find((m) => (m.code || m.id) === state.activeModuleId);
         if (mod && mod.animationMode && window.SBSimulators && window.SBSimulators.setPlayerMode) {
           window.SBSimulators.setPlayerMode(mod.animationMode);
         }
+        const section = document.getElementById('curriculum-section');
+        const rail = document.getElementById('module-sidebar-nav');
+        if (section && rail && window.scrollY > rail.offsetTop) {
+          window.scrollTo({ top: rail.offsetTop - 1, behavior: 'smooth' });
+        }
       });
     });
+
+    const active = sidebar.querySelector('.module-tab-btn.active');
+    // Horizontal-only centring: scrollIntoView would also move the page vertically.
+    if (active) sidebar.scrollLeft = active.offsetLeft - (sidebar.clientWidth - active.offsetWidth) / 2;
+  }
+
+  function renderPrinciple(p, pIdx, mod, mNum) {
+    const mediaId = p.mediaId || `p_${mNum}_${pad2(pIdx + 1)}`;
+    const title = p.title || p.name;
+    return `
+      <details class="acc">
+        <summary>
+          <span class="acc-idx">${pad2(pIdx + 1)}</span>
+          <span class="acc-title">${title}<small>原稿主張 · 數值待核實</small></span>
+          ${chevron}
+        </summary>
+        <div class="acc-body">
+          ${p.formula ? `<div class="formula">${p.formula}</div>` : ''}
+          ${toPoints(p.explanation || p.description)}
+          <div class="media-block-wrap" style="margin-top:16px">
+            ${buildMediaBlock([repoSource('原稿', mediaId, p.image, p.video)], title)}
+          </div>
+        </div>
+      </details>`;
+  }
+
+  function renderSkill(skill, idx, mod, mNum) {
+    const sNum = pad2(idx + 1);
+    const mainId = skill.mediaId || `s_${mNum}_${sNum}`;
+    const stepId = skill.stepMediaId || `step_${mNum}_${sNum}`;
+    const errId = skill.errMediaId || `err_${mNum}_${sNum}`;
+    const bio = skill.biomechanics || {};
+    const err = skill.commonErrors || {};
+    const uid = `sk-${mNum}-${sNum}`;
+
+    const bioHtml = typeof bio === 'string'
+      ? toPoints(bio)
+      : `<dl class="kv">
+          ${bio.comBos ? `<div><dt>COM / BOS 重心與底面積</dt><dd>${bio.comBos}</dd></div>` : ''}
+          ${bio.jointAngles ? `<div><dt>踝／膝／髖關節角度</dt><dd>${bio.jointAngles}</dd></div>` : ''}
+          ${bio.weightDistribution || bio.foreAft ? `<div><dt>前後與側向配重</dt><dd>${bio.weightDistribution || bio.foreAft}</dd></div>` : ''}
+          ${bio.edgeControl ? `<div><dt>鋼邊與板性控制</dt><dd>${bio.edgeControl}</dd></div>` : ''}
+        </dl>`;
+
+    const stepsHtml = `<ol class="steps">${(skill.stepByStep || []).map((s) => `<li>${s}</li>`).join('')}</ol>`;
+
+    const errHtml = typeof err === 'string'
+      ? `<div class="callout"><p>${err}</p></div>`
+      : `
+        ${err.symptom ? `<div class="callout err"><h5>錯誤徵兆（原稿，待核實）</h5><p>${err.symptom}</p></div>` : ''}
+        ${err.rootCause ? `<div class="callout"><h5>原稿提出的原因（待核實）</h5><p>${err.rootCause}</p></div>` : ''}
+        ${err.correctiveDrill || err.fix ? `<div class="callout fix"><h5>原稿練習提案（待教練核准）</h5><p>${err.correctiveDrill || err.fix}</p></div>` : ''}
+        ${skill.expertMindset ? `<div class="callout"><h5>原稿提示（待來源與教練核實）</h5><p>${skill.expertMindset}</p></div>` : ''}`;
+
+    const media = buildMediaBlock(
+      withAiSample(mainId, [
+        repoSource('全貌', mainId, skill.image, skill.video),
+        repoSource('步驟', stepId, skill.stepImage, skill.stepVideo),
+        repoSource('正誤', errId, skill.errImage, skill.errVideo)
+      ]),
+      skill.name
+    );
+
+    const hasAi = Boolean(AI_SAMPLES[mainId]);
+    return `
+      <details class="acc skill-acc">
+        <summary>
+          <span class="acc-idx">${sNum}</span>
+          <span class="acc-title">${skill.name}<small>${[skill.level, hasAi ? 'AI 示範樣片' : ''].filter(Boolean).join(' · ')}</small></span>
+          ${chevron}
+        </summary>
+        <div class="acc-body">
+          ${media}
+          <div class="segmented small" role="tablist" aria-label="技能內容" style="margin-top:18px">
+            <button type="button" role="tab" aria-selected="true" data-skill-tab="${uid}" data-pane="steps">步驟</button>
+            <button type="button" role="tab" aria-selected="false" data-skill-tab="${uid}" data-pane="bio">力學要點</button>
+            <button type="button" role="tab" aria-selected="false" data-skill-tab="${uid}" data-pane="err">錯誤修正</button>
+          </div>
+          <div data-skill-pane="${uid}" data-pane="steps">${stepsHtml}</div>
+          <div data-skill-pane="${uid}" data-pane="bio" hidden>${bioHtml}</div>
+          <div data-skill-pane="${uid}" data-pane="err" hidden>${errHtml}</div>
+          ${skill.casiAasiRef ? `<p class="fine" style="margin-top:14px">原稿機構對照（未核實）：${skill.casiAasiRef}</p>` : ''}
+        </div>
+      </details>`;
   }
 
   function renderActiveModuleDetail() {
     const pane = document.getElementById('module-detail-content');
     if (!pane) return;
     const modules = getCurriculum().modules || [];
+    if (state.searchQuery && !filteredModules().length) {
+      pane.innerHTML = '<p class="fine">請換個關鍵字，或清除搜尋。</p>';
+      return;
+    }
     let modIdx = modules.findIndex((m) => (m.code || m.id) === state.activeModuleId);
     if (modIdx < 0) modIdx = 0;
     const mod = modules[modIdx];
-
     if (!mod) {
-      pane.innerHTML = `<p>載入課程模組中...</p>`;
+      pane.innerHTML = '<p class="fine">載入課程模組中…</p>';
       return;
     }
 
-    const mNum = String(modIdx + 1).padStart(2, '0');
-    const modHeroImg = `assets/media/images/s_${mNum}_01.jpg`;
-
-    const principlesHtml = (mod.physicsPrinciples || [])
-      .map((p, pIdx) => {
-        const pNum = String(pIdx + 1).padStart(2, '0');
-        const mediaId = `p_${mNum}_${pNum}`;
-        const badgeLabel = `${mod.code || mod.id} · PRINCIPLE 0${pIdx + 1}`;
-        const pSents = String(p.explanation || p.description || '').split(/[。；！？]+/).filter(Boolean);
-        return `
-        <div class="principle-card">
-          <div style="display:flex; justify-content:space-between; align-items:center; gap:0.5rem;">
-            <span class="tag-badge" style="font-size:0.68rem;">${badgeLabel}</span>
-            <span class="tag-badge orange" style="font-size:0.68rem;">原稿審查／真人示範宣稱：未獨立核實</span>
-          </div>
-          <div style="font-weight:800; font-size:1.05rem; color:var(--text-primary);">${p.title || p.name}</div>
-          ${p.formula ? `<div class="principle-formula">${p.formula}</div>` : ''}
-          <p style="font-size:0.88rem; color:var(--text-secondary);">${p.explanation || p.description || ''}</p>
-          ${buildRealMediaDualBoxHtml(
-            mediaId,
-            p.title || p.name,
-            badgeLabel,
-            '📸 多角度真人連續動作 & 文字講解重點標示圖',
-            [
-              p.formula || p.title,
-              pSents[0] || p.title,
-              pSents[1] || pSents[0] || 'COM 穿過 BOS 維持動態平衡'
-            ]
-          )}
-        </div>
-      `;
-      })
-      .join('');
-
-    const skillsHtml = (mod.coreSkills || [])
-      .map((skill, idx) => {
-        const sNum = String(idx + 1).padStart(2, '0');
-        const mainMediaId = `s_${mNum}_${sNum}`;
-        const stepMediaId = `step_${mNum}_${sNum}`;
-        const errMediaId = `err_${mNum}_${sNum}`;
-        const badgeLabel = `${mod.code || mod.id} · SKILL 0${idx + 1}`;
-
-        const bio = skill.biomechanics || {};
-        const bioText =
-          typeof bio === 'string'
-            ? bio
-            : `
-              <ul class="system-list">
-                ${bio.comBos ? `<li><strong>COM / BOS 重心與底面積：</strong>${bio.comBos}</li>` : ''}
-                ${bio.jointAngles ? `<li><strong>踝/膝/髖關節角度：</strong>${bio.jointAngles}</li>` : ''}
-                ${bio.weightDistribution || bio.foreAft ? `<li><strong>前後與側向配重比：</strong>${bio.weightDistribution || bio.foreAft}</li>` : ''}
-                ${bio.edgeControl ? `<li><strong>鋼邊與板性控制：</strong>${bio.edgeControl}</li>` : ''}
-              </ul>
-            `;
-
-        const stepsHtml = (skill.stepByStep || [])
-          .map(
-            (s, i) =>
-              `<li style="margin-bottom:0.45rem;"><strong>Step ${i + 1}:</strong> ${s}</li>`
-          )
-          .join('');
-
-        const err = skill.commonErrors || {};
-        const errHtml =
-          typeof err === 'string'
-            ? `<p>${err}</p>`
-            : `
-              <div style="font-size:0.87rem;">
-                <p><strong style="color:var(--crimson-400);">⚠️ 原稿描述的錯誤徵兆（待核實）：</strong>${err.symptom || ''}</p>
-                <p style="margin-top:0.3rem;"><strong style="color:var(--orange-400);">🔬 原稿提出的原因（待核實）：</strong>${err.rootCause || ''}</p>
-                <p style="margin-top:0.3rem;"><strong style="color:var(--emerald-400);">🧭 原稿練習提案（待教練核准）：</strong>${err.correctiveDrill || err.fix || ''}</p>
-              </div>
-            `;
-
-        return `
-        <div class="skill-card">
-          <div class="skill-header">
-            <div>
-              <span class="tag-badge" style="margin-right:0.5rem;">SKILL 0${idx + 1}</span>
-              <span class="skill-title">${skill.name}</span>
-            </div>
-            <div style="display:flex; gap:0.45rem; flex-wrap:wrap;">
-              ${skill.level ? `<span class="tag-badge orange">${skill.level}</span>` : ''}
-              ${skill.casiAasiRef ? `<span class="tag-badge orange">原稿機構對照（未核實）：${skill.casiAasiRef}</span>` : ''}
-            </div>
-          </div>
-
-          <!-- 1. Main Skill Continuous Human Motion Demonstration -->
-          <div style="margin-bottom:1.2rem;">
-            ${buildRealMediaDualBoxHtml(
-              mainMediaId,
-              skill.name,
-              badgeLabel,
-              '📸 技能全貌：多角度真人連續動作與重點標示圖',
-              [
-                bio.comBos || (skill.stepByStep && skill.stepByStep[0]),
-                bio.jointAngles || (skill.stepByStep && skill.stepByStep[1]),
-                bio.edgeControl || (skill.stepByStep && skill.stepByStep[2])
-              ]
-            )}
-          </div>
-
-          <div class="skill-columns">
-            <div class="bio-box">
-              <div style="font-family:var(--font-mono); font-size:0.78rem; font-weight:700; color:var(--cyan-400); margin-bottom:0.5rem;">
-                📐 生物力學與重心參數 (BIOMECHANICS &amp; COM/BOS)
-              </div>
-              <div style="font-size:0.87rem; color:var(--text-secondary);">
-                ${bioText}
-              </div>
-            </div>
-
-            <div class="steps-box">
-              <div style="font-family:var(--font-mono); font-size:0.78rem; font-weight:700; color:var(--emerald-400); margin-bottom:0.5rem;">
-                🎯 系統化分解動作與練習步驟 (Step 1 ➔ Step 4)
-              </div>
-              <ol style="padding-left:1.1rem; font-size:0.87rem; color:var(--text-secondary);">
-                ${stepsHtml}
-              </ol>
-            </div>
-          </div>
-
-          <!-- 2. Dedicated Practice Steps (Step 1 to Step 4) Continuous Image & Video -->
-          <div style="margin-bottom:1.2rem;">
-            ${buildRealMediaDualBoxHtml(
-              stepMediaId,
-              `分解練習步驟 (Step 1–4)：${skill.name}`,
-              `${badgeLabel} · STEPS 1–4`,
-              '📸 練習步驟 Step 1–4 多角度真人連續動作與重點標示圖',
-              [
-                skill.stepByStep && skill.stepByStep[0] ? `Step 1: ${skill.stepByStep[0]}` : '',
-                skill.stepByStep && skill.stepByStep[1] ? `Step 2–3: ${skill.stepByStep[1]}` : '',
-                skill.stepByStep && skill.stepByStep[3] ? `Step 4: ${skill.stepByStep[3]}` : ''
-              ]
-            )}
-          </div>
-
-          <!-- 3. Original draft tips (not independently reviewed) -->
-          <div class="error-box">
-            ${errHtml}
-          </div>
-
-          ${
-            skill.expertMindset
-              ? `<div class="mindset-box" style="margin-bottom:0.9rem;">
-                  <strong style="color:var(--orange-400);">🧠 原稿提示（待來源與教練核實）：</strong>
-                  <span>${skill.expertMindset}</span>
-                </div>`
-              : ''
-          }
-
-          <div>
-            ${buildRealMediaDualBoxHtml(
-              errMediaId,
-              `正誤連續動作對照 & 專家 Tips：${skill.name}`,
-              `${badgeLabel} · CORRECT vs ERROR & TIPS`,
-              '📸 ✅正確真人動作 vs ❌錯誤逆刃/洗刃對照 & 專家 Tips 圖',
-              [
-                `原稿提示（待核驗）：${skill.expertMindset || bio.comBos || ''}`,
-                `矯正處方：${err.correctiveDrill || bio.jointAngles || ''}`,
-                `常見錯誤：${err.symptom || ''}`
-              ]
-            )}
-          </div>
-        </div>
-      `;
-      })
-      .join('');
+    const mNum = pad2(modIdx + 1);
+    const principles = mod.physicsPrinciples || [];
+    const skills = mod.coreSkills || [];
+    const tab = state.moduleTab;
 
     pane.innerHTML = `
-      <div role="note" style="margin-bottom:1rem;padding:.85rem 1rem;border:2px solid #f59e0b;border-radius:10px;background:#451a03;color:#ffedd5;font-weight:700;line-height:1.55;">
-        本模組顯示 repo 原稿；公式、數值、動作與機構標籤未逐項核驗，不構成教練、安全或醫療指引。請勿只依本頁嘗試高風險動作。
-      </div>
-      <div class="module-hero-banner">
+      <header class="module-head">
         <div>
-          <div class="module-meta-tags">
-            <span class="tag-badge">${mod.code || mod.id}</span>
-            <span class="tag-badge orange">${mod.difficulty || ''}</span>
-            <span class="tag-badge orange">${mod.systemsRef ? `原稿機構對照（未核實）：${mod.systemsRef}` : '機構／課綱對照未核實'}</span>
+          <div class="module-meta">
+            <span>${mod.code || mod.id}</span>
+            <span>${mod.difficulty || ''}</span>
           </div>
-          <h3 style="font-size:1.75rem; font-weight:900; line-height:1.25; margin-bottom:0.5rem;">
-            ${mod.title}
-          </h3>
-          <p style="font-size:0.95rem; color:var(--cyan-400); font-weight:600; margin-bottom:0.9rem;">
-            ${mod.subtitle || ''}
-          </p>
-          <p style="font-size:0.94rem; color:var(--text-secondary);">
-            ${mod.summary || ''}
-          </p>
+          <h3 class="module-title">${mod.title}</h3>
+          ${mod.subtitle ? `<p class="module-subtitle">${mod.subtitle}</p>` : ''}
+          <p class="module-summary" id="module-summary" style="margin-top:10px">${mod.summary || ''}</p>
+          <button type="button" class="text-btn" id="btn-module-summary" aria-expanded="false" aria-controls="module-summary">展開全文</button>
         </div>
-        <div>
-          <img class="module-banner-img" src="${modHeroImg}" alt="${mod.title}" />
-        </div>
+      </header>
+
+      <p class="inline-note" role="note">本模組為 repo 原稿；公式、數值、動作與機構標籤未逐項核驗，不構成教練、安全或醫療指引。請勿只依本頁嘗試高風險動作。</p>
+
+      <div class="segmented" role="tablist" aria-label="模組內容" style="margin-top:22px">
+        <button type="button" role="tab" aria-selected="${tab === 'skills'}" data-module-tab="skills">技術動作 · ${skills.length}</button>
+        <button type="button" role="tab" aria-selected="${tab === 'principles'}" data-module-tab="principles">原理 · ${principles.length}</button>
       </div>
 
-      <div>
-        <h4 style="font-size:1.15rem; font-weight:800; color:var(--cyan-400); display:flex; align-items:center; gap:0.5rem;">
-          <span>⚡</span> 原稿物理與生物力學主張（數值與媒體示範待核實）
-        </h4>
-        <div class="principles-grid">
-          ${principlesHtml}
-        </div>
+      <div data-module-pane="skills" ${tab === 'skills' ? '' : 'hidden'}>
+        ${skills.map((s, i) => renderSkill(s, i, mod, mNum)).join('')}
       </div>
-
-      <div>
-        <h4 style="font-size:1.15rem; font-weight:800; color:var(--emerald-400); margin-bottom:1rem; display:flex; align-items:center; gap:0.5rem;">
-          <span>🏔️</span> 原稿技術步驟與提示（未經合格教練逐項核准）
-        </h4>
-        <div class="skills-list">
-          ${skillsHtml}
-        </div>
+      <div data-module-pane="principles" ${tab === 'principles' ? '' : 'hidden'}>
+        ${principles.map((p, i) => renderPrinciple(p, i, mod, mNum)).join('')}
       </div>
+      ${mod.systemsRef ? `<p class="fine" style="margin-top:18px">原稿機構對照（未核實）：${mod.systemsRef}</p>` : ''}
     `;
 
+    const summaryBtn = pane.querySelector('#btn-module-summary');
+    const summary = pane.querySelector('#module-summary');
+    if (summaryBtn && summary) {
+      if (String(mod.summary || '').length < 80) summaryBtn.hidden = true;
+      summaryBtn.addEventListener('click', () => {
+        const open = summary.classList.toggle('expanded');
+        summaryBtn.textContent = open ? '收合' : '展開全文';
+        summaryBtn.setAttribute('aria-expanded', String(open));
+      });
+    }
+
+    pane.querySelectorAll('[data-module-tab]').forEach((btn) => {
+      btn.addEventListener('click', () => {
+        state.moduleTab = btn.getAttribute('data-module-tab');
+        pane.querySelectorAll('[data-module-tab]').forEach((b) => b.setAttribute('aria-selected', String(b === btn)));
+        pane.querySelectorAll('[data-module-pane]').forEach((p) => {
+          p.hidden = p.getAttribute('data-module-pane') !== state.moduleTab;
+        });
+      });
+    });
+
+    bindSkillTabs(pane);
+    bindAccordionVideoPause(pane);
     bindMediaInteractions(pane);
+
+    // First skill opens by default so the module never looks empty.
+    const firstAcc = pane.querySelector(`[data-module-pane="${tab}"] details.acc`);
+    if (firstAcc) firstAcc.open = true;
+  }
+
+  function bindSkillTabs(root) {
+    root.querySelectorAll('[data-skill-tab]').forEach((btn) => {
+      btn.addEventListener('click', () => {
+        const uid = btn.getAttribute('data-skill-tab');
+        const target = btn.getAttribute('data-pane');
+        root.querySelectorAll(`[data-skill-tab="${uid}"]`).forEach((b) => b.setAttribute('aria-selected', String(b === btn)));
+        root.querySelectorAll(`[data-skill-pane="${uid}"]`).forEach((p) => {
+          p.hidden = p.getAttribute('data-pane') !== target;
+        });
+      });
+    });
+  }
+
+  function bindAccordionVideoPause(root) {
+    root.querySelectorAll('details.acc').forEach((d) => {
+      d.addEventListener('toggle', () => {
+        if (!d.open) d.querySelectorAll('video').forEach((v) => v.pause());
+      });
+    });
   }
 
   /* --------------------------------------------------------------------------
-     3. RENDER GROUND TRICK (平花グラトリ) COMBO BUILDER & LOGIC MATRIX
+     3. GROUND TRICKS: chip filter + combo rail + one combo detail
      -------------------------------------------------------------------------- */
   function renderGroundTrickBuilder() {
     const matrix = getCurriculum().groundTrickComboMatrix;
     if (!matrix) return;
 
     const atomicContainer = document.getElementById('atomic-skills-grid');
+    const atomicDetail = document.getElementById('atomic-skill-detail');
     const comboListContainer = document.getElementById('combo-selector-list');
     const comboDetailContainer = document.getElementById('combo-detail-stage');
+    const atomics = matrix.atomicSkills || [];
 
-    if (atomicContainer && matrix.atomicSkills) {
-      atomicContainer.innerHTML = matrix.atomicSkills
-        .map((sk, idx) => {
-          const isSel = state.selectedAtomicSkillId === (sk.id || sk.name);
-          const aNum = String(idx + 1).padStart(2, '0');
-          const mediaId = `atomic_${aNum}`;
-          return `
-          <div class="atomic-card ${isSel ? 'selected' : ''}" data-atomic-id="${sk.id || sk.name}" style="grid-column: span 2;">
-            <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:0.35rem;">
-              <strong style="font-size:1rem; color:var(--text-primary);">0${idx + 1}. ${sk.name}</strong>
-              <span class="tag-badge" style="font-size:0.68rem;">${sk.category || sk.code || 'ATOMIC'} · 點擊篩選組合招式</span>
-            </div>
-            <div style="font-family:var(--font-mono); font-size:0.76rem; color:var(--orange-400); margin-bottom:0.35rem;">
-              重心座標：${sk.comPosition || sk.foreAft || '動態轉移'}
-            </div>
-            <p style="font-size:0.83rem; color:var(--text-secondary); margin-bottom:0.55rem;">
-              ${sk.biomechanics || sk.description || ''}
-            </p>
-            ${buildRealMediaDualBoxHtml(
-              mediaId,
-              sk.name,
-              `ATOMIC SKILL 0${idx + 1}`,
-              '📸 原子技能多角度真人連續動作 + 重點標示圖',
-              [
-                `${sk.category || '平花原子技能'} · ${sk.proficiency || ''}`,
-                `重心座標：${sk.comPosition || '動態轉移'}`,
-                sk.biomechanics || ''
-              ]
-            )}
-          </div>
-        `;
-        })
-        .join('');
+    if (atomicContainer) {
+      atomicContainer.innerHTML = `
+        <button type="button" class="atomic-card ${state.selectedAtomicSkillId ? '' : 'selected'}" data-atomic-id="" aria-pressed="${!state.selectedAtomicSkillId}">全部</button>
+        ${atomics
+          .map((sk, idx) => {
+            const key = sk.id || sk.name;
+            const isSel = state.selectedAtomicSkillId === key;
+            return `<button type="button" class="atomic-card ${isSel ? 'selected' : ''}" data-atomic-id="${attr(key)}" aria-pressed="${isSel}">
+              <span class="n">${pad2(idx + 1)}</span>${key}</button>`;
+          })
+          .join('')}`;
 
       atomicContainer.querySelectorAll('.atomic-card').forEach((card) => {
-        card.addEventListener('click', (e) => {
-          if (e.target.closest('video') || e.target.closest('button') || e.target.closest('img')) {
-            return;
-          }
-          const clickedId = card.getAttribute('data-atomic-id');
-          state.selectedAtomicSkillId =
-            state.selectedAtomicSkillId === clickedId ? null : clickedId;
+        card.addEventListener('click', () => {
+          const clickedId = card.getAttribute('data-atomic-id') || null;
+          state.selectedAtomicSkillId = state.selectedAtomicSkillId === clickedId ? null : clickedId;
+          state.activeComboIndex = 0;
           renderGroundTrickBuilder();
         });
       });
+    }
 
-      bindMediaInteractions(atomicContainer);
+    if (atomicDetail) {
+      const idx = atomics.findIndex((a) => (a.id || a.name) === state.selectedAtomicSkillId);
+      const sk = atomics[idx];
+      if (sk) {
+        const mediaId = sk.mediaId || `atomic_${pad2(idx + 1)}`;
+        atomicDetail.innerHTML = `
+          <h4>${sk.name}</h4>
+          <dl class="kv">
+            ${sk.category ? `<div><dt>類別</dt><dd>${sk.category}</dd></div>` : ''}
+            ${sk.comPosition ? `<div><dt>重心位置（原稿）</dt><dd>${sk.comPosition}</dd></div>` : ''}
+            ${sk.proficiency ? `<div><dt>建議程度（原稿）</dt><dd>${sk.proficiency}</dd></div>` : ''}
+          </dl>
+          ${toPoints(sk.biomechanics || sk.description)}
+          <div style="margin-top:14px">${buildMediaBlock([repoSource('原稿', mediaId, sk.image, sk.video)], sk.name)}</div>`;
+        bindMediaInteractions(atomicDetail);
+      } else {
+        atomicDetail.innerHTML = '';
+      }
     }
 
     const allCombos = matrix.combos || [];
     const filteredCombos = state.selectedAtomicSkillId
-      ? allCombos.filter((c) => {
-          const blob = JSON.stringify(c).toLowerCase();
-          return blob.includes(state.selectedAtomicSkillId.toLowerCase());
-        })
+      ? allCombos.filter((c) => JSON.stringify(c).toLowerCase().includes(state.selectedAtomicSkillId.toLowerCase()))
       : allCombos;
-
     const activeList = filteredCombos.length > 0 ? filteredCombos : allCombos;
-    if (state.activeComboIndex >= activeList.length) {
-      state.activeComboIndex = 0;
-    }
+    if (state.activeComboIndex >= activeList.length) state.activeComboIndex = 0;
 
     if (comboListContainer) {
       comboListContainer.innerHTML = activeList
         .map((c, idx) => {
-          const isAct = idx === state.activeComboIndex;
           const origIdx = allCombos.findIndex((orig) => orig.id === c.id);
-          const cNum = String((origIdx >= 0 ? origIdx : idx) + 1).padStart(2, '0');
-          const thumbImg = `assets/media/images/combo_${cNum}.jpg`;
-
+          const cNum = pad2((origIdx >= 0 ? origIdx : idx) + 1);
+          const thumb = c.image || `assets/media/images/combo_${cNum}.jpg`;
           return `
-          <button class="combo-item-btn ${isAct ? 'active' : ''}" data-combo-idx="${idx}" style="padding:0.75rem;">
-            <img src="${thumbImg}" alt="${c.name}" loading="lazy" style="width:100%; height:110px; object-fit:cover; border-radius:6px; margin-bottom:0.5rem; border:1px solid var(--border-subtle);" />
-            <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:0.25rem;">
-              <span style="font-family:var(--font-mono); font-size:0.7rem; color:var(--cyan-400); font-weight:700;">${c.difficulty || c.level || 'PRO COMBO'}</span>
-              <span style="font-family:var(--font-mono); font-size:0.7rem; color:var(--orange-400);">${c.rotation || c.style || 'JSBA Gra-tri'}</span>
-            </div>
-            <div style="font-weight:800; font-size:0.95rem; margin-bottom:0.2rem;">${c.name}</div>
-            <div style="font-size:0.75rem; color:var(--text-muted);">${c.formula || (c.atomicComponents || []).join(' + ')}</div>
-          </button>
-        `;
+          <button type="button" class="combo-item-btn ${idx === state.activeComboIndex ? 'active' : ''}" data-combo-idx="${idx}" aria-pressed="${idx === state.activeComboIndex}">
+            <img src="${attr(thumb)}" alt="" loading="lazy" />
+            <span class="meta">${cNum} · ${c.difficulty || c.level || ''}</span>
+            <span class="name">${c.name}</span>
+          </button>`;
         })
         .join('');
 
@@ -615,6 +597,8 @@
         btn.addEventListener('click', () => {
           state.activeComboIndex = parseInt(btn.getAttribute('data-combo-idx'), 10);
           renderGroundTrickBuilder();
+          const stage = document.getElementById('combo-detail-stage');
+          if (stage) stage.scrollIntoView({ behavior: 'smooth', block: 'start' });
         });
       });
     }
@@ -622,125 +606,63 @@
     const activeCombo = activeList[state.activeComboIndex];
     if (comboDetailContainer && activeCombo) {
       const origIdx = allCombos.findIndex((orig) => orig.id === activeCombo.id);
-      const cNum = String((origIdx >= 0 ? origIdx : state.activeComboIndex) + 1).padStart(2, '0');
-      const comboMainId = `combo_${cNum}`;
-      const comboStepId = `combo_step_${cNum}`;
-      const comboErrId = `combo_err_${cNum}`;
+      const cNum = pad2((origIdx >= 0 ? origIdx : state.activeComboIndex) + 1);
       const phases = activeCombo.phases || [];
+      const uid = `cb-${cNum}`;
 
       comboDetailContainer.innerHTML = `
-        <div style="background:rgba(15,23,42,0.7); border:1px solid var(--border-active); border-radius:var(--radius-lg); padding:1.5rem;">
-          <div style="display:flex; flex-wrap:wrap; justify-content:space-between; align-items:center; gap:0.75rem; margin-bottom:1rem; border-bottom:1px solid var(--border-subtle); padding-bottom:0.9rem;">
-            <div>
-              <span class="tag-badge orange" style="margin-right:0.5rem;">${activeCombo.id || 'COMBO'}</span>
-              <span style="font-family:var(--font-mono); font-size:0.9rem; color:var(--cyan-400); font-weight:700;">
-                ${activeCombo.formula || (activeCombo.atomicComponents || []).join(' ➔ ')}
-              </span>
-              <h4 style="font-size:1.45rem; font-weight:900; margin-top:0.35rem;">${activeCombo.name}</h4>
-            </div>
-            <button class="btn-primary" id="btn-trigger-groundtrick-sim" style="padding:0.55rem 1rem; font-size:0.82rem;">
-              ▶ 同步至上方 60fps 物理實驗室
-            </button>
-          </div>
+        <article class="combo-detail">
+          <p class="kicker">${activeCombo.id || 'COMBO'} · ${activeCombo.difficulty || ''}</p>
+          <h4>${activeCombo.name}</h4>
+          <p class="combo-formula">${activeCombo.formula || (activeCombo.atomicComponents || []).join(' → ')}</p>
 
-          <!-- 1. Main Ground Trick Combo Continuous Action Photo + MP4 Video -->
-          <div style="margin-bottom:1.25rem;">
-            ${buildRealMediaDualBoxHtml(
-              comboMainId,
-              activeCombo.name,
-              `${activeCombo.id} · ${activeCombo.difficulty || 'GROUND TRICK'}`,
-              '📸 招式全貌：多角度真人連續動作與重點標示圖',
-              [
-                `組合公式：${activeCombo.formula || ''}`,
-                `重心軌跡：${activeCombo.comSummary || ''}`,
-                `用刃邏輯：${activeCombo.edgeLogic || ''}`
-              ]
-            )}
-          </div>
+          ${buildMediaBlock(
+            [
+              repoSource('全貌', activeCombo.mediaId || `combo_${cNum}`, activeCombo.image, activeCombo.video),
+              repoSource('分段', activeCombo.stepMediaId || `combo_step_${cNum}`, activeCombo.stepImage, activeCombo.stepVideo),
+              repoSource('正誤', activeCombo.errMediaId || `combo_err_${cNum}`, activeCombo.errImage, activeCombo.errVideo)
+            ],
+            activeCombo.name
+          )}
 
-          <div style="display:grid; grid-template-columns:repeat(auto-fit, minmax(200px, 1fr)); gap:0.75rem; margin-bottom:1.1rem;">
-            <div class="readout-box">
-              <span class="lbl">核心重心轉移軌跡 (COM Path)</span>
-              <span class="val" style="font-size:0.88rem; color:var(--cyan-400);">${activeCombo.comSummary || activeCombo.comShift || '前腳 75% 壓板 ➔ 後腳軸心反彈'}</span>
-            </div>
-            <div class="readout-box">
-              <span class="lbl">鋼邊切換邏輯 (Edge Transfer)</span>
-              <span class="val" style="font-size:0.88rem; color:var(--orange-400);">${activeCombo.edgeLogic || activeCombo.edgeStatus || 'Heelside 入刃 ➔ 點支撐 ➔ Toeside 鎖刃'}</span>
-            </div>
-            <div class="readout-box">
-              <span class="lbl">上下半身反擰扭矩 (Torsion &amp; Gaze)</span>
-              <span class="val" style="font-size:0.88rem; color:var(--emerald-400);">${activeCombo.torsionAngle || activeCombo.upperLowerLogic || '預轉蓄力 ±45° 反向鎖定'}</span>
-            </div>
-          </div>
-
-          <div class="combo-phase-timeline" style="margin-bottom:1rem;">
+          <h5 class="sub-title">分段拆解 · 左右滑動</h5>
+          <div class="rail phase-rail">
             ${phases
               .map(
                 (ph, idx) => `
               <div class="phase-step-card">
-                <div style="font-family:var(--font-mono); font-size:0.72rem; color:var(--cyan-400); font-weight:700;">
-                  PHASE 0${idx + 1} · ${ph.com || ''}
+                <span class="ph-n">PHASE ${pad2(idx + 1)}</span>
+                <span class="ph-t">${ph.phase || ph.title || ph.name || ''}</span>
+                <p>${ph.action || ph.detail || ph.description || ''}</p>
+                <div class="ph-kv">
+                  ${ph.com ? `<span>重心</span><b>${ph.com}</b>` : ''}
+                  ${ph.edge ? `<span>用刃</span><b>${ph.edge}</b>` : ''}
                 </div>
-                <div style="font-weight:800; font-size:0.95rem; margin:0.25rem 0 0.4rem;">
-                  ${ph.phase || ph.title || ph.name}
-                </div>
-                <p style="font-size:0.82rem; color:var(--text-secondary);">
-                  ${ph.action || ph.detail || ph.description || ''}
-                </p>
-                ${
-                  ph.edge
-                    ? `<div style="margin-top:0.45rem; font-family:var(--font-mono); font-size:0.72rem; color:var(--orange-400);">用刃：${ph.edge}</div>`
-                    : ''
-                }
-              </div>
-            `
+              </div>`
               )
               .join('')}
           </div>
 
-          <!-- 2. Dedicated Phase 1 to Phase 4 Practice Steps Continuous Image & MP4 Video -->
-          <div style="margin-bottom:1.25rem;">
-            ${buildRealMediaDualBoxHtml(
-              comboStepId,
-              `Phase 1–4 連續練習步驟：${activeCombo.name}`,
-              `${activeCombo.id} · PHASE 1–4 DRILL`,
-              '📸 Phase 1–Phase 4 多角度真人連續動作與重點標示圖',
-              [
-                phases[0] ? `${phases[0].phase}：${phases[0].action}` : '',
-                phases[1] ? `${phases[1].phase}：${phases[1].action}` : '',
-                phases[3] ? `${phases[3].phase}：${phases[3].action}` : ''
-              ]
-            )}
+          <div class="segmented small" role="tablist" aria-label="招式要點" style="margin-top:10px">
+            <button type="button" role="tab" aria-selected="true" data-skill-tab="${uid}" data-pane="path">重心與用刃</button>
+            <button type="button" role="tab" aria-selected="false" data-skill-tab="${uid}" data-pane="fail">失敗點與提示</button>
+          </div>
+          <div data-skill-pane="${uid}" data-pane="path">
+            <dl class="kv">
+              ${activeCombo.comSummary ? `<div><dt>重心轉移（原稿）</dt><dd>${activeCombo.comSummary}</dd></div>` : ''}
+              ${activeCombo.edgeLogic ? `<div><dt>鋼邊切換（原稿）</dt><dd>${activeCombo.edgeLogic}</dd></div>` : ''}
+              ${activeCombo.torsionAngle ? `<div><dt>上下半身反擰（原稿）</dt><dd>${activeCombo.torsionAngle}</dd></div>` : ''}
+            </dl>
+          </div>
+          <div data-skill-pane="${uid}" data-pane="fail" hidden>
+            ${activeCombo.failureMode || activeCombo.commonMistake ? `<div class="callout err"><h5>失敗卡刃點（原稿，待核實）</h5><p>${activeCombo.failureMode || activeCombo.commonMistake}</p></div>` : ''}
+            ${activeCombo.expertTip || activeCombo.mindset ? `<div class="callout"><h5>原稿提示（待教練核實）</h5><p>${activeCombo.expertTip || activeCombo.mindset}</p></div>` : ''}
           </div>
 
-          <!-- 3. Failure Mode & JSBA Pro Tips + Dedicated Correct-vs-Error Continuous Video -->
-          <div style="margin-top:1.15rem; margin-bottom:1rem; display:grid; grid-template-columns:1fr 1fr; gap:1rem;">
-            <div class="error-box" style="margin-bottom:0;">
-              <strong style="color:var(--crimson-400);">⚠️ 失敗卡刃點分析 (Failure Mode)：</strong>
-              <span style="font-size:0.85rem; color:var(--text-secondary);">${activeCombo.failureMode || activeCombo.commonMistake || ''}</span>
-            </div>
-            <div class="mindset-box">
-              <strong style="color:var(--orange-400);">💡 日系平花專家思維 Tips (JSBA Pro Tip)：</strong>
-              <span style="font-size:0.85rem; color:var(--text-secondary);">${activeCombo.expertTip || activeCombo.mindset || ''}</span>
-            </div>
-          </div>
+          <button type="button" class="btn btn-ghost" id="btn-trigger-groundtrick-sim">在實驗室播放模擬動畫</button>
+        </article>`;
 
-          <div>
-            ${buildRealMediaDualBoxHtml(
-              comboErrId,
-              `正誤對照 & 日系專家 Tips：${activeCombo.name}`,
-              `${activeCombo.id} · CORRECT vs ERROR & TIPS`,
-              '📸 ✅正確鎖刃 vs ❌失敗卡刃真人連續動作 & 專家 Tips 圖',
-              [
-                `大師心法：${activeCombo.expertTip || ''}`,
-                `重心軌跡：${activeCombo.comSummary || ''}`,
-                `失敗斷點：${activeCombo.failureMode || ''}`
-              ]
-            )}
-          </div>
-        </div>
-      `;
-
+      bindSkillTabs(comboDetailContainer);
       bindMediaInteractions(comboDetailContainer);
 
       const simBtn = document.getElementById('btn-trigger-groundtrick-sim');
@@ -749,15 +671,15 @@
           if (window.SBSimulators && window.SBSimulators.setPlayerMode) {
             window.SBSimulators.setPlayerMode('ground_trick_owen');
           }
-          const studioEl = document.getElementById('interactive-studio');
-          if (studioEl) studioEl.scrollIntoView({ behavior: 'smooth' });
+          setLabTab('player');
+          navigate('lab');
         });
       }
     }
   }
 
   /* --------------------------------------------------------------------------
-     4. RENDER 50-EXPERT PANEL REVIEW & SIGN-OFF BOARD
+     4. EXPERT ROSTER (kept hidden in markup; identities are unverified)
      -------------------------------------------------------------------------- */
   function renderExpertsAuditBoard() {
     const filterBar = document.getElementById('expert-panel-filters');
@@ -811,15 +733,60 @@
   }
 
   /* --------------------------------------------------------------------------
-     5. INITIALIZE UI CONTROLS, SEARCH, LIGHTBOX, THEME & SCROLL PROGRESS
+     5. LAB TABS
      -------------------------------------------------------------------------- */
+  function setLabTab(name) {
+    document.querySelectorAll('[data-lab-tab]').forEach((b) => b.setAttribute('aria-selected', String(b.getAttribute('data-lab-tab') === name)));
+    document.querySelectorAll('[data-lab-panel]').forEach((p) => {
+      p.hidden = p.getAttribute('data-lab-panel') !== name;
+    });
+  }
+
+  /* --------------------------------------------------------------------------
+     6. UI EVENTS: nav, search, theme, lightbox, scroll behaviour
+     -------------------------------------------------------------------------- */
+  function updateScrollProgress() {
+    const progressEl = document.getElementById('scroll-progress');
+    if (!progressEl) return;
+    const winScroll = document.documentElement.scrollTop || document.body.scrollTop;
+    const height = document.documentElement.scrollHeight - document.documentElement.clientHeight;
+    progressEl.style.width = (height > 0 ? (winScroll / height) * 100 : 0) + '%';
+  }
+
   function initUIEvents() {
+    document.querySelectorAll('[data-view-link]').forEach((a) => {
+      a.addEventListener('click', (e) => {
+        e.preventDefault();
+        navigate(a.getAttribute('data-view-link'));
+      });
+    });
+    window.addEventListener('popstate', () => showView(viewFromHash()));
+    window.addEventListener('hashchange', () => showView(viewFromHash()));
+
+    document.querySelectorAll('[data-lab-tab]').forEach((b) => {
+      b.addEventListener('click', () => setLabTab(b.getAttribute('data-lab-tab')));
+    });
+
+    const searchBtn = document.getElementById('btn-open-search');
+    const searchPanel = document.getElementById('search-panel');
     const searchInput = document.getElementById('global-curriculum-search');
+    if (searchBtn && searchPanel) {
+      searchBtn.addEventListener('click', () => {
+        const open = searchPanel.hidden;
+        searchPanel.hidden = !open;
+        searchBtn.setAttribute('aria-expanded', String(open));
+        if (open && searchInput) searchInput.focus();
+      });
+    }
     if (searchInput) {
       searchInput.addEventListener('input', (e) => {
         state.searchQuery = e.target.value.trim();
+        if (state.searchQuery && state.view !== 'curriculum') navigate('curriculum');
         renderModuleSidebar();
         renderActiveModuleDetail();
+      });
+      searchInput.addEventListener('keydown', (e) => {
+        if (e.key === 'Enter') searchInput.blur();
       });
     }
 
@@ -828,52 +795,65 @@
       themeBtn.addEventListener('click', () => {
         state.snowGlareTheme = !state.snowGlareTheme;
         document.body.classList.toggle('theme-snow-glare', state.snowGlareTheme);
-        themeBtn.innerHTML = state.snowGlareTheme
-          ? '🌙 切換高山黑曜護眼模式'
-          : '☀️ 切換雪地強光高對比模式';
+        themeBtn.setAttribute('aria-pressed', String(state.snowGlareTheme));
+        themeBtn.setAttribute('aria-label', state.snowGlareTheme ? '切換回深色模式' : '切換雪地強光淺色模式');
+        const meta = document.querySelector('meta[name="theme-color"]');
+        if (meta) meta.setAttribute('content', state.snowGlareTheme ? '#f5f1e8' : '#0f0e0c');
+        try { localStorage.setItem('sb-theme', state.snowGlareTheme ? 'glare' : 'dark'); } catch (_) { /* private mode */ }
       });
+      try {
+        if (localStorage.getItem('sb-theme') === 'glare') themeBtn.click();
+      } catch (_) { /* private mode */ }
     }
 
     const backdrop = document.getElementById('global-media-lightbox');
     const closeBtn = document.getElementById('btn-close-lightbox');
     if (backdrop) {
       backdrop.addEventListener('click', (e) => {
-        if (e.target === backdrop) {
-          const vidEl = document.getElementById('lightbox-video');
-          if (vidEl) vidEl.pause();
-          backdrop.classList.remove('open');
-        }
+        if (e.target === backdrop) closeMediaLightbox();
       });
+      bindMediaInteractions(backdrop);
     }
-    if (closeBtn && backdrop) {
-      closeBtn.addEventListener('click', () => {
-        const vidEl = document.getElementById('lightbox-video');
-        if (vidEl) vidEl.pause();
-        backdrop.classList.remove('open');
-      });
-    }
-
-    window.addEventListener('scroll', () => {
-      const progressEl = document.getElementById('scroll-progress');
-      if (!progressEl) return;
-      const winScroll = document.body.scrollTop || document.documentElement.scrollTop;
-      const height =
-        document.documentElement.scrollHeight - document.documentElement.clientHeight;
-      const scrolled = height > 0 ? (winScroll / height) * 100 : 0;
-      progressEl.style.width = scrolled + '%';
+    if (closeBtn) closeBtn.addEventListener('click', closeMediaLightbox);
+    document.addEventListener('keydown', (e) => {
+      if (e.key === 'Escape') closeMediaLightbox();
     });
+
+    const gallery = document.getElementById('gallery-section');
+    if (gallery) bindMediaInteractions(gallery);
+
+    // App bar hides while scrolling down, returns on any upward scroll.
+    let lastY = window.scrollY;
+    let ticking = false;
+    window.addEventListener('scroll', () => {
+      if (ticking) return;
+      ticking = true;
+      requestAnimationFrame(() => {
+        const y = window.scrollY;
+        const searchOpen = searchPanel && !searchPanel.hidden;
+        if (!searchOpen) {
+          if (y > 120 && y > lastY + 4) document.body.classList.add('appbar-hidden');
+          else if (y < lastY - 4 || y < 60) document.body.classList.remove('appbar-hidden');
+        }
+        lastY = y;
+        updateScrollProgress();
+        ticking = false;
+      });
+    }, { passive: true });
   }
 
   /* --------------------------------------------------------------------------
-     BOOT APPLICATION
+     BOOT
      -------------------------------------------------------------------------- */
   document.addEventListener('DOMContentLoaded', () => {
+    if ('scrollRestoration' in history) history.scrollRestoration = 'manual';
     renderSystemsComparison();
     renderModuleSidebar();
     renderActiveModuleDetail();
     renderGroundTrickBuilder();
     renderExpertsAuditBoard();
     initUIEvents();
+    showView(viewFromHash());
 
     if (window.SBSimulators) {
       if (typeof window.SBSimulators.initMotionPlayer === 'function') {

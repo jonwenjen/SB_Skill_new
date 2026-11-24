@@ -214,6 +214,20 @@ class PublicDisclosureTests(unittest.TestCase):
             "self-reported audit note must use warning styling",
         )
 
+    def test_ai_sample_video_is_labelled_not_filmed(self):
+        app = (self.root / "js/app.js").read_text(encoding="utf-8")
+        self.assertIn("AI 生成示範 · 非真人拍攝", app, "AI sample must carry a visible not-filmed label")
+        self.assertIn("尚待合格教練核可", app, "AI sample must not read as approved coaching")
+        for name in ("s_01_01_ai_live_action.mp4", "s_01_01_ai_live_action.jpg"):
+            self.assertTrue((self.root / "assets/media/ai-samples" / name).is_file(), f"missing {name}")
+
+    def test_mobile_shell_keeps_single_view_navigation(self):
+        html = (self.root / "index.html").read_text(encoding="utf-8")
+        self.assertIn('<nav class="tabbar" aria-label="主導覽列">', html)
+        for view in ("overview", "curriculum", "lab", "tricks", "library"):
+            self.assertIn(f'data-view-link="{view}"', html)
+        self.assertIn('id="review-status-banner"', html, "review-pending notice must stay on the landing view")
+
     def test_curriculum_typo_uses_traditional_chinese(self):
         data = (self.root / "js/curriculum_data.js").read_text(encoding="utf-8")
         self.assertTrue("信號搜尋與粗略搜尋" in data, "correct Traditional Chinese conjunction must be present")
