@@ -741,3 +741,19 @@ body.sheet-open { overflow: hidden; }
 .ext-open:hover, .ext-open:focus-visible { color: var(--gold); }
 .ext-open .ext { width: 15px; height: 15px; }
 .ext-note { margin-top: 10px; }
+
+/* ---------- Source explanations + AI coach drafts (not human-approved) ---------- */
+.coach-card { margin: 0 0 16px; padding: 14px; border: 1px solid var(--border-subtle); border-radius: var(--radius-md); background: var(--ink-1); }
+.coach-disclosure { margin: 0 0 12px; padding: 8px 10px; border-left: 3px solid var(--gold); background: var(--gold-soft); color: var(--text-muted); font-size: 0.75rem; line-height: 1.55; }
+.coach-source, .coach-summary { margin: 0 0 14px; }
+.coach-source h5, .coach-summary h5 { margin: 0 0 6px; color: var(--text-primary); font-size: 0.86rem; font-weight: 600; }
+.coach-source p, .coach-summary p { margin: 0; color: var(--text-secondary); font-size: 0.86rem; line-height: 1.75; white-space: pre-line; }
+.coach-source a { display: inline-flex; min-height: 38px; align-items: center; margin-top: 4px; color: var(--gold); font-size: 0.78rem; }
+.coach-sub { margin-top: 13px; }
+.coach-sub h6 { margin: 0 0 6px; color: var(--text-primary); font-size: 0.78rem; font-weight: 600; }
+.coach-sub ul { display: grid; gap: 5px; margin: 0; padding-left: 18px; color: var(--text-secondary); font-size: 0.82rem; line-height: 1.6; }
+.coach-fix { display: block; color: var(--text-muted); }
+.coach-safety, .coach-caveat { margin: 12px 0 0; padding: 9px 10px; border-radius: 8px; background: var(--ink-2); color: var(--text-muted); font-size: 0.78rem; line-height: 1.6; }
+.coach-safety strong { color: var(--text-secondary); }
+.coach-caveat { border-left: 2px solid var(--orange-400); }
+.ep-coach-hint { display: block; margin-top: 3px; color: var(--text-muted); font-size: 0.68rem; font-weight: 400; }

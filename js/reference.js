@@ -7,6 +7,7 @@
 
   const D = window.SB_CARVINGEEK;
   if (!D) return;
+  const COACH = (window.SB_CARVINGEEK_COACHING || {}).items || {};
 
   const LEVEL_NAME = D.levels || { B: '入門', A: '進階', S: '高階' };
   const byId = Object.fromEntries(D.tricks.map((t) => [t.id, t]));
@@ -130,6 +131,23 @@
     btn.setAttribute('aria-expanded', 'true');
   }
 
+  function coachCard(id) {
+    const c = COACH[id];
+    if (!c) return '';
+    const original = c.originalText
+      ? `<section class="coach-source"><h5>極刻滑行原站解說 · 繁體轉寫</h5><p>${esc(c.originalText)}</p></section>`
+      : (c.summary ? `<section class="coach-summary"><h5>動作解說草稿</h5><p>${esc(c.summary)}</p></section>` : '');
+    const n = c.coachNotes || {};
+    const list = (title, arr, cls = '') => arr && arr.length
+      ? `<section class="coach-sub ${cls}"><h6>${title}</h6><ul>${arr.map((x) => `<li>${esc(typeof x === 'string' ? x : x.error || '')}${typeof x === 'object' && x.fix ? `<span class="coach-fix">修正方向：${esc(x.fix)}</span>` : ''}</li>`).join('')}</ul></section>` : '';
+    const sourceCaveat = c.sourceCaveat ? `<p class="coach-caveat">${esc(c.sourceCaveat)}</p>` : '';
+    const uncertainty = c.uncertain ? `<p class="coach-caveat">動作定義仍待確認：${esc(c.uncertain)}</p>` : '';
+    const label = c.originalText
+      ? 'AI 模擬教練團隊補充解說草稿 · 非真人撰寫 · 尚待真人專業教練審核'
+      : 'AI 模擬教練團隊解說草稿 · 非真人撰寫 · 尚待真人專業教練審核';
+    return `<div class="coach-card"><p class="coach-disclosure">${label}</p>${original}${sourceCaveat}${list('動作要點', n.keyPoints)}${list('常見卡關與修正', n.mistakes, 'coach-mistakes')}${list('練習進程', n.progression, 'coach-progression')}${n.safety ? `<p class="coach-safety"><strong>安全提醒：</strong>${esc(n.safety)}</p>` : ''}${uncertainty}</div>`;
+  }
+
   /* ---------- skill tree ---------- */
   function chip(id) {
     const t = byId[id];
@@ -162,6 +180,7 @@
           ${chev}
         </summary>
         <div class="acc-body">
+          ${coachCard(t.id)}
           ${vids.length
             ? `${videoTabs}${vids.map((v, k) => `<div data-vpane="${uid}" data-k="${k}" ${k ? 'hidden' : ''}>${videoCard(v, uid + k)}</div>`).join('')}`
             : extBlock(t)}
@@ -233,7 +252,7 @@
       <details class="acc" ${gi === 0 ? 'open' : ''}>
         <summary>
           <span class="acc-idx">${gi < 5 ? String(gi + 1).padStart(2, '0') : '+'}</span>
-          <span class="acc-title">${esc(g.title)}<small>${g.eps.length} 集 · ${esc(g.desc)}</small></span>
+          <span class="acc-title">${esc(g.title)}<small>${g.eps.length} 集 · 原站章節說明：${esc(g.desc)}</small></span>
           ${chev}
         </summary>
         <div class="acc-body">
@@ -242,10 +261,11 @@
               <li class="ep">
                 <button type="button" class="ep-btn" data-ep="${esc(e.yt)}" aria-expanded="false">
                   <span class="ep-n">${esc(e.ep)}</span>
-                  <span class="ep-name">${esc(e.name)}</span>
+                  <span class="ep-name">${esc(e.name)}${COACH['carv-' + e.yt]?.summary ? `<small class="ep-coach-hint">含 AI 模擬教練解說草稿</small>` : ''}</span>
                   <span class="ep-play">${playSvg}</span>
                 </button>
                 <div class="ep-body" hidden>
+                  ${coachCard('carv-' + e.yt)}
                   ${videoCard({ yt: e.yt, bv: e.bv, title: e.title, kind: e.ep }, 'ep' + e.yt)}
                 </div>
               </li>`).join('')}

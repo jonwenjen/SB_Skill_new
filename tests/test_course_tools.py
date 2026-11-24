@@ -276,6 +276,42 @@ class PublicDisclosureTests(unittest.TestCase):
                 self.assertEqual(keys, sorted(keys), f"{t['id']} {plat} picks not ranked match-first then views")
         self.assertIn("未經本專案審查", js, "third-party picks must be labelled as unreviewed")
 
+    def test_coaching_content_covers_all_tricks_and_carving_episodes(self):
+        raw = (self.root / "js/carvingeek_coaching.js").read_text(encoding="utf-8")
+        data = json.loads(raw.split("window.SB_CARVINGEEK_COACHING = ", 1)[1].rstrip().rstrip(";"))
+        source_raw = (self.root / "js/carvingeek_data.js").read_text(encoding="utf-8")
+        source = json.loads(source_raw.split("window.SB_CARVINGEEK = ", 1)[1].rstrip().rstrip(";"))
+        expected = {t["id"] for t in source["tricks"]}
+        expected.update("carv-" + e["yt"] for g in source["carving"] for e in g["eps"])
+        self.assertEqual(expected, set(data["items"]), "every original node and episode needs coaching content")
+        self.assertEqual(13, sum(bool(x.get("originalText")) for x in data["items"].values()))
+        self.assertEqual(70, sum(bool(x.get("summary")) for x in data["items"].values()))
+        for item_id, item in data["items"].items():
+            self.assertEqual("AI 模擬教練團隊草稿 · 待真人專業教練審核", item["contentStatus"])
+            self.assertTrue(item.get("originalText") or item.get("summary"), item_id)
+            notes = item["coachNotes"]
+            for key in ("keyPoints", "mistakes", "progression"):
+                self.assertTrue(notes[key], f"{item_id} missing {key}")
+            self.assertTrue(notes["safety"], f"{item_id} missing safety caveat")
+        js = (self.root / "js/reference.js").read_text(encoding="utf-8")
+        self.assertIn("AI 模擬教練團隊補充解說草稿", js)
+        self.assertIn("AI 模擬教練團隊解說草稿", js)
+        self.assertIn("非真人撰寫", js)
+        self.assertIn("尚待真人專業教練審核", js)
+        self.assertIn("極刻滑行原站解說 · 繁體轉寫", js)
+        html = (self.root / "index.html").read_text(encoding="utf-8")
+        self.assertIn("非真人教練撰寫或核可", html)
+        self.assertIn('src="js/carvingeek_coaching.js"', html)
+
+    def test_source_graph_conflict_is_disclosed(self):
+        raw = (self.root / "js/carvingeek_coaching.js").read_text(encoding="utf-8")
+        data = json.loads(raw.split("window.SB_CARVINGEEK_COACHING = ", 1)[1].rstrip().rstrip(";"))
+        caveat = data["items"]["sone-360"].get("sourceCaveat", "")
+        self.assertIn("Gios", caveat)
+        self.assertIn("未核實", caveat)
+        js = (self.root / "js/reference.js").read_text(encoding="utf-8")
+        self.assertIn("sourceCaveat", js)
+
     def test_curriculum_typo_uses_traditional_chinese(self):
         data = (self.root / "js/curriculum_data.js").read_text(encoding="utf-8")
         self.assertTrue("信號搜尋與粗略搜尋" in data, "correct Traditional Chinese conjunction must be present")
