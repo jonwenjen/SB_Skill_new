@@ -719,3 +719,25 @@ body.sheet-open { overflow: hidden; }
 @media (prefers-reduced-motion: reduce) {
   *, *::before, *::after { transition: none !important; scroll-behavior: auto !important; }
 }
+
+/* ---------- External (third-party) video picks for nodes without a carvingeek video ---------- */
+.ext-block { margin-top: 2px; }
+.ext-head { font-size: 0.78rem; color: var(--text-muted); margin-bottom: 8px; letter-spacing: 0.04em; }
+.ext-list { list-style: none; margin: 0; padding: 0; display: grid; gap: 8px; }
+.ext-item { position: relative; border: 1px solid var(--border-subtle); border-radius: var(--radius-md); overflow: hidden; background: var(--ink-1); }
+.ext-row { display: flex; gap: 12px; align-items: center; width: 100%; min-height: 72px; padding: 8px 48px 8px 8px; text-align: left; }
+.ext-thumb { position: relative; flex: 0 0 112px; aspect-ratio: 16 / 9; border-radius: 6px; overflow: hidden; background: #000; display: grid; place-items: center; }
+.ext-thumb img { width: 100%; height: 100%; object-fit: cover; opacity: 0.88; }
+.bili-mark { font-family: var(--font-serif); font-size: 1.3rem; color: #e2cc9a; }
+.yt-play.mini { width: 30px; height: 30px; }
+.yt-play.mini svg { width: 12px; height: 12px; margin-left: 2px; }
+.ext-meta { display: flex; flex-direction: column; gap: 3px; min-width: 0; }
+.ext-title { font-size: 0.84rem; line-height: 1.45; color: var(--text-primary); display: -webkit-box; -webkit-line-clamp: 2; -webkit-box-orient: vertical; overflow: hidden; }
+.ext-sub { font-size: 0.72rem; color: var(--text-muted); white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+.ext-sub em { font-style: normal; color: var(--gold); }
+.ext-row[aria-expanded="true"] { background: var(--gold-soft); }
+.ext-player { padding: 0 8px 8px; }
+.ext-open { position: absolute; top: 8px; right: 6px; width: 40px; height: 40px; display: grid; place-items: center; border-radius: 50%; color: var(--text-muted); }
+.ext-open:hover, .ext-open:focus-visible { color: var(--gold); }
+.ext-open .ext { width: 15px; height: 15px; }
+.ext-note { margin-top: 10px; }

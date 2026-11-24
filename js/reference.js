@@ -59,6 +59,7 @@
   }
 
   function stopEmbeds(root) {
+    (root || document).querySelectorAll('.ext-player:not([hidden])').forEach((b) => { b.hidden = true; b.innerHTML = ''; if (b.previousElementSibling) b.previousElementSibling.setAttribute('aria-expanded', 'false'); });
     (root || document).querySelectorAll('iframe.yt-frame').forEach((f) => {
       const id = (f.src.match(/embed\/([\w-]{11})/) || [])[1];
       const btn = document.createElement('button');
@@ -69,6 +70,64 @@
       btn.innerHTML = `<img src="https://i.ytimg.com/vi/${id}/hqdefault.jpg" alt="" loading="lazy" /><span class="yt-play">${playSvg}</span>`;
       f.replaceWith(btn);
     });
+  }
+
+  const fmtViews = (n) => (n >= 10000 ? `${(n / 10000).toFixed(n >= 100000 ? 0 : 1)} 萬` : n.toLocaleString('zh-Hant'));
+
+  function extRow(plat, v, uid, k) {
+    const url = plat === 'yt' ? ytWatch(v.id) : bvWatch(v.id);
+    const thumb = plat === 'yt' ? `<img src="https://i.ytimg.com/vi/${esc(v.id)}/mqdefault.jpg" alt="" loading="lazy" />` : `<span class="bili-mark">B</span>`;
+    return `
+      <li class="ext-item" data-ext="${uid}-${plat}-${k}">
+        <button type="button" class="ext-row" data-play="${plat}" data-id="${esc(v.id)}" aria-expanded="false" aria-label="播放：${esc(v.title)}">
+          <span class="ext-thumb">${thumb}<span class="yt-play mini">${playSvg}</span></span>
+          <span class="ext-meta">
+            <span class="ext-title">${esc(v.title)}</span>
+            <span class="ext-sub">${esc(v.channel)} · ${fmtViews(v.views)} 次觀看${v.match === 'exact' ? '' : ' · <em>相近動作</em>'}</span>
+          </span>
+        </button>
+        <div class="ext-player" hidden></div>
+        <a class="ext-open" href="${url}" target="_blank" rel="noopener" aria-label="在${plat === 'yt' ? ' YouTube' : ' B 站'}開啟">${ext}</a>
+      </li>`;
+  }
+
+  function extBlock(t) {
+    const e = t.ext || { yt: [], bili: [] };
+    const uid = `ex-${t.id}`;
+    if (!e.yt.length && !e.bili.length) {
+      return '<p class="fine no-video">極刻滑行未發布此動作影片，YouTube 與 B 站也找不到可靠對應的教學；可先看前置動作的影片。</p>';
+    }
+    const first = e.yt.length ? 'yt' : 'bili';
+    const list = (plat) => e[plat].length
+      ? `<ol class="ext-list">${e[plat].map((v, k) => extRow(plat, v, uid, k)).join('')}</ol>`
+      : `<p class="fine no-video">${plat === 'yt' ? 'YouTube' : 'B 站'}找不到對應此動作的教學。</p>`;
+    return `
+      <div class="ext-block">
+        <p class="ext-head">極刻滑行未發布此動作影片 · 其他頻道推薦</p>
+        <div class="segmented small" role="tablist" aria-label="影片平台">
+          <button type="button" role="tab" aria-selected="${first === 'yt'}" data-vtab="${uid}" data-k="yt">YouTube · ${e.yt.length}</button>
+          <button type="button" role="tab" aria-selected="${first === 'bili'}" data-vtab="${uid}" data-k="bili">B 站 · ${e.bili.length}</button>
+        </div>
+        <div data-vpane="${uid}" data-k="yt" ${first === 'yt' ? '' : 'hidden'}>${list('yt')}</div>
+        <div data-vpane="${uid}" data-k="bili" ${first === 'bili' ? '' : 'hidden'}>${list('bili')}</div>
+        <p class="fine ext-note">依動作名稱吻合度、再依觀看數排序；第三方內容，非極刻滑行，未經本專案審查。</p>
+      </div>`;
+  }
+
+  function playExt(btn) {
+    const li = btn.closest('.ext-item');
+    const box = li.querySelector('.ext-player');
+    const open = box.hidden;
+    const scope = li.closest('.trick-node') || document;
+    scope.querySelectorAll('.ext-player').forEach((b) => { b.hidden = true; b.innerHTML = ''; b.previousElementSibling.setAttribute('aria-expanded', 'false'); });
+    if (!open) return;
+    const id = btn.getAttribute('data-id');
+    const src = btn.getAttribute('data-play') === 'yt'
+      ? `https://www.youtube-nocookie.com/embed/${encodeURIComponent(id)}?autoplay=1&playsinline=1&rel=0`
+      : `https://player.bilibili.com/player.html?bvid=${encodeURIComponent(id)}&autoplay=1&high_quality=1&danmaku=0`;
+    box.innerHTML = `<iframe class="yt-frame" src="${src}" title="${esc(btn.getAttribute('aria-label'))}" allow="autoplay; encrypted-media; picture-in-picture; fullscreen" allowfullscreen referrerpolicy="strict-origin-when-cross-origin"></iframe>`;
+    box.hidden = false;
+    btn.setAttribute('aria-expanded', 'true');
   }
 
   /* ---------- skill tree ---------- */
@@ -86,7 +145,7 @@
     const meta = [
       t.parents.length ? `前置 ${t.parents.length}` : '起點',
       t.unlocks.length ? `解鎖 ${t.unlocks.length}` : '',
-      vids.length ? `▶ ${vids.length} 支影片` : ''
+      vids.length ? `▶ 極刻滑行 ${vids.length}` : (t.ext && (t.ext.yt.length + t.ext.bili.length) ? `▷ 外部推薦 ${t.ext.yt.length + t.ext.bili.length}` : '')
     ].filter(Boolean).join(' · ');
 
     const videoTabs = vids.length > 1
@@ -105,7 +164,7 @@
         <div class="acc-body">
           ${vids.length
             ? `${videoTabs}${vids.map((v, k) => `<div data-vpane="${uid}" data-k="${k}" ${k ? 'hidden' : ''}>${videoCard(v, uid + k)}</div>`).join('')}`
-            : '<p class="fine no-video">極刻滑行尚未為此動作發布教學影片；可先看前置動作的影片。</p>'}
+            : extBlock(t)}
           ${t.detail ? `<a class="detail-link" href="${esc(t.detail)}" target="_blank" rel="noopener">極刻滑行動作詳解 ${ext}</a>` : ''}
 
           <h5 class="node-h">前置動作</h5>
@@ -131,7 +190,7 @@
     bar.innerHTML = `
       ${['B', 'A', 'S'].map((L) => `<button type="button" class="atomic-card ${!ui.videoOnly && ui.level === L ? 'selected' : ''}" data-level="${L}" aria-pressed="${!ui.videoOnly && ui.level === L}">
         <span class="n">LV ${L}</span>${LEVEL_NAME[L]} · ${count(L)}</button>`).join('')}
-      <button type="button" class="atomic-card ${ui.videoOnly ? 'selected' : ''}" data-video-only aria-pressed="${ui.videoOnly}">▶ 有影片 · ${withVid}</button>`;
+      <button type="button" class="atomic-card ${ui.videoOnly ? 'selected' : ''}" data-video-only aria-pressed="${ui.videoOnly}">▶ 極刻滑行影片 · ${withVid}</button>`;
 
     const list = D.tricks.filter((t) => (ui.videoOnly ? t.videos.length : t.level === ui.level));
     root.innerHTML = list.map((t) => nodeHtml(t, D.tricks.filter((x) => x.level === t.level).indexOf(t))).join('');
@@ -212,6 +271,8 @@
   /* ---------- shared bindings ---------- */
   function bindDelegates(root) {
     root.addEventListener('click', (e) => {
+      const er = e.target.closest('.ext-row');
+      if (er && root.contains(er)) { e.preventDefault(); playExt(er); return; }
       const thumb = e.target.closest('.yt-thumb');
       if (thumb && root.contains(thumb)) { e.preventDefault(); mountEmbed(thumb); return; }
       const go = e.target.closest('[data-goto]');

@@ -260,6 +260,21 @@ class PublicDisclosureTests(unittest.TestCase):
             self.assertIn(needle, html)
         js = (self.root / "js/reference.js").read_text(encoding="utf-8")
         self.assertIn("youtube-nocookie.com/embed/", js, "embeds must use privacy-enhanced mode")
+        # Nodes without a carvingeek video carry <=3 third-party picks per platform, ranked match-first then views.
+        for t in tricks:
+            if t["videos"]:
+                self.assertNotIn("ext", t, f"{t['id']} has carvingeek videos; no third-party picks needed")
+                continue
+            self.assertIn("ext", t, f"{t['id']} lacks external picks")
+            for plat, pat in (("yt", r"^[\w-]{11}$"), ("bili", r"^BV[0-9A-Za-z]{10}$")):
+                picks = t["ext"][plat]
+                self.assertLessEqual(len(picks), 3)
+                for v in picks:
+                    self.assertRegex(v["id"], pat)
+                    self.assertTrue(v["title"] and v["channel"])
+                keys = [(v["match"] != "exact", -v["views"]) for v in picks]
+                self.assertEqual(keys, sorted(keys), f"{t['id']} {plat} picks not ranked match-first then views")
+        self.assertIn("未經本專案審查", js, "third-party picks must be labelled as unreviewed")
 
     def test_curriculum_typo_uses_traditional_chinese(self):
         data = (self.root / "js/curriculum_data.js").read_text(encoding="utf-8")

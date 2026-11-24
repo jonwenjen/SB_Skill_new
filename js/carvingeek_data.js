@@ -1,6 +1,7 @@
 /* External reference index: 極刻滑行 carvingeek.com (老胡與婷婷).
  * Skill-tree structure, prerequisite links and video IDs as published on carvingeek.com, retrieved 2026-11-24.
- * Videos remain the creators' content; this site only links / embeds them. Not reviewed by this project. */
+ * Videos remain the creators' content; this site only links / embeds them. Not reviewed by this project.
+ * `ext` (nodes without a carvingeek video): third-party YouTube/Bilibili picks, ranked by title match then views, retrieved 2026-11-24. */
 window.SB_CARVINGEEK = {
  "source": {
   "name": "極刻滑行（老胡與婷婷）",
@@ -9,7 +10,8 @@ window.SB_CARVINGEEK = {
   "carving": "https://carvingeek.com/carving",
   "youtube": "https://www.youtube.com/@carvingeek",
   "bilibili": "https://space.bilibili.com/92292870",
-  "retrieved": "2026-11-24"
+  "retrieved": "2026-11-24",
+  "ext_note": "原站未提供影片的動作：YouTube 與 B 站各取 3 支，先依動作名稱吻合度、再依觀看數排序；2026-11-24 檢索並逐一確認仍可播放。非極刻滑行內容，未經本專案審查。"
  },
  "levels": {
   "B": "入門",
@@ -31,7 +33,55 @@ window.SB_CARVINGEEK = {
     "dolphin-turn"
    ],
    "detail": null,
-   "videos": []
+   "videos": [],
+   "ext": {
+    "yt": [
+     {
+      "id": "Kv0Ah4Xd8d0",
+      "title": "How To Tail Press On A Snowboard",
+      "channel": "Snowboard Addiction",
+      "views": 29426,
+      "match": "exact"
+     },
+     {
+      "id": "Px2YuKQVS_g",
+      "title": "How To Nose Press On A Snowboard",
+      "channel": "Snowboard Addiction",
+      "views": 22936,
+      "match": "exact"
+     },
+     {
+      "id": "hIA01upc5hY",
+      "title": "[黄嘉蓝单板教学] 板头/板尾平衡 + 压板转圈圈 教学",
+      "channel": "黄嘉蓝单板教学 Huang's Snowboarding",
+      "views": 15405,
+      "match": "exact"
+     }
+    ],
+    "bili": [
+     {
+      "id": "BV1MY411p7Yq",
+      "title": "[黄嘉蓝单板教学] 板头/板尾平衡 + 压板转圈圈 教学",
+      "channel": "黄嘉蓝单板教学",
+      "views": 19951,
+      "match": "exact"
+     },
+     {
+      "id": "BV1cwkyYzEaZ",
+      "title": "【初学者必看】 Press板头板尾平衡，真的这么简单吗？",
+      "channel": "小林Hayashi",
+      "views": 3795,
+      "match": "exact"
+     },
+     {
+      "id": "BV1uK411M7pV",
+      "title": "单板滑雪自由式入门——Tail Press &Nose Press",
+      "channel": "蘇桥",
+      "views": 791,
+      "match": "exact"
+     }
+    ]
+   }
   },
   {
    "id": "front-spin-back-spin",
@@ -42,7 +92,55 @@ window.SB_CARVINGEEK = {
    ],
    "unlocks": [],
    "detail": null,
-   "videos": []
+   "videos": [],
+   "ext": {
+    "yt": [
+     {
+      "id": "hIA01upc5hY",
+      "title": "[黄嘉蓝单板教学] 板头/板尾平衡 + 压板转圈圈 教学",
+      "channel": "黄嘉蓝单板教学 Huang's Snowboarding",
+      "views": 15405,
+      "match": "exact"
+     },
+     {
+      "id": "WHIxDwbR7Io",
+      "title": "Frontside 360 Nose Butter / 180 Press 180 Out Snowboarding Trick Tip",
+      "channel": "WNTR Ski & Snowboard Training",
+      "views": 6557,
+      "match": "exact"
+     },
+     {
+      "id": "Z1HjjE692Yc",
+      "title": "Snowboard tricks: Tailpress Backside 180 Tailpress",
+      "channel": "shvejnov",
+      "views": 2645,
+      "match": "exact"
+     }
+    ],
+    "bili": [
+     {
+      "id": "BV1oM4m1y7Cg",
+      "title": "【单板平花】轴转教学分享 单板武士团",
+      "channel": "夜洛大人",
+      "views": 5298,
+      "match": "close"
+     },
+     {
+      "id": "BV1cwkyYzEaZ",
+      "title": "【初学者必看】 Press板头板尾平衡，真的这么简单吗？",
+      "channel": "小林Hayashi",
+      "views": 3795,
+      "match": "close"
+     },
+     {
+      "id": "BV1jG411G7Jq",
+      "title": "【ToyFilms】最新press trick集锦",
+      "channel": "cz暴雪",
+      "views": 948,
+      "match": "close"
+     }
+    ]
+   }
   },
   {
    "id": "front-nose",
@@ -58,7 +156,55 @@ window.SB_CARVINGEEK = {
     "bs-nollie-shuffle-180"
    ],
    "detail": null,
-   "videos": []
+   "videos": [],
+   "ext": {
+    "yt": [
+     {
+      "id": "N3ddt_yoxts",
+      "title": "How To 180 Nose Roll On A Snowboard",
+      "channel": "Snowboard Addiction",
+      "views": 98855,
+      "match": "exact"
+     },
+     {
+      "id": "hIA01upc5hY",
+      "title": "[黄嘉蓝单板教学] 板头/板尾平衡 + 压板转圈圈 教学",
+      "channel": "黄嘉蓝单板教学 Huang's Snowboarding",
+      "views": 15405,
+      "match": "exact"
+     },
+     {
+      "id": "ehmIHFnNrjM",
+      "title": "How To Nose Press Frontside 180 On A Snowboard",
+      "channel": "Snowboard Addiction",
+      "views": 10801,
+      "match": "exact"
+     }
+    ],
+    "bili": [
+     {
+      "id": "BV1MY411p7Yq",
+      "title": "[黄嘉蓝单板教学] 板头/板尾平衡 + 压板转圈圈 教学",
+      "channel": "黄嘉蓝单板教学",
+      "views": 19951,
+      "match": "exact"
+     },
+     {
+      "id": "BV1cwkyYzEaZ",
+      "title": "【初学者必看】 Press板头板尾平衡，真的这么简单吗？",
+      "channel": "小林Hayashi",
+      "views": 3795,
+      "match": "exact"
+     },
+     {
+      "id": "BV1hW4y1v7L7",
+      "title": "【在家就能学的单板平花课】第26期 旋转系的起点：板头外转Spin",
+      "channel": "小阳儿Joy_禾木教学",
+      "views": 1410,
+      "match": "exact"
+     }
+    ]
+   }
   },
   {
    "id": "back-nose",
@@ -74,7 +220,55 @@ window.SB_CARVINGEEK = {
     "mfm"
    ],
    "detail": null,
-   "videos": []
+   "videos": [],
+   "ext": {
+    "yt": [
+     {
+      "id": "qEVaINaRpf0",
+      "title": "How To 360 Nose Roll On A Snowboard",
+      "channel": "Snowboard Addiction",
+      "views": 117658,
+      "match": "exact"
+     },
+     {
+      "id": "N3ddt_yoxts",
+      "title": "How To 180 Nose Roll On A Snowboard",
+      "channel": "Snowboard Addiction",
+      "views": 98855,
+      "match": "exact"
+     },
+     {
+      "id": "me3sxI2DJnY",
+      "title": "[黄嘉蓝单板教学] 跳转180细节提高 + Backside Noseroll 180 教学",
+      "channel": "黄嘉蓝单板教学 Huang's Snowboarding",
+      "views": 19588,
+      "match": "exact"
+     }
+    ],
+    "bili": [
+     {
+      "id": "BV1MY411p7Yq",
+      "title": "[黄嘉蓝单板教学] 板头/板尾平衡 + 压板转圈圈 教学",
+      "channel": "黄嘉蓝单板教学",
+      "views": 19951,
+      "match": "exact"
+     },
+     {
+      "id": "BV1W44y177aY",
+      "title": "[黄嘉蓝单板教学] 跳转180细节提高 + Backside Noseroll 180 教学",
+      "channel": "黄嘉蓝单板教学",
+      "views": 19476,
+      "match": "exact"
+     },
+     {
+      "id": "BV163411s7tk",
+      "title": "单板平花之板头Compass内转",
+      "channel": "乃迪_Ou",
+      "views": 4310,
+      "match": "exact"
+     }
+    ]
+   }
   },
   {
    "id": "back-tail",
@@ -90,7 +284,55 @@ window.SB_CARVINGEEK = {
     "back-tail-rewind"
    ],
    "detail": null,
-   "videos": []
+   "videos": [],
+   "ext": {
+    "yt": [
+     {
+      "id": "VL9pPKsVB_4",
+      "title": "How To 180 Tail Butter 180 Out On A Snowboard",
+      "channel": "Snowboard Addiction",
+      "views": 164162,
+      "match": "exact"
+     },
+     {
+      "id": "hZCDsreASr4",
+      "title": "How To Tail Butter Backside 180",
+      "channel": "Snowboard Addiction",
+      "views": 21052,
+      "match": "exact"
+     },
+     {
+      "id": "hIA01upc5hY",
+      "title": "[黄嘉蓝单板教学] 板头/板尾平衡 + 压板转圈圈 教学",
+      "channel": "黄嘉蓝单板教学 Huang's Snowboarding",
+      "views": 15405,
+      "match": "exact"
+     }
+    ],
+    "bili": [
+     {
+      "id": "BV1MY411p7Yq",
+      "title": "[黄嘉蓝单板教学] 板头/板尾平衡 + 压板转圈圈 教学",
+      "channel": "黄嘉蓝单板教学",
+      "views": 19951,
+      "match": "exact"
+     },
+     {
+      "id": "BV1cwkyYzEaZ",
+      "title": "【初学者必看】 Press板头板尾平衡，真的这么简单吗？",
+      "channel": "小林Hayashi",
+      "views": 3795,
+      "match": "exact"
+     },
+     {
+      "id": "BV1Jp4y1h7mp",
+      "title": "How To 180 Tail Butter 180 Out On A Snowboard",
+      "channel": "stalkerloner",
+      "views": 91,
+      "match": "exact"
+     }
+    ]
+   }
   },
   {
    "id": "front-tail",
@@ -106,7 +348,55 @@ window.SB_CARVINGEEK = {
     "front-tail-rewind"
    ],
    "detail": null,
-   "videos": []
+   "videos": [],
+   "ext": {
+    "yt": [
+     {
+      "id": "y-pPJzqetTg",
+      "title": "How To Tail Butter 180 On A Snowboard (Regular)",
+      "channel": "Snowboard Addiction",
+      "views": 475535,
+      "match": "exact"
+     },
+     {
+      "id": "VL9pPKsVB_4",
+      "title": "How To 180 Tail Butter 180 Out On A Snowboard",
+      "channel": "Snowboard Addiction",
+      "views": 164162,
+      "match": "exact"
+     },
+     {
+      "id": "0kOnosbyt1c",
+      "title": "How To Tail Butter Frontside 180",
+      "channel": "Snowboard Addiction",
+      "views": 56292,
+      "match": "exact"
+     }
+    ],
+    "bili": [
+     {
+      "id": "BV1MY411p7Yq",
+      "title": "[黄嘉蓝单板教学] 板头/板尾平衡 + 压板转圈圈 教学",
+      "channel": "黄嘉蓝单板教学",
+      "views": 19951,
+      "match": "exact"
+     },
+     {
+      "id": "BV1cwkyYzEaZ",
+      "title": "【初学者必看】 Press板头板尾平衡，真的这么简单吗？",
+      "channel": "小林Hayashi",
+      "views": 3795,
+      "match": "exact"
+     },
+     {
+      "id": "BV1uK411M7pV",
+      "title": "单板滑雪自由式入门——Tail Press &Nose Press",
+      "channel": "蘇桥",
+      "views": 791,
+      "match": "exact"
+     }
+    ]
+   }
   },
   {
    "id": "back-nose-rewind",
@@ -217,7 +507,55 @@ window.SB_CARVINGEEK = {
     "fs-nollie-360"
    ],
    "detail": null,
-   "videos": []
+   "videos": [],
+   "ext": {
+    "yt": [
+     {
+      "id": "qEVaINaRpf0",
+      "title": "How To 360 Nose Roll On A Snowboard",
+      "channel": "Snowboard Addiction",
+      "views": 117658,
+      "match": "exact"
+     },
+     {
+      "id": "5q2ivIXJx3U",
+      "title": "How To Nose & Tail Spin On A Snowboard",
+      "channel": "Snowboard Addiction",
+      "views": 94465,
+      "match": "exact"
+     },
+     {
+      "id": "hIA01upc5hY",
+      "title": "[黄嘉蓝单板教学] 板头/板尾平衡 + 压板转圈圈 教学",
+      "channel": "黄嘉蓝单板教学 Huang's Snowboarding",
+      "views": 15405,
+      "match": "exact"
+     }
+    ],
+    "bili": [
+     {
+      "id": "BV1MY411p7Yq",
+      "title": "[黄嘉蓝单板教学] 板头/板尾平衡 + 压板转圈圈 教学",
+      "channel": "黄嘉蓝单板教学",
+      "views": 19951,
+      "match": "exact"
+     },
+     {
+      "id": "BV1cwkyYzEaZ",
+      "title": "【初学者必看】 Press板头板尾平衡，真的这么简单吗？",
+      "channel": "小林Hayashi",
+      "views": 3795,
+      "match": "exact"
+     },
+     {
+      "id": "BV1VA4m1j7AE",
+      "title": "刻平教程 1正外粘板头180",
+      "channel": "哲哲就行",
+      "views": 2338,
+      "match": "exact"
+     }
+    ]
+   }
   },
   {
    "id": "nose-press-back-spin",
@@ -233,7 +571,55 @@ window.SB_CARVINGEEK = {
     "telie"
    ],
    "detail": null,
-   "videos": []
+   "videos": [],
+   "ext": {
+    "yt": [
+     {
+      "id": "N3ddt_yoxts",
+      "title": "How To 180 Nose Roll On A Snowboard",
+      "channel": "Snowboard Addiction",
+      "views": 98855,
+      "match": "exact"
+     },
+     {
+      "id": "5q2ivIXJx3U",
+      "title": "How To Nose & Tail Spin On A Snowboard",
+      "channel": "Snowboard Addiction",
+      "views": 94465,
+      "match": "exact"
+     },
+     {
+      "id": "ejWLQXRJ7Qw",
+      "title": "Snowboard Trick Tips: Backside 360 Nose-Roll",
+      "channel": "Ryan Knapton",
+      "views": 66730,
+      "match": "exact"
+     }
+    ],
+    "bili": [
+     {
+      "id": "BV1MY411p7Yq",
+      "title": "[黄嘉蓝单板教学] 板头/板尾平衡 + 压板转圈圈 教学",
+      "channel": "黄嘉蓝单板教学",
+      "views": 19951,
+      "match": "exact"
+     },
+     {
+      "id": "BV163411s7tk",
+      "title": "单板平花之板头Compass内转",
+      "channel": "乃迪_Ou",
+      "views": 4310,
+      "match": "exact"
+     },
+     {
+      "id": "BV1cwkyYzEaZ",
+      "title": "【初学者必看】 Press板头板尾平衡，真的这么简单吗？",
+      "channel": "小林Hayashi",
+      "views": 3795,
+      "match": "exact"
+     }
+    ]
+   }
   },
   {
    "id": "drive-spin-540",
@@ -329,7 +715,55 @@ window.SB_CARVINGEEK = {
     "heel-bs-tail-compass"
    ],
    "detail": null,
-   "videos": []
+   "videos": [],
+   "ext": {
+    "yt": [
+     {
+      "id": "oUnjq_IU_IE",
+      "title": "テールコンパス180  グラトリの基本技 スノーボード初心者向けの簡単なトリック集",
+      "channel": "スノーボード ネクスト(SNOWBOARD NEXT)",
+      "views": 19491,
+      "match": "exact"
+     },
+     {
+      "id": "8jtAZFa5JPs",
+      "title": "【グラトリハウツー】Bテールコンパス180から360まで回す練習法",
+      "channel": "ジェジュンのグラトリ大学",
+      "views": 3047,
+      "match": "exact"
+     },
+     {
+      "id": "ZPi0WCl9RYs",
+      "title": "【グラトリ】サシ360の練習　テールコンパス",
+      "channel": "スノボー先生 by LATEproject",
+      "views": 2776,
+      "match": "exact"
+     }
+    ],
+    "bili": [
+     {
+      "id": "BV18S4y1o71i",
+      "title": "阶段三：板尾Compass内转360",
+      "channel": "乃迪_Ou",
+      "views": 4510,
+      "match": "exact"
+     },
+     {
+      "id": "BV1vg411w7e8",
+      "title": "板尾Compass：一个用重心转移来做的小妙招",
+      "channel": "乃迪_Ou",
+      "views": 3036,
+      "match": "exact"
+     },
+     {
+      "id": "BV1oV411K7MT",
+      "title": "干货满满！外转compass180教学来了！",
+      "channel": "王想想-武士团",
+      "views": 1253,
+      "match": "exact"
+     }
+    ]
+   }
   },
   {
    "id": "backside-nose-compass",
@@ -344,7 +778,55 @@ window.SB_CARVINGEEK = {
     "bs-nollie-540"
    ],
    "detail": null,
-   "videos": []
+   "videos": [],
+   "ext": {
+    "yt": [
+     {
+      "id": "OZlUOyQkJYk",
+      "title": "＃20  初級者のためのグラトリ講座【 BSノーズコンパス 】ハウツー",
+      "channel": "ペレッスン",
+      "views": 47312,
+      "match": "exact"
+     },
+     {
+      "id": "8fJN8aKBoiE",
+      "title": "ノーズコンパス360・ピボット360  グラトリの基本技 スノーボード初心者",
+      "channel": "スノーボード ネクスト(SNOWBOARD NEXT)",
+      "views": 45352,
+      "match": "exact"
+     },
+     {
+      "id": "sxwL0K1lTJE",
+      "title": "【グラトリ成長への道】BSコンパスのハウツー‼︎あの技が出来れば良いだけ⁉︎『スノーボード  』",
+      "channel": "ジェジュンのグラトリ大学",
+      "views": 43571,
+      "match": "exact"
+     }
+    ],
+    "bili": [
+     {
+      "id": "BV18S4y1o71i",
+      "title": "阶段三：板尾Compass内转360",
+      "channel": "乃迪_Ou",
+      "views": 4510,
+      "match": "exact"
+     },
+     {
+      "id": "BV1oV411K7MT",
+      "title": "干货满满！外转compass180教学来了！",
+      "channel": "王想想-武士团",
+      "views": 1253,
+      "match": "exact"
+     },
+     {
+      "id": "BV1Vcy3z7EW8",
+      "title": "【平花系统修行Lv.2】弹板弹不高？两个要素+Compass练习 让你的Ollie Nollie跳得更高",
+      "channel": "老胡与婷婷_极刻滑行",
+      "views": 809,
+      "match": "exact"
+     }
+    ]
+   }
   },
   {
    "id": "frontside-nose-compass",
@@ -358,7 +840,55 @@ window.SB_CARVINGEEK = {
     "fs-nollie-540"
    ],
    "detail": null,
-   "videos": []
+   "videos": [],
+   "ext": {
+    "yt": [
+     {
+      "id": "8fJN8aKBoiE",
+      "title": "ノーズコンパス360・ピボット360  グラトリの基本技 スノーボード初心者",
+      "channel": "スノーボード ネクスト(SNOWBOARD NEXT)",
+      "views": 45352,
+      "match": "exact"
+     },
+     {
+      "id": "apeVKQhdD0I",
+      "title": "【初心者必見!!】誰でもすぐに挑戦できるフロントコンパス！グラトリ女子が解説します♪",
+      "channel": "おしずの部屋",
+      "views": 12617,
+      "match": "exact"
+     },
+     {
+      "id": "4PkF9BtF8kY",
+      "title": "グラトリ初心者でもさらっと1回転できるフロントコンパス360を解説します",
+      "channel": "りゅう@グラトリ研究チャンネル",
+      "views": 4789,
+      "match": "exact"
+     }
+    ],
+    "bili": [
+     {
+      "id": "BV163411s7tk",
+      "title": "单板平花之板头Compass内转",
+      "channel": "乃迪_Ou",
+      "views": 4310,
+      "match": "exact"
+     },
+     {
+      "id": "BV1oV411K7MT",
+      "title": "干货满满！外转compass180教学来了！",
+      "channel": "王想想-武士团",
+      "views": 1253,
+      "match": "exact"
+     },
+     {
+      "id": "BV1Vcy3z7EW8",
+      "title": "【平花系统修行Lv.2】弹板弹不高？两个要素+Compass练习 让你的Ollie Nollie跳得更高",
+      "channel": "老胡与婷婷_极刻滑行",
+      "views": 809,
+      "match": "exact"
+     }
+    ]
+   }
   },
   {
    "id": "frontside-tail-compass",
@@ -391,7 +921,55 @@ window.SB_CARVINGEEK = {
     "toe-open-360"
    ],
    "detail": null,
-   "videos": []
+   "videos": [],
+   "ext": {
+    "yt": [
+     {
+      "id": "8fJN8aKBoiE",
+      "title": "ノーズコンパス360・ピボット360  グラトリの基本技 スノーボード初心者",
+      "channel": "スノーボード ネクスト(SNOWBOARD NEXT)",
+      "views": 45352,
+      "match": "exact"
+     },
+     {
+      "id": "4PkF9BtF8kY",
+      "title": "グラトリ初心者でもさらっと1回転できるフロントコンパス360を解説します",
+      "channel": "りゅう@グラトリ研究チャンネル",
+      "views": 4789,
+      "match": "exact"
+     },
+     {
+      "id": "PlqTJp-rti4",
+      "title": "【初心者必見‼️】これができればグラトリ爆速成長‼️🔥【フロントコンパス】",
+      "channel": "りょぺちゃんねる",
+      "views": 4710,
+      "match": "exact"
+     }
+    ],
+    "bili": [
+     {
+      "id": "BV163411s7tk",
+      "title": "单板平花之板头Compass内转",
+      "channel": "乃迪_Ou",
+      "views": 4310,
+      "match": "exact"
+     },
+     {
+      "id": "BV1oV411K7MT",
+      "title": "干货满满！外转compass180教学来了！",
+      "channel": "王想想-武士团",
+      "views": 1253,
+      "match": "exact"
+     },
+     {
+      "id": "BV1Vcy3z7EW8",
+      "title": "【平花系统修行Lv.2】弹板弹不高？两个要素+Compass练习 让你的Ollie Nollie跳得更高",
+      "channel": "老胡与婷婷_极刻滑行",
+      "views": 809,
+      "match": "exact"
+     }
+    ]
+   }
   },
   {
    "id": "back-owen",
@@ -403,7 +981,55 @@ window.SB_CARVINGEEK = {
    ],
    "unlocks": [],
    "detail": null,
-   "videos": []
+   "videos": [],
+   "ext": {
+    "yt": [
+     {
+      "id": "qBFLuYma4pw",
+      "title": "单板滑雪 owen 平花教学",
+      "channel": "宇梶亜威",
+      "views": 36060,
+      "match": "close"
+     },
+     {
+      "id": "KI8lE4LdEmM",
+      "title": "Snowboard Groundtricks and Butters Tutorial - Owen Combo Trick",
+      "channel": "The Butter Dojo",
+      "views": 12166,
+      "match": "close"
+     },
+     {
+      "id": "mHkZrMrp5Ic",
+      "title": "【平花系统修行Lv.2】Owen详解来了 典型错误改善 进来看看你的Owen是不是也有同样的问题",
+      "channel": "老胡与婷婷   极刻滑行",
+      "views": 6233,
+      "match": "close"
+     }
+    ],
+    "bili": [
+     {
+      "id": "BV1Cb411b7d7",
+      "title": "【平花教学OWEN】OWEN平花滑雪超详细教程",
+      "channel": "单板老曹",
+      "views": 13462,
+      "match": "close"
+     },
+     {
+      "id": "BV1u24y1a745",
+      "title": "【VLOG】平衡系三大基本招式｜DriveSpin｜Owen｜Sone｜一顺也能玩平花吗？",
+      "channel": "老胡与婷婷_极刻滑行",
+      "views": 5276,
+      "match": "close"
+     },
+     {
+      "id": "BV1tr4y167kw",
+      "title": "Owen分解练习",
+      "channel": "乃迪_Ou",
+      "views": 3870,
+      "match": "close"
+     }
+    ]
+   }
   },
   {
    "id": "owen",
@@ -466,7 +1092,55 @@ window.SB_CARVINGEEK = {
     "heel-bs-ollie-180"
    ],
    "detail": null,
-   "videos": []
+   "videos": [],
+   "ext": {
+    "yt": [
+     {
+      "id": "sxwL0K1lTJE",
+      "title": "【グラトリ成長への道】BSコンパスのハウツー‼︎あの技が出来れば良いだけ⁉︎『スノーボード  』",
+      "channel": "ジェジュンのグラトリ大学",
+      "views": 43571,
+      "match": "exact"
+     },
+     {
+      "id": "_1NFRtlL8Cc",
+      "title": "【グラトリハウツー】バックコンパスと先行動作",
+      "channel": "いぐっちゃん。",
+      "views": 15583,
+      "match": "exact"
+     },
+     {
+      "id": "zHUdqGWxUug",
+      "title": "Lv3⑪【NOLLIE BACK COMPASS ノーリーバックコンパス】　フロントロデオ　基礎　ジブ　グラトリ　3D snowbard 13-14 trick how to",
+      "channel": "ONE SNOW",
+      "views": 8085,
+      "match": "exact"
+     }
+    ],
+    "bili": [
+     {
+      "id": "BV18S4y1o71i",
+      "title": "阶段三：板尾Compass内转360",
+      "channel": "乃迪_Ou",
+      "views": 4510,
+      "match": "exact"
+     },
+     {
+      "id": "BV1vg411w7e8",
+      "title": "板尾Compass：一个用重心转移来做的小妙招",
+      "channel": "乃迪_Ou",
+      "views": 3036,
+      "match": "exact"
+     },
+     {
+      "id": "BV1oV411K7MT",
+      "title": "干货满满！外转compass180教学来了！",
+      "channel": "王想想-武士团",
+      "views": 1253,
+      "match": "exact"
+     }
+    ]
+   }
   },
   {
    "id": "toe-open-360",
@@ -480,7 +1154,55 @@ window.SB_CARVINGEEK = {
     "fs-nollie-720"
    ],
    "detail": null,
-   "videos": []
+   "videos": [],
+   "ext": {
+    "yt": [
+     {
+      "id": "lm6fZ9c6aUg",
+      "title": "グラトリ初心者基本編【オーリー360】あっそれ練習してみたいっと思ったら見るグラトリスノーボード動画　オーリー３６０　グランドトリック　オープン３６０グラトリの基本のハウツーレッスン",
+      "channel": "スノボー先生 by LATEproject",
+      "views": 58799,
+      "match": "exact"
+     },
+     {
+      "id": "79F8hgVFeWc",
+      "title": "【ハウツー】新企画！トゥ抜けオープン360のやり方！（FS360）【グラトリ】【トリック】【スノーボード】",
+      "channel": "ichimura film",
+      "views": 4865,
+      "match": "exact"
+     },
+     {
+      "id": "oFQKi4vKzqE",
+      "title": "【ラマ先生解説付き】｜スノーボード｜見てわかる初めてのグラトリ講座｜オープン360編",
+      "channel": "SURF & SNOW",
+      "views": 1533,
+      "match": "exact"
+     }
+    ],
+    "bili": [
+     {
+      "id": "BV1i34y127Fb",
+      "title": "全网最细drive spin教程（包含平地版本）",
+      "channel": "乃迪_Ou",
+      "views": 20651,
+      "match": "close"
+     },
+     {
+      "id": "BV1a7411z7gY",
+      "title": "[黄嘉蓝单板教学] 只要注意这两点，马上拥有帅气潇洒的外转360",
+      "channel": "黄嘉蓝单板教学",
+      "views": 15988,
+      "match": "close"
+     },
+     {
+      "id": "BV1k64y1L76s",
+      "title": "【平衡系】平花基础动作 Drive Spin掰开揉碎教学",
+      "channel": "老胡与婷婷_极刻滑行",
+      "views": 14625,
+      "match": "close"
+     }
+    ]
+   }
   },
   {
    "id": "heel-bs-nose-compass",
@@ -493,7 +1215,55 @@ window.SB_CARVINGEEK = {
     "zero-andy-360"
    ],
    "detail": null,
-   "videos": []
+   "videos": [],
+   "ext": {
+    "yt": [
+     {
+      "id": "sxwL0K1lTJE",
+      "title": "【グラトリ成長への道】BSコンパスのハウツー‼︎あの技が出来れば良いだけ⁉︎『スノーボード  』",
+      "channel": "ジェジュンのグラトリ大学",
+      "views": 43571,
+      "match": "exact"
+     },
+     {
+      "id": "0JIjSSO1WbU",
+      "title": "【グラトリHow to】B3ノーズコンパスとBsノーリーを教えてもらった【虫くんch】",
+      "channel": "虫くんチャンネル",
+      "views": 20897,
+      "match": "exact"
+     },
+     {
+      "id": "X_hL29ehF1o",
+      "title": "【グラトリハウツー】レギュラーバックコンパスと先行動作",
+      "channel": "いぐっちゃん。",
+      "views": 18060,
+      "match": "exact"
+     }
+    ],
+    "bili": [
+     {
+      "id": "BV163411s7tk",
+      "title": "单板平花之板头Compass内转",
+      "channel": "乃迪_Ou",
+      "views": 4310,
+      "match": "exact"
+     },
+     {
+      "id": "BV1oV411K7MT",
+      "title": "干货满满！外转compass180教学来了！",
+      "channel": "王想想-武士团",
+      "views": 1253,
+      "match": "exact"
+     },
+     {
+      "id": "BV1Vcy3z7EW8",
+      "title": "【平花系统修行Lv.2】弹板弹不高？两个要素+Compass练习 让你的Ollie Nollie跳得更高",
+      "channel": "老胡与婷婷_极刻滑行",
+      "views": 809,
+      "match": "exact"
+     }
+    ]
+   }
   },
   {
    "id": "fs-nollie-360",
@@ -526,7 +1296,11 @@ window.SB_CARVINGEEK = {
    ],
    "unlocks": [],
    "detail": null,
-   "videos": []
+   "videos": [],
+   "ext": {
+    "yt": [],
+    "bili": []
+   }
   },
   {
    "id": "fs-ollie-360",
@@ -567,7 +1341,55 @@ window.SB_CARVINGEEK = {
     "bs-nollie-720"
    ],
    "detail": null,
-   "videos": []
+   "videos": [],
+   "ext": {
+    "yt": [
+     {
+      "id": "I75j-6LEA5M",
+      "title": "【Lv4⑫　NOLLIE BACK540 バックノーリー540】初心者　基礎　ジブ　グラトリ　180　360　オーウェン　アンディ",
+      "channel": "ONE SNOW",
+      "views": 52737,
+      "match": "exact"
+     },
+     {
+      "id": "aWjzcPC7BAo",
+      "title": "【バックサイドノーリー540】スノボグラトリ初心者向けハウツー19-20 家ティ 芝トレ スノボオフトレ ALLIAN ARRTH",
+      "channel": "かっさー",
+      "views": 12716,
+      "match": "exact"
+     },
+     {
+      "id": "0fqjaXrVL7I",
+      "title": "LV5⑳【NOLLIE BACK 540、ノーリーバック540】  SNOWBOARDING  flattrick グランドトリック　グラトリ　初心者",
+      "channel": "ONE SNOW",
+      "views": 10413,
+      "match": "exact"
+     }
+    ],
+    "bili": [
+     {
+      "id": "BV1dWfnBYEM6",
+      "title": "平花Nollie内转540练习顺序",
+      "channel": "乃迪_Ou",
+      "views": 2078,
+      "match": "exact"
+     },
+     {
+      "id": "BV1Ps4y1u7ex",
+      "title": "一小时教会CASI二级同学nollie内转540",
+      "channel": "阿誠AC",
+      "views": 612,
+      "match": "exact"
+     },
+     {
+      "id": "BV1RL4y1W75W",
+      "title": "Nollie外转起跳详细分解",
+      "channel": "乃迪_Ou",
+      "views": 10113,
+      "match": "close"
+     }
+    ]
+   }
   },
   {
    "id": "bs-nollie-shuffle-180",
@@ -581,7 +1403,55 @@ window.SB_CARVINGEEK = {
     "bs-nollie-shuffle-360"
    ],
    "detail": null,
-   "videos": []
+   "videos": [],
+   "ext": {
+    "yt": [
+     {
+      "id": "jVBSQObTJFc",
+      "title": "Lv4⑫【BACK　NOSE　TO　SUFFLE180　バックノーズ　TO　シャッフル180】　基礎　ジブ　グラトリ",
+      "channel": "ONE SNOW",
+      "views": 15564,
+      "match": "exact"
+     },
+     {
+      "id": "SSgmBfHjYbM",
+      "title": "How To MFM Butter On A Snowboard",
+      "channel": "Snowboard Addiction",
+      "views": 137809,
+      "match": "close"
+     },
+     {
+      "id": "ZAn2LtPKJVM",
+      "title": "MFM Snowboarding (mark frank montoya)",
+      "channel": "dyms42",
+      "views": 102743,
+      "match": "close"
+     }
+    ],
+    "bili": [
+     {
+      "id": "BV1pRKce2EFe",
+      "title": "【刻平小招】刻平人躲不过的必修课 MFM 进来看如何跳得高的秘密㊙️",
+      "channel": "老胡与婷婷_极刻滑行",
+      "views": 4621,
+      "match": "close"
+     },
+     {
+      "id": "BV19E411a7qa",
+      "title": "【熟肉】【平花教学完整版】十八、如何做出MFM Butter @野生的Yan",
+      "channel": "野生的Yan",
+      "views": 3984,
+      "match": "close"
+     },
+     {
+      "id": "BV12Y4y1B7SF",
+      "title": "单板平花名招 “MFM” 的出活艰辛之路",
+      "channel": "是Ruca呀",
+      "views": 1706,
+      "match": "close"
+     }
+    ]
+   }
   },
   {
    "id": "tochi",
@@ -635,7 +1505,27 @@ window.SB_CARVINGEEK = {
     "andy-540"
    ],
    "detail": null,
-   "videos": []
+   "videos": [],
+   "ext": {
+    "yt": [
+     {
+      "id": "DFtKbjCKFuQ",
+      "title": "Lv5⑤　OLLIE　GRAB FRONT540　初心者　 オーリーグラブ　フロント540　基礎　ジブ　グラトリ　3D フラットスキム",
+      "channel": "ONE SNOW",
+      "views": 4989,
+      "match": "exact"
+     }
+    ],
+    "bili": [
+     {
+      "id": "BV1E6AseeEG6",
+      "title": "【平花系统修行Lv.2】最简单的跳转系360 之 Ollie外转",
+      "channel": "老胡与婷婷_极刻滑行",
+      "views": 11307,
+      "match": "close"
+     }
+    ]
+   }
   },
   {
    "id": "fs-nollie-720",
@@ -669,7 +1559,55 @@ window.SB_CARVINGEEK = {
     "heel-bs-ollie-360"
    ],
    "detail": null,
-   "videos": []
+   "videos": [],
+   "ext": {
+    "yt": [
+     {
+      "id": "YAABnJfKJ5w",
+      "title": "5 Steps to Learning Backside 180's - Snowboard Trick",
+      "channel": "SnowboardProCamp",
+      "views": 145379,
+      "match": "close"
+     },
+     {
+      "id": "ln03njzMzuk",
+      "title": "Master The Backside 180 On Your Snowboard",
+      "channel": "Snowboard Addiction",
+      "views": 65056,
+      "match": "close"
+     },
+     {
+      "id": "6sNCGEibkWg",
+      "title": "The ULTIMATE Guide to Backside 180’s on Flat Ground- Best Snowboard Trick?",
+      "channel": "Tommie Bennett",
+      "views": 26538,
+      "match": "close"
+     }
+    ],
+    "bili": [
+     {
+      "id": "BV1xt411C7tk",
+      "title": "滑雪单板Ollie、Nollie。外转180和内转180教学。",
+      "channel": "朕和你拼了",
+      "views": 27010,
+      "match": "exact"
+     },
+     {
+      "id": "BV1A5411K7Xj",
+      "title": "[黄嘉蓝单板教学] 平花必备技巧 - 刃起刃落180",
+      "channel": "黄嘉蓝单板教学",
+      "views": 25921,
+      "match": "close"
+     },
+     {
+      "id": "BV1iz4y127DM",
+      "title": "[黄嘉蓝单板教学] 跳转180提高教学！如何跳出高飘远的180",
+      "channel": "黄嘉蓝单板教学",
+      "views": 19922,
+      "match": "close"
+     }
+    ]
+   }
   },
   {
    "id": "bs-ollie-540",
@@ -682,7 +1620,41 @@ window.SB_CARVINGEEK = {
     "bs-ollie-360-lock"
    ],
    "detail": null,
-   "videos": []
+   "videos": [],
+   "ext": {
+    "yt": [
+     {
+      "id": "K5cF0-zFPOo",
+      "title": "【Lv4⑦　OLLIE BACK540　オーリーバック540】初心者　基礎　ジブ　グラトリ　180　360",
+      "channel": "ONE SNOW",
+      "views": 37627,
+      "match": "exact"
+     },
+     {
+      "id": "Y6fV_PCm99o",
+      "title": "【Lv3③　OLLIE BACK360　オーリーバック360】初心者　基礎　ジブ　グラトリ　180　540　720　オーリー",
+      "channel": "ONE SNOW",
+      "views": 32106,
+      "match": "exact"
+     },
+     {
+      "id": "yhTsEgNJLbQ",
+      "title": "【バックサイドオーリー180・360・540】スノボグラトリ初心者向けハウツー19-20 家ティ 芝トレ スノボオフトレ ALLIAN ARRTH",
+      "channel": "かっさー",
+      "views": 15770,
+      "match": "exact"
+     }
+    ],
+    "bili": [
+     {
+      "id": "BV13U4y1x7q6",
+      "title": "[黄嘉蓝单板教学] 如何跳出你的第一个内转180？Backside 180 on a Snowboard",
+      "channel": "黄嘉蓝单板教学",
+      "views": 15392,
+      "match": "close"
+     }
+    ]
+   }
   },
   {
    "id": "andy-540",
@@ -719,7 +1691,55 @@ window.SB_CARVINGEEK = {
     "fs-nollie-720-lock"
    ],
    "detail": null,
-   "videos": []
+   "videos": [],
+   "ext": {
+    "yt": [
+     {
+      "id": "kqUlImvqBJE",
+      "title": "【グラトリ初心者ハウツー】女の子でも回せるノーリー360　筋力は関係ない　楽にスピンするコツ　グランドトリック・ノーリーフロントサイド360のやり方　スローモーションで徹底解説　スノーボードは楽しい",
+      "channel": "スノボー先生 by LATEproject",
+      "views": 113422,
+      "match": "exact"
+     },
+     {
+      "id": "EC1DxcDUKrY",
+      "title": "【グラトリ大技】ノーリースピンのやり方を解説するよノーリー360/540/720",
+      "channel": "いぐっちゃん。",
+      "views": 76724,
+      "match": "exact"
+     },
+     {
+      "id": "9OPFmzV8sX0",
+      "title": "【进阶平花】Nollie外转180 360 540 练习的方法与技巧",
+      "channel": "老胡与婷婷   极刻滑行",
+      "views": 30434,
+      "match": "exact"
+     }
+    ],
+    "bili": [
+     {
+      "id": "BV1xe4y1x7ka",
+      "title": "【进阶平花】Nollie外转180 360 540 练习的方法与技巧",
+      "channel": "老胡与婷婷_极刻滑行",
+      "views": 13810,
+      "match": "exact"
+     },
+     {
+      "id": "BV1c3411X7Jw",
+      "title": "Nollie外转360全网细致讲解，按步骤练习出活妥妥滴",
+      "channel": "乃迪_Ou",
+      "views": 13092,
+      "match": "exact"
+     },
+     {
+      "id": "BV18b41117Ub",
+      "title": "【平花教学】左右脚示范NOLLIE，F180，360，540，720",
+      "channel": "单板老曹",
+      "views": 2915,
+      "match": "exact"
+     }
+    ]
+   }
   },
   {
    "id": "zero-andy-360",
@@ -733,7 +1753,55 @@ window.SB_CARVINGEEK = {
     "zero-andy-540-lock"
    ],
    "detail": null,
-   "videos": []
+   "videos": [],
+   "ext": {
+    "yt": [
+     {
+      "id": "HVFmM1BhW7Y",
+      "title": "【ゼロアンディ】コレを覚えてグラトリ爆速成長！初心者さんでも出来る練習方法を紹介します♪",
+      "channel": "こきっすん",
+      "views": 26393,
+      "match": "exact"
+     },
+     {
+      "id": "Q1kdlonXqUE",
+      "title": "グラトリ　ゼロアンディ　スローモーション　高橋玲【YONEX MURASAKI ThreeWeather LATEproject】",
+      "channel": "スノボー先生 by LATEproject",
+      "views": 9574,
+      "match": "exact"
+     },
+     {
+      "id": "b1CqUun8iJQ",
+      "title": "練習ゼロでできる！ゼロアンディ講座",
+      "channel": "グラトリ解説bboyこーじ",
+      "views": 4816,
+      "match": "exact"
+     }
+    ],
+    "bili": [
+     {
+      "id": "BV18Y41117BE",
+      "title": "单板滑雪 Andy360练习步骤",
+      "channel": "乃迪_Ou",
+      "views": 6352,
+      "match": "close"
+     },
+     {
+      "id": "BV1Es4y1C7vE",
+      "title": "单板平花：Andy怎么练",
+      "channel": "辰逸同学",
+      "views": 1139,
+      "match": "close"
+     },
+     {
+      "id": "BV12e411C7yV",
+      "title": "Andy540的三个要点—中川智贵",
+      "channel": "北雪单板平花",
+      "views": 1091,
+      "match": "close"
+     }
+    ]
+   }
   },
   {
    "id": "bs-nollie-shuffle-360",
@@ -746,7 +1814,55 @@ window.SB_CARVINGEEK = {
     "bs-nollie-shuffle-540"
    ],
    "detail": null,
-   "videos": []
+   "videos": [],
+   "ext": {
+    "yt": [
+     {
+      "id": "4nrYRtTSwwM",
+      "title": "【Lv3⑪　NOLLIE BACK360 ノーリーバック360】初心者　基礎　ジブ　グラトリ　180　540　ノーリー",
+      "channel": "ONE SNOW",
+      "views": 33495,
+      "match": "exact"
+     },
+     {
+      "id": "XPan9p6z1rU",
+      "title": "ノーリー360  グラトリ初心者必見！ スノーボード",
+      "channel": "スノーボード ネクスト(SNOWBOARD NEXT)",
+      "views": 25403,
+      "match": "exact"
+     },
+     {
+      "id": "kHpgjiFlX_o",
+      "title": "グラトリで簡単に360回す方法。BSノーリー360ハウツー",
+      "channel": "いぐっちゃん。",
+      "views": 18541,
+      "match": "exact"
+     }
+    ],
+    "bili": [
+     {
+      "id": "BV198411x7YL",
+      "title": "单板平花：Nollie360怎么练？",
+      "channel": "辰逸同学",
+      "views": 7674,
+      "match": "exact"
+     },
+     {
+      "id": "BV1PcNWzBEXe",
+      "title": "NOLLIE COMPASS360教学（粘转360）",
+      "channel": "董老师滑雪教学",
+      "views": 641,
+      "match": "exact"
+     },
+     {
+      "id": "BV1esjTzTEQH",
+      "title": "3个技巧搞定nollie 内转360",
+      "channel": "董老师滑雪教学",
+      "views": 587,
+      "match": "exact"
+     }
+    ]
+   }
   },
   {
    "id": "bs-nollie-720",
@@ -760,7 +1876,55 @@ window.SB_CARVINGEEK = {
     "andy-720"
    ],
    "detail": null,
-   "videos": []
+   "videos": [],
+   "ext": {
+    "yt": [
+     {
+      "id": "_bw1Jv8XtqA",
+      "title": "【Lv6⑥　軸ずれノーリー720】　基礎　ジブ　グラトリ　初心者　180　360　540 フラットスキム",
+      "channel": "ONE SNOW",
+      "views": 59513,
+      "match": "exact"
+     },
+     {
+      "id": "8kIiVebpfPk",
+      "title": "スノーボード ノーリー７２０【コツは超大事】明らかに回り始めたから、シェアしていく！",
+      "channel": "UTASNOW",
+      "views": 31387,
+      "match": "exact"
+     },
+     {
+      "id": "szQJwJUnoo8",
+      "title": "LV1-6【レギュラーノーリー　180～720動画】初心者　グラトリ 스노보드 groundtrick snow snowboard　アンディ　オーウェン",
+      "channel": "ONE SNOW",
+      "views": 16897,
+      "match": "exact"
+     }
+    ],
+    "bili": [
+     {
+      "id": "BV1g1421t7it",
+      "title": "如果你会回头，那么你就可以nollie lock720",
+      "channel": "夜洛大人",
+      "views": 254288,
+      "match": "exact"
+     },
+     {
+      "id": "BV1f54y1L7i3",
+      "title": "nollie动作系列：720旋转篇",
+      "channel": "单板的世界",
+      "views": 1023,
+      "match": "exact"
+     },
+     {
+      "id": "BV1K7es6qEZj",
+      "title": "nollie720慢动作示范",
+      "channel": "董老师滑雪教学",
+      "views": 494,
+      "match": "exact"
+     }
+    ]
+   }
   },
   {
    "id": "heel-bs-ollie-360",
@@ -773,7 +1937,55 @@ window.SB_CARVINGEEK = {
     "heel-bs-ollie-360-lock"
    ],
    "detail": null,
-   "videos": []
+   "videos": [],
+   "ext": {
+    "yt": [
+     {
+      "id": "Y6fV_PCm99o",
+      "title": "【Lv3③　OLLIE BACK360　オーリーバック360】初心者　基礎　ジブ　グラトリ　180　540　720　オーリー",
+      "channel": "ONE SNOW",
+      "views": 32106,
+      "match": "exact"
+     },
+     {
+      "id": "F0QnqM6K2Hw",
+      "title": "グラトリ オーリーB360・バックサイド360  基本技 スノーボード初心者向けの簡単なトリック集",
+      "channel": "スノーボード ネクスト(SNOWBOARD NEXT)",
+      "views": 18829,
+      "match": "exact"
+     },
+     {
+      "id": "aonzIVmHYlY",
+      "title": "グラトリ初心者レッスン⚡️オーリーバックサイド360の練習方法とコツ",
+      "channel": "スノボー先生 by LATEproject",
+      "views": 9305,
+      "match": "exact"
+     }
+    ],
+    "bili": [
+     {
+      "id": "BV1nr4y1r7BU",
+      "title": "超帅动作：前刃Ollie内转360",
+      "channel": "乃迪_Ou",
+      "views": 5256,
+      "match": "exact"
+     },
+     {
+      "id": "BV1pb4y1N72K",
+      "title": "Ollie BackSide 360—中川智贵",
+      "channel": "北雪单板平花",
+      "views": 1541,
+      "match": "exact"
+     },
+     {
+      "id": "BV1jL411f7Pu",
+      "title": "平花进阶动作一：ollie内转粘转360",
+      "channel": "单板滑雪平花王sir",
+      "views": 1331,
+      "match": "exact"
+     }
+    ]
+   }
   },
   {
    "id": "fs-nollie-720-lock",
@@ -787,7 +1999,55 @@ window.SB_CARVINGEEK = {
     "fs-nollie-900"
    ],
    "detail": null,
-   "videos": []
+   "videos": [],
+   "ext": {
+    "yt": [
+     {
+      "id": "tjoWvOyKaFE",
+      "title": "【京極翔吾　アンディロデオ　ノーリーロック720　グラトリ 平地花式　ノーリー　アンディ　オーウェン　グラトリ　snowboard 】",
+      "channel": "ONE SNOW",
+      "views": 37713,
+      "match": "exact"
+     },
+     {
+      "id": "MsB6Y1qfULM",
+      "title": "【Lv6⑤　NOLLIE LOCK 720ノーリーロック 720】初心者　グラトリ　180　540　360　ノーリー　ラントリ",
+      "channel": "ONE SNOW",
+      "views": 33349,
+      "match": "exact"
+     },
+     {
+      "id": "IP3x8u_lxlE",
+      "title": "LV6 神技【ノーリー 450ロック 720】その他　小技特集　グラトリ　初心者　スノーボード　SNOWBOARD　平地花式",
+      "channel": "ONE SNOW",
+      "views": 6447,
+      "match": "exact"
+     }
+    ],
+    "bili": [
+     {
+      "id": "BV1g1421t7it",
+      "title": "如果你会回头，那么你就可以nollie lock720",
+      "channel": "夜洛大人",
+      "views": 254288,
+      "match": "exact"
+     },
+     {
+      "id": "BV1NZ4y1F7Wt",
+      "title": "nollie动作系列：nollie lock（360~720）",
+      "channel": "单板的世界",
+      "views": 627,
+      "match": "exact"
+     },
+     {
+      "id": "BV1eb421E7RZ",
+      "title": "NOLLIE 720纯享版",
+      "channel": "董老师滑雪教学",
+      "views": 344,
+      "match": "close"
+     }
+    ]
+   }
   },
   {
    "id": "bs-ollie-360-lock",
@@ -801,7 +2061,55 @@ window.SB_CARVINGEEK = {
     "bs-ollie-540-lock"
    ],
    "detail": null,
-   "videos": []
+   "videos": [],
+   "ext": {
+    "yt": [
+     {
+      "id": "Y6fV_PCm99o",
+      "title": "【Lv3③　OLLIE BACK360　オーリーバック360】初心者　基礎　ジブ　グラトリ　180　540　720　オーリー",
+      "channel": "ONE SNOW",
+      "views": 32106,
+      "match": "close"
+     },
+     {
+      "id": "75-8qXOKN_U",
+      "title": "スノーボード グラトリ2013【オーリー360・グーフィー編】スノボ グランドトリック 動画 初心者 レッスン 講座【山本純士】",
+      "channel": "スノボー先生 by LATEproject",
+      "views": 29528,
+      "match": "close"
+     },
+     {
+      "id": "BX-txrer9ZM",
+      "title": "Lv4⑧　OLLIE160　TO NOLLIE　BACK360　初心者　オーリー160　ノーリーバック360　基礎　ジブ　グラトリ　3D フラットスキム",
+      "channel": "ONE SNOW",
+      "views": 4357,
+      "match": "close"
+     }
+    ],
+    "bili": [
+     {
+      "id": "BV1nr4y1r7BU",
+      "title": "超帅动作：前刃Ollie内转360",
+      "channel": "乃迪_Ou",
+      "views": 5256,
+      "match": "close"
+     },
+     {
+      "id": "BV1pb4y1N72K",
+      "title": "Ollie BackSide 360—中川智贵",
+      "channel": "北雪单板平花",
+      "views": 1541,
+      "match": "close"
+     },
+     {
+      "id": "BV1jL411f7Pu",
+      "title": "平花进阶动作一：ollie内转粘转360",
+      "channel": "单板滑雪平花王sir",
+      "views": 1331,
+      "match": "close"
+     }
+    ]
+   }
   },
   {
    "id": "andy-720",
@@ -813,7 +2121,48 @@ window.SB_CARVINGEEK = {
    ],
    "unlocks": [],
    "detail": null,
-   "videos": []
+   "videos": [],
+   "ext": {
+    "yt": [
+     {
+      "id": "WEM8WMA3xpE",
+      "title": "【Lv6③　ANDY 720 アンディ　720】初心者　基礎　ジブ　グラトリ buter trick レッスン  jib　スノーボード",
+      "channel": "ONE SNOW",
+      "views": 85592,
+      "match": "exact"
+     },
+     {
+      "id": "Ix1gbYm3ljA",
+      "title": "グラトリ アンディ720　高橋玲【YONEX MURASAKI ThreeWeather LATEproject】",
+      "channel": "スノボー先生 by LATEproject",
+      "views": 7984,
+      "match": "exact"
+     },
+     {
+      "id": "2x6y-hSOqLo",
+      "title": "グラトリ アンディ720　神保賢一【NOVEMBER NORTHWAVE DRAKE B side OVYO LATEproject】",
+      "channel": "スノボー先生 by LATEproject",
+      "views": 7073,
+      "match": "exact"
+     }
+    ],
+    "bili": [
+     {
+      "id": "BV1x8411Q71y",
+      "title": "单板平花：Andy540",
+      "channel": "辰逸同学",
+      "views": 531,
+      "match": "close"
+     },
+     {
+      "id": "BV1qe411g7ip",
+      "title": "andy540（库存版）",
+      "channel": "子玄_修行版",
+      "views": 181,
+      "match": "close"
+     }
+    ]
+   }
   },
   {
    "id": "zero-andy-540-lock",
@@ -826,7 +2175,55 @@ window.SB_CARVINGEEK = {
     "zero-andy-double-lock-540"
    ],
    "detail": null,
-   "videos": []
+   "videos": [],
+   "ext": {
+    "yt": [
+     {
+      "id": "HVFmM1BhW7Y",
+      "title": "【ゼロアンディ】コレを覚えてグラトリ爆速成長！初心者さんでも出来る練習方法を紹介します♪",
+      "channel": "こきっすん",
+      "views": 26393,
+      "match": "close"
+     },
+     {
+      "id": "Q1kdlonXqUE",
+      "title": "グラトリ　ゼロアンディ　スローモーション　高橋玲【YONEX MURASAKI ThreeWeather LATEproject】",
+      "channel": "スノボー先生 by LATEproject",
+      "views": 9574,
+      "match": "close"
+     },
+     {
+      "id": "b1CqUun8iJQ",
+      "title": "練習ゼロでできる！ゼロアンディ講座",
+      "channel": "グラトリ解説bboyこーじ",
+      "views": 4816,
+      "match": "close"
+     }
+    ],
+    "bili": [
+     {
+      "id": "BV12e411C7yV",
+      "title": "Andy540的三个要点—中川智贵",
+      "channel": "北雪单板平花",
+      "views": 1091,
+      "match": "close"
+     },
+     {
+      "id": "BV1214y1N7Rm",
+      "title": "【540系列】ANDY 540",
+      "channel": "北雪单板平花",
+      "views": 547,
+      "match": "close"
+     },
+     {
+      "id": "BV1x8411Q71y",
+      "title": "单板平花：Andy540",
+      "channel": "辰逸同学",
+      "views": 531,
+      "match": "close"
+     }
+    ]
+   }
   },
   {
    "id": "bs-nollie-shuffle-540",
@@ -840,7 +2237,55 @@ window.SB_CARVINGEEK = {
     "andy-lock-540"
    ],
    "detail": null,
-   "videos": []
+   "videos": [],
+   "ext": {
+    "yt": [
+     {
+      "id": "I75j-6LEA5M",
+      "title": "【Lv4⑫　NOLLIE BACK540 バックノーリー540】初心者　基礎　ジブ　グラトリ　180　360　オーウェン　アンディ",
+      "channel": "ONE SNOW",
+      "views": 52737,
+      "match": "exact"
+     },
+     {
+      "id": "aWjzcPC7BAo",
+      "title": "【バックサイドノーリー540】スノボグラトリ初心者向けハウツー19-20 家ティ 芝トレ スノボオフトレ ALLIAN ARRTH",
+      "channel": "かっさー",
+      "views": 12716,
+      "match": "exact"
+     },
+     {
+      "id": "0fqjaXrVL7I",
+      "title": "LV5⑳【NOLLIE BACK 540、ノーリーバック540】  SNOWBOARDING  flattrick グランドトリック　グラトリ　初心者",
+      "channel": "ONE SNOW",
+      "views": 10413,
+      "match": "exact"
+     }
+    ],
+    "bili": [
+     {
+      "id": "BV1dWfnBYEM6",
+      "title": "平花Nollie内转540练习顺序",
+      "channel": "乃迪_Ou",
+      "views": 2078,
+      "match": "exact"
+     },
+     {
+      "id": "BV1ib4y1T7j2",
+      "title": "【熟肉】Nollie540教学-中川智贵",
+      "channel": "北雪单板平花",
+      "views": 1715,
+      "match": "exact"
+     },
+     {
+      "id": "BV1Xh411L7zH",
+      "title": "一小时教会CASI二级同学nollie 540",
+      "channel": "阿誠AC",
+      "views": 980,
+      "match": "exact"
+     }
+    ]
+   }
   },
   {
    "id": "bs-nollie-720-lock",
@@ -851,7 +2296,55 @@ window.SB_CARVINGEEK = {
    ],
    "unlocks": [],
    "detail": null,
-   "videos": []
+   "videos": [],
+   "ext": {
+    "yt": [
+     {
+      "id": "v_bOpuv5Yaw",
+      "title": "グラトリ バックサイドノーリーロック720　スーパースロー　神保賢一【NOVEMBER NORTHWAVE DRAKE B side OVYO LATEproject】",
+      "channel": "スノボー先生 by LATEproject",
+      "views": 3137,
+      "match": "exact"
+     },
+     {
+      "id": "MsB6Y1qfULM",
+      "title": "【Lv6⑤　NOLLIE LOCK 720ノーリーロック 720】初心者　グラトリ　180　540　360　ノーリー　ラントリ",
+      "channel": "ONE SNOW",
+      "views": 33349,
+      "match": "close"
+     },
+     {
+      "id": "IP3x8u_lxlE",
+      "title": "LV6 神技【ノーリー 450ロック 720】その他　小技特集　グラトリ　初心者　スノーボード　SNOWBOARD　平地花式",
+      "channel": "ONE SNOW",
+      "views": 6447,
+      "match": "close"
+     }
+    ],
+    "bili": [
+     {
+      "id": "BV1g1421t7it",
+      "title": "如果你会回头，那么你就可以nollie lock720",
+      "channel": "夜洛大人",
+      "views": 254288,
+      "match": "close"
+     },
+     {
+      "id": "BV1f54y1L7i3",
+      "title": "nollie动作系列：720旋转篇",
+      "channel": "单板的世界",
+      "views": 1023,
+      "match": "close"
+     },
+     {
+      "id": "BV1K7es6qEZj",
+      "title": "nollie720慢动作示范",
+      "channel": "董老师滑雪教学",
+      "views": 494,
+      "match": "close"
+     }
+    ]
+   }
   },
   {
    "id": "fs-nollie-900",
@@ -862,7 +2355,55 @@ window.SB_CARVINGEEK = {
    ],
    "unlocks": [],
    "detail": null,
-   "videos": []
+   "videos": [],
+   "ext": {
+    "yt": [
+     {
+      "id": "M4PieGXp1E8",
+      "title": "ノーリー900　グラトリ",
+      "channel": "TOMMY SEES",
+      "views": 338931,
+      "match": "exact"
+     },
+     {
+      "id": "B7g08eUnZ7c",
+      "title": "【Lv7②　NOLLIE FRONT 900ノーリー900】初心者　HOW　TO　lesson　スノーボード　180　360　540　アンディ",
+      "channel": "ONE SNOW",
+      "views": 73913,
+      "match": "exact"
+     },
+     {
+      "id": "nn66YZtZwjA",
+      "title": "グラトリ2014【ノーリー900】スノーボード グランドトリック 初心者 レッスン【小森貴之/天狗打痢】",
+      "channel": "スノボー先生 by LATEproject",
+      "views": 36193,
+      "match": "exact"
+     }
+    ],
+    "bili": [
+     {
+      "id": "BV1SZw7zWEMP",
+      "title": "Nollie900",
+      "channel": "乃迪_Ou",
+      "views": 1464,
+      "match": "exact"
+     },
+     {
+      "id": "BV1g1421t7it",
+      "title": "如果你会回头，那么你就可以nollie lock720",
+      "channel": "夜洛大人",
+      "views": 254288,
+      "match": "close"
+     },
+     {
+      "id": "BV1xe4y1x7ka",
+      "title": "【进阶平花】Nollie外转180 360 540 练习的方法与技巧",
+      "channel": "老胡与婷婷_极刻滑行",
+      "views": 13810,
+      "match": "close"
+     }
+    ]
+   }
   },
   {
    "id": "heel-bs-ollie-360-lock",
@@ -874,7 +2415,55 @@ window.SB_CARVINGEEK = {
    ],
    "unlocks": [],
    "detail": null,
-   "videos": []
+   "videos": [],
+   "ext": {
+    "yt": [
+     {
+      "id": "Y6fV_PCm99o",
+      "title": "【Lv3③　OLLIE BACK360　オーリーバック360】初心者　基礎　ジブ　グラトリ　180　540　720　オーリー",
+      "channel": "ONE SNOW",
+      "views": 32106,
+      "match": "close"
+     },
+     {
+      "id": "F0QnqM6K2Hw",
+      "title": "グラトリ オーリーB360・バックサイド360  基本技 スノーボード初心者向けの簡単なトリック集",
+      "channel": "スノーボード ネクスト(SNOWBOARD NEXT)",
+      "views": 18829,
+      "match": "close"
+     },
+     {
+      "id": "aonzIVmHYlY",
+      "title": "グラトリ初心者レッスン⚡️オーリーバックサイド360の練習方法とコツ",
+      "channel": "スノボー先生 by LATEproject",
+      "views": 9305,
+      "match": "close"
+     }
+    ],
+    "bili": [
+     {
+      "id": "BV1nr4y1r7BU",
+      "title": "超帅动作：前刃Ollie内转360",
+      "channel": "乃迪_Ou",
+      "views": 5256,
+      "match": "close"
+     },
+     {
+      "id": "BV1pb4y1N72K",
+      "title": "Ollie BackSide 360—中川智贵",
+      "channel": "北雪单板平花",
+      "views": 1541,
+      "match": "close"
+     },
+     {
+      "id": "BV1jL411f7Pu",
+      "title": "平花进阶动作一：ollie内转粘转360",
+      "channel": "单板滑雪平花王sir",
+      "views": 1331,
+      "match": "close"
+     }
+    ]
+   }
   },
   {
    "id": "andy-lock-540",
@@ -889,7 +2478,55 @@ window.SB_CARVINGEEK = {
     "zero-andy-double-lock-540"
    ],
    "detail": null,
-   "videos": []
+   "videos": [],
+   "ext": {
+    "yt": [
+     {
+      "id": "UHE11VCCSMA",
+      "title": "LV5【アンディロック540】グラトリ　初心者　snowboard スノーボード",
+      "channel": "ONE SNOW",
+      "views": 4945,
+      "match": "exact"
+     },
+     {
+      "id": "-sa-nv3bqBg",
+      "title": "グラトリ アンディ540ロック　神保賢一【NOVEMBER NORTHWAVE DRAKE B side OVYO LATEproject】",
+      "channel": "スノボー先生 by LATEproject",
+      "views": 3435,
+      "match": "exact"
+     },
+     {
+      "id": "COSIMSjhCfE",
+      "title": "【実証】やはりアンディ540は秒でできる！覚醒した3つの方法",
+      "channel": "グラトリ解説bboyこーじ",
+      "views": 52933,
+      "match": "close"
+     }
+    ],
+    "bili": [
+     {
+      "id": "BV12e411C7yV",
+      "title": "Andy540的三个要点—中川智贵",
+      "channel": "北雪单板平花",
+      "views": 1091,
+      "match": "close"
+     },
+     {
+      "id": "BV1x8411Q71y",
+      "title": "单板平花：Andy540",
+      "channel": "辰逸同学",
+      "views": 531,
+      "match": "close"
+     },
+     {
+      "id": "BV1qe411g7ip",
+      "title": "andy540（库存版）",
+      "channel": "子玄_修行版",
+      "views": 181,
+      "match": "close"
+     }
+    ]
+   }
   },
   {
    "id": "bs-ollie-540-lock",
@@ -902,7 +2539,41 @@ window.SB_CARVINGEEK = {
     "bs-ollie-double-lock-540"
    ],
    "detail": null,
-   "videos": []
+   "videos": [],
+   "ext": {
+    "yt": [
+     {
+      "id": "K5cF0-zFPOo",
+      "title": "【Lv4⑦　OLLIE BACK540　オーリーバック540】初心者　基礎　ジブ　グラトリ　180　360",
+      "channel": "ONE SNOW",
+      "views": 37627,
+      "match": "close"
+     },
+     {
+      "id": "yhTsEgNJLbQ",
+      "title": "【バックサイドオーリー180・360・540】スノボグラトリ初心者向けハウツー19-20 家ティ 芝トレ スノボオフトレ ALLIAN ARRTH",
+      "channel": "かっさー",
+      "views": 15770,
+      "match": "close"
+     },
+     {
+      "id": "HU0CW41kENE",
+      "title": "Lv4⑬【OLLIE BACKS540 tap、オーリータップ　バック540】 初心者　タップ ノーリーバックサイド540　基礎　ジブ　グラトリ　3D フラットスキム",
+      "channel": "ONE SNOW",
+      "views": 8166,
+      "match": "close"
+     }
+    ],
+    "bili": [
+     {
+      "id": "BV1jL411f7Pu",
+      "title": "平花进阶动作一：ollie内转粘转360",
+      "channel": "单板滑雪平花王sir",
+      "views": 1331,
+      "match": "close"
+     }
+    ]
+   }
   },
   {
    "id": "zero-andy-double-lock-540",
@@ -914,7 +2585,55 @@ window.SB_CARVINGEEK = {
    ],
    "unlocks": [],
    "detail": null,
-   "videos": []
+   "videos": [],
+   "ext": {
+    "yt": [
+     {
+      "id": "HVFmM1BhW7Y",
+      "title": "【ゼロアンディ】コレを覚えてグラトリ爆速成長！初心者さんでも出来る練習方法を紹介します♪",
+      "channel": "こきっすん",
+      "views": 26393,
+      "match": "close"
+     },
+     {
+      "id": "Q1kdlonXqUE",
+      "title": "グラトリ　ゼロアンディ　スローモーション　高橋玲【YONEX MURASAKI ThreeWeather LATEproject】",
+      "channel": "スノボー先生 by LATEproject",
+      "views": 9574,
+      "match": "close"
+     },
+     {
+      "id": "b1CqUun8iJQ",
+      "title": "練習ゼロでできる！ゼロアンディ講座",
+      "channel": "グラトリ解説bboyこーじ",
+      "views": 4816,
+      "match": "close"
+     }
+    ],
+    "bili": [
+     {
+      "id": "BV18Y41117BE",
+      "title": "单板滑雪 Andy360练习步骤",
+      "channel": "乃迪_Ou",
+      "views": 6352,
+      "match": "close"
+     },
+     {
+      "id": "BV1Es4y1C7vE",
+      "title": "单板平花：Andy怎么练",
+      "channel": "辰逸同学",
+      "views": 1139,
+      "match": "close"
+     },
+     {
+      "id": "BV12e411C7yV",
+      "title": "Andy540的三个要点—中川智贵",
+      "channel": "北雪单板平花",
+      "views": 1091,
+      "match": "close"
+     }
+    ]
+   }
   },
   {
    "id": "andy-double-lock-540",
@@ -925,7 +2644,41 @@ window.SB_CARVINGEEK = {
    ],
    "unlocks": [],
    "detail": null,
-   "videos": []
+   "videos": [],
+   "ext": {
+    "yt": [
+     {
+      "id": "COSIMSjhCfE",
+      "title": "【実証】やはりアンディ540は秒でできる！覚醒した3つの方法",
+      "channel": "グラトリ解説bboyこーじ",
+      "views": 52933,
+      "match": "close"
+     },
+     {
+      "id": "921kRbQxTxw",
+      "title": "アンディ540で諦めないで【グラトリ】720目指すワンポイント_ぷりん道",
+      "channel": "マジメニアソブch",
+      "views": 12674,
+      "match": "close"
+     },
+     {
+      "id": "4IfwVAm94Fs",
+      "title": "LV5【アンディロデオ540】グラトリ　初心者　snowboard スノーボード",
+      "channel": "ONE SNOW",
+      "views": 9788,
+      "match": "close"
+     }
+    ],
+    "bili": [
+     {
+      "id": "BV1x8411Q71y",
+      "title": "单板平花：Andy540",
+      "channel": "辰逸同学",
+      "views": 531,
+      "match": "close"
+     }
+    ]
+   }
   },
   {
    "id": "bs-nollie-double-lock-540",
@@ -936,7 +2689,55 @@ window.SB_CARVINGEEK = {
    ],
    "unlocks": [],
    "detail": null,
-   "videos": []
+   "videos": [],
+   "ext": {
+    "yt": [
+     {
+      "id": "I75j-6LEA5M",
+      "title": "【Lv4⑫　NOLLIE BACK540 バックノーリー540】初心者　基礎　ジブ　グラトリ　180　360　オーウェン　アンディ",
+      "channel": "ONE SNOW",
+      "views": 52737,
+      "match": "close"
+     },
+     {
+      "id": "0fqjaXrVL7I",
+      "title": "LV5⑳【NOLLIE BACK 540、ノーリーバック540】  SNOWBOARDING  flattrick グランドトリック　グラトリ　初心者",
+      "channel": "ONE SNOW",
+      "views": 10413,
+      "match": "close"
+     },
+     {
+      "id": "w-GFOuQ29p8",
+      "title": "Lv4　⑥ノーリーヒールバック　540　初心者　グーフィー　HOW　TO　基礎　グラトリ",
+      "channel": "ONE SNOW",
+      "views": 3592,
+      "match": "close"
+     }
+    ],
+    "bili": [
+     {
+      "id": "BV1g1421t7it",
+      "title": "如果你会回头，那么你就可以nollie lock720",
+      "channel": "夜洛大人",
+      "views": 254288,
+      "match": "close"
+     },
+     {
+      "id": "BV1Xh411L7zH",
+      "title": "一小时教会CASI二级同学nollie 540",
+      "channel": "阿誠AC",
+      "views": 980,
+      "match": "close"
+     },
+     {
+      "id": "BV1Ps4y1u7ex",
+      "title": "一小时教会CASI二级同学nollie内转540",
+      "channel": "阿誠AC",
+      "views": 612,
+      "match": "close"
+     }
+    ]
+   }
   },
   {
    "id": "fs-nollie-double-lock-720",
@@ -947,7 +2748,55 @@ window.SB_CARVINGEEK = {
     "fs-nollie-720-lock"
    ],
    "detail": null,
-   "videos": []
+   "videos": [],
+   "ext": {
+    "yt": [
+     {
+      "id": "xoYTzO_irXY",
+      "title": "【Lv6③　NOLLIE FRONT720】ノーリー　720　初心者　基礎　ジブ　グラトリ　3D 2014　スノーボード",
+      "channel": "ONE SNOW",
+      "views": 97476,
+      "match": "close"
+     },
+     {
+      "id": "tjoWvOyKaFE",
+      "title": "【京極翔吾　アンディロデオ　ノーリーロック720　グラトリ 平地花式　ノーリー　アンディ　オーウェン　グラトリ　snowboard 】",
+      "channel": "ONE SNOW",
+      "views": 37713,
+      "match": "close"
+     },
+     {
+      "id": "8kIiVebpfPk",
+      "title": "スノーボード ノーリー７２０【コツは超大事】明らかに回り始めたから、シェアしていく！",
+      "channel": "UTASNOW",
+      "views": 31387,
+      "match": "close"
+     }
+    ],
+    "bili": [
+     {
+      "id": "BV1g1421t7it",
+      "title": "如果你会回头，那么你就可以nollie lock720",
+      "channel": "夜洛大人",
+      "views": 254288,
+      "match": "close"
+     },
+     {
+      "id": "BV1NZ4y1F7Wt",
+      "title": "nollie动作系列：nollie lock（360~720）",
+      "channel": "单板的世界",
+      "views": 627,
+      "match": "close"
+     },
+     {
+      "id": "BV1eb421E7RZ",
+      "title": "NOLLIE 720纯享版",
+      "channel": "董老师滑雪教学",
+      "views": 344,
+      "match": "close"
+     }
+    ]
+   }
   },
   {
    "id": "bs-ollie-double-lock-540",
@@ -958,7 +2807,33 @@ window.SB_CARVINGEEK = {
    ],
    "unlocks": [],
    "detail": null,
-   "videos": []
+   "videos": [],
+   "ext": {
+    "yt": [
+     {
+      "id": "K5cF0-zFPOo",
+      "title": "【Lv4⑦　OLLIE BACK540　オーリーバック540】初心者　基礎　ジブ　グラトリ　180　360",
+      "channel": "ONE SNOW",
+      "views": 37627,
+      "match": "close"
+     },
+     {
+      "id": "yhTsEgNJLbQ",
+      "title": "【バックサイドオーリー180・360・540】スノボグラトリ初心者向けハウツー19-20 家ティ 芝トレ スノボオフトレ ALLIAN ARRTH",
+      "channel": "かっさー",
+      "views": 15770,
+      "match": "close"
+     },
+     {
+      "id": "HU0CW41kENE",
+      "title": "Lv4⑬【OLLIE BACKS540 tap、オーリータップ　バック540】 初心者　タップ ノーリーバックサイド540　基礎　ジブ　グラトリ　3D フラットスキム",
+      "channel": "ONE SNOW",
+      "views": 8166,
+      "match": "close"
+     }
+    ],
+    "bili": []
+   }
   }
  ],
  "carving": [
